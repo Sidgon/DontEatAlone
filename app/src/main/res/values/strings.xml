@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">DontEatAlone</string>
+    <string name="title_activity_user_profile">User Profile</string>
+    <string name="title_activity_edit_user_profile">Edit Profile</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="user_profile_btnGoingEvents_text">Going Events</string>
+    <string name="user_profile_btnCreatedEvents_text">Own Events</string>
+    <string name="user_profile_btnEditProfile_text">Edit Profile</string>
+    <string name="user_profile_txtProfileName_text">profile name</string>
+    <string name="user_profile_txtUsername_text">user name</string>
+    <string name="user_profile_userImage_des">Profile picture of user</string>
+
+    <string name="edit_uder_profile_error_username_exist">Username already exist</string>
+    
+    <string name="user_firstname">Firstname</string>
+    <string name="user_lastname">Lastname</string>
+    <string name="user_username">Username</string>
+    <string name="user_email">Email</string>
 </resources>

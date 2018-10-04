@@ -9,6 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".UserProfile"
+            android:label="@string/title_activity_user_profile"
+
+            />
+        <activity
+            android:name=".edit_user_profile"
+            android:label="@string/title_activity_edit_user_profile"
+            />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
