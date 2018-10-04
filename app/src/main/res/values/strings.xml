@@ -17,4 +17,11 @@
     <string name="user_lastname">Lastname</string>
     <string name="user_username">Username</string>
     <string name="user_email">Email</string>
+
+    <string name="login_txtEmail">Email</string>
+    <string name="login_txtPassword">Password</string>
+    <string name="login_btnSignIn">Sign In</string>
+    <string name="login_btnRegister">Register</string>
+
+
 </resources>
