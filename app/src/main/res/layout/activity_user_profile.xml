@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UserProfile">
+
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_middle"
+        android:contentDescription="@string/user_profile_userImage_des"
+        android:layout_weight="0.5"
+
+        android:src="@drawable/profile_dummy"
+        />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        >
+    <TextView
+        android:id="@+id/txtProfileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_profile_txtProfileName_text"
+        android:textAlignment="center"
+
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        />
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_profile_txtUsername_text"
+            android:textAlignment="center"
+
+            app:layout_constraintTop_toBottomOf="@id/txtProfileName"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            />
+
+    <Button
+        android:id="@+id/btnEditProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:text="@string/user_profile_btnEditProfile_text"
+
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        />
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:background="@android:color/darker_gray"
+
+        app:layout_constraintBottom_toTopOf="@+id/btnGoingEvents"
+        />
+
+    <Button
+        android:id="@+id/btnGoingEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:text="@string/user_profile_btnGoingEvents_text"
+        app:layout_constraintBottom_toTopOf="@id/btnCreatedEvents" />
+
+    <Button
+        android:id="@+id/btnCreatedEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_middle"
+        android:text="@string/user_profile_btnCreatedEvents_text"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.LinearLayoutCompat>
