@@ -23,5 +23,13 @@
     <string name="login_btnSignIn">Sign In</string>
     <string name="login_btnRegister">Register</string>
 
+    <string name="register_txtUsername">Username</string>
+    <string name="register_txtEmail">Email</string>
+    <string name="register_btnSignUp">Sign Up</string>
+    <string name="register_txtPasswordRepeat">Repeat Password</string>
+    <string name="register_txtPassword">Enter Password</string>
+    <string name="register_txtLastName">Lastname</string>
+    <string name="register_txtFirstName">Firstname</string>
+
 
 </resources>
