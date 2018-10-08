@@ -63,7 +63,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size"
+        android:layout_height="@dimen/divider_size_medium"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
         android:background="@android:color/darker_gray"
