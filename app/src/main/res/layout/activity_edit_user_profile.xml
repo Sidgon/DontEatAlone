@@ -4,77 +4,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edit_user_profile"
-    android:nestedScrollingEnabled="false"
-    >
+    android:orientation="vertical"
+    tools:context=".EditUserProfile">
 
 
-    <ScrollView
+    <EditText
+        android:id="@+id/txtUsername"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:autofillHints="@string/user_username"
+        android:hint="@string/user_username"
+        android:inputType="text" />
 
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
 
-            <EditText
-                android:id="@+id/txtUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/user_username"
-                android:autofillHints="@string/user_username"
+        android:autofillHints="@string/user_email"
+        android:hint="@string/user_email"
+        android:inputType="textEmailAddress" />
 
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-                />
+    <EditText
+        android:id="@+id/txtFirstname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_uder_profile_error_username_exist"
-                android:layout_marginLeft="@dimen/margin_large"
-                android:layout_marginRight="@dimen/margin_middle"
-                android:visibility="gone"
-                />
+        android:autofillHints="@string/user_lastname"
+        android:hint="@string/user_firstname"
+        android:inputType="textPersonName" />
 
-            <EditText
-                android:id="@+id/txtFirstname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/user_firstname"
-                android:autofillHints="@string/user_lastname"
-
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-                />
-
-            <EditText
-                android:id="@+id/txtLastname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/user_lastname"
-                android:autofillHints="@string/user_lastname"
-
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-                />
+    <EditText
+        android:id="@+id/txtLastname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
 
 
+        android:autofillHints="@string/user_lastname"
+        android:hint="@string/user_lastname"
+        android:inputType="textPersonName" />
 
-        </LinearLayout>
+    <CheckBox
+        android:id="@+id/checkbox_changePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
 
-    </ScrollView>
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/edit_user_profile_password_checkbox" />
 
+    <EditText
+        android:id="@+id/txtEnterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:autofillHints="@string/enter_password"
+        android:hint="@string/enter_password"
 
+        android:inputType="textPassword"
+        android:visibility="gone" />
 
+    <EditText
+        android:id="@+id/txtRepeatPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:autofillHints="@string/repeat_password"
+
+        android:hint="@string/repeat_password"
+        android:inputType="textPassword"
+        android:visibility="gone" />
 
 
 </android.support.v7.widget.LinearLayoutCompat>

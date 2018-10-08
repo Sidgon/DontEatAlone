@@ -11,13 +11,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UserProfile"
-            android:label="@string/title_activity_user_profile"
-
-            />
+            android:label="@string/title_activity_user_profile" />
         <activity
-            android:name=".edit_user_profile"
-            android:label="@string/title_activity_edit_user_profile"
-            />
+            android:name=".EditUserProfile"
+            android:label="@string/title_activity_edit_user_profile" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterWithEmailActivity"></activity>
+        <activity android:name=".EventsList"></activity>
     </application>
 
 </manifest>

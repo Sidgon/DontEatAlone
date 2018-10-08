@@ -54,6 +54,7 @@
         android:layout_marginLeft="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
         android:text="@string/user_profile_btnEditProfile_text"
+        android:onClick="onClick_btnEditProfile"
 
         app:layout_constraintBottom_toTopOf="@id/divider"
         />
@@ -77,6 +78,7 @@
         android:layout_marginLeft="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
         android:text="@string/user_profile_btnGoingEvents_text"
+        android:onClick="onClick_btnGoingEvents"
         app:layout_constraintBottom_toTopOf="@id/btnCreatedEvents" />
 
     <Button
@@ -87,6 +89,7 @@
         android:layout_marginRight="@dimen/margin_middle"
         android:layout_marginBottom="@dimen/margin_middle"
         android:text="@string/user_profile_btnCreatedEvents_text"
+        android:onClick="onClick_btnCreatedEvents"
 
         app:layout_constraintBottom_toBottomOf="parent"
         />
