@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserProfile">
+    tools:context=".UserProfileActivity">
 
 
     <ImageView
@@ -53,15 +53,16 @@
 
         android:layout_marginLeft="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_small"
         android:text="@string/user_profile_btnEditProfile_text"
         android:onClick="onClick_btnEditProfile"
 
-        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintBottom_toTopOf="@id/going_event_divider"
         />
 
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/going_event_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size_medium"
         android:layout_marginLeft="@dimen/margin_small"
@@ -69,22 +70,26 @@
         android:background="@android:color/darker_gray"
 
         app:layout_constraintBottom_toTopOf="@+id/btnGoingEvents"
+        app:layout_constraintTop_toBottomOf="@id/btnEditProfile"
         />
 
     <Button
         android:id="@+id/btnGoingEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
         android:text="@string/user_profile_btnGoingEvents_text"
         android:onClick="onClick_btnGoingEvents"
-        app:layout_constraintBottom_toTopOf="@id/btnCreatedEvents" />
+        app:layout_constraintBottom_toTopOf="@id/btnCreatedEvents"
+        />
 
     <Button
         android:id="@+id/btnCreatedEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
         android:layout_marginBottom="@dimen/margin_middle"

@@ -7,7 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-public class EditUserProfile extends AppCompatActivity {
+public class EditUserProfileActivity extends AppCompatActivity {
 
     private EditText txtUsername;
     private EditText txtEmail;

@@ -9,16 +9,15 @@
 
 
     <TextView
-        android:id="@+id/event_name"
+        android:id="@+id/going_event_name"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_middle"
         android:layout_marginTop="@dimen/margin_small"
         android:text="testname"
-
+        android:descendantFocusability="blocksDescendants"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,8 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
-        app:layout_constraintTop_toBottomOf="@id/event_name"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintTop_toBottomOf="@id/going_event_name"
         app:layout_constraintLeft_toLeftOf="parent">
 
     <LinearLayout
@@ -49,13 +48,13 @@
         >
 
         <TextView
-            android:id="@+id/event_date"
+            android:id="@+id/going_event_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Monday 18.01.1800" />
 
         <TextView
-            android:id="@+id/event_postcode_city"
+            android:id="@+id/going_event_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="18:00-22:00 Uhr" />
@@ -71,18 +70,18 @@
         android:layout_marginRight="@dimen/margin_small"
 
 
-        app:layout_constraintTop_toBottomOf="@id/event_name"
+        app:layout_constraintTop_toBottomOf="@id/going_event_name"
         app:layout_constraintLeft_toLeftOf="parent"
         >
 
         <TextView
-            android:id="@+id/event_addrasse"
+            android:id="@+id/going_event_addrasse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dragonerstrasse 55" />
 
         <TextView
-            android:id="@+id/event_time"
+            android:id="@+id/going_event_postcode_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="5600 Lenzburg" />
@@ -92,12 +91,13 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/going_event_divider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_size_tiny"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
         android:background="@android:color/background_dark"
+        android:descendantFocusability="blocksDescendants"
 
         android:layout_marginTop="@dimen/margin_small"
 

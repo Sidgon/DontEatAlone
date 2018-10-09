@@ -15,7 +15,7 @@
     <string name="edit_user_profile_password_checkbox">Change Password</string>
 
     <string name="going_event_list_noData">No events to go</string>
-
+    <string name="going_events_list_activity_tile">Going Events</string>
 
     <string name="user_firstname">Firstname</string>
     <string name="user_lastname">Lastname</string>
@@ -23,4 +23,6 @@
     <string name="user_email">Email</string>
     <string name="enter_password">Enter Password</string>
     <string name="repeat_password">Repeat Password</string>
+
+
 </resources>

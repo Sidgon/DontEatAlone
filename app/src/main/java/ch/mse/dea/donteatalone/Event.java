@@ -2,11 +2,14 @@ package ch.mse.dea.donteatalone;
 
 import android.location.Location;
 
+import org.joda.time.DateTime;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Event {
     private String restaurantName;
-    private LocalDateTime date;
+    private DateTime date;
     private int duration;
     private String addrasse;
     private String postcode;
@@ -15,7 +18,7 @@ public class Event {
     private int maxGuest;
     private Location location;
 
-    public Event(String restaurantName, LocalDateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, Location location) {
+    public Event(String restaurantName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, Location location) {
         this.restaurantName = restaurantName;
         this.date = date;
         this.duration = duration;
@@ -35,11 +38,11 @@ public class Event {
         this.restaurantName = restaurantName;
     }
 
-    public LocalDateTime getDate() {
+    public DateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(DateTime date) {
         this.date = date;
     }
 

@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordLoginTextField" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/going_event_divider"
         android:layout_width="368dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
@@ -70,6 +70,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/going_event_divider" />
 
 </android.support.constraint.ConstraintLayout>
