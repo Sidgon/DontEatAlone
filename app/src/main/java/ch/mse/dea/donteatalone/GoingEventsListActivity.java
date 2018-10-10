@@ -18,17 +18,14 @@ public class GoingEventsListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
 
         final int numRows = 64;
-        super.onCreate(savedInstanceState);
         events = new Event[numRows];
-
-
         for (int i = 0; i < numRows; i++) {
             events[i] = new Event("Restaurant " + i, DateTime.now(), 60 + i * 2, "Musterstrasse " + i, i * 100 + "", "Bern", "Switzerland", i, null);
         }
 
-        setContentView(R.layout.activity_going_events_list);
+        setContentView(R.layout.activity_events_list);
         // construct and register the adapter
-        GoingEventsListArrayAdapter adapter = new GoingEventsListArrayAdapter(
+        EventsListArrayAdapter adapter = new EventsListArrayAdapter(
                 this, events);
 
 
@@ -39,8 +36,10 @@ public class GoingEventsListActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
+        Event event = events[position];
+
         Toast.makeText(
                 getApplicationContext(),
-                "Position :" + position+" "+events[position].getRestaurantName(), Toast.LENGTH_LONG).show();
+                "Position :" + position+" "+event.getEventName(), Toast.LENGTH_LONG).show();
     }
 }

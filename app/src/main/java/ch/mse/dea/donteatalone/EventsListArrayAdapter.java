@@ -12,15 +12,14 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class GoingEventsListArrayAdapter extends ArrayAdapter<Event> {
+public class EventsListArrayAdapter extends ArrayAdapter<Event> {
     private final Context context;
     private final Event[] events;
 
-    public GoingEventsListArrayAdapter(Context context, Event[] events) {
-        super(context,R.layout.activity_going_events_list_item, events);
+    public EventsListArrayAdapter(Context context, Event[] events) {
+        super(context,R.layout.activity_events_list_item, events);
 
         this.context=context;
         this.events=events;
@@ -35,7 +34,7 @@ public class GoingEventsListArrayAdapter extends ArrayAdapter<Event> {
         if (convertView == null){
             LayoutInflater view= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (view !=null){
-                eventView = view.inflate(R.layout.activity_going_events_list_item,parent,false);
+                eventView = view.inflate(R.layout.activity_events_list_item,parent,false);
             }
         }
 
@@ -47,7 +46,7 @@ public class GoingEventsListArrayAdapter extends ArrayAdapter<Event> {
             TextView eventAddresse=eventView.findViewById(R.id.going_event_addrasse);
             TextView eventCity=eventView.findViewById(R.id.going_event_postcode_city);
 
-            eventName.setText(event.getRestaurantName());
+            eventName.setText(event.getEventName());
             setDate(eventDate,event.getDate());
             setTime(eventTime,event.getDate(),event.getDuration());
             eventAddresse.setText(event.getAddrasse());

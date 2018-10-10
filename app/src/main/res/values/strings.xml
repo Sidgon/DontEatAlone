@@ -24,5 +24,21 @@
     <string name="enter_password">Enter Password</string>
     <string name="repeat_password">Repeat Password</string>
 
+    <string name="edit_event_title">Edit Event</string>
+    <string name="create_event_title">Create Event</string>
+    <string name="edit_create_event_get_address">Search address of Location</string>
+    <string name="edit_create_event_btn_date">Set Date</string>
+    <string name="edit_create_event_txt_date">Date</string>
+    <string name="edit_create_event_btn_time">Set time</string>
+    <string name="edit_create_event_txt_time">Start time</string>
+    <string name="edit_create_event_duration">Duration in minutes</string>
+    <string name="edit_create_event_address">Address</string>
+    <string name="edit_create_event_postcode">Postcode</string>
+    <string name="edit_create_event_City">City</string>
+    <string name="edit_create_event_country">Country</string>
+    <string name="edit_create_event_btn_country">Set country</string>
+    <string name="edit_create_event_max_guest">Maximal number of guests</string>
+    <string name="edit_create_event_event_name">Event name</string>
+
 
 </resources>

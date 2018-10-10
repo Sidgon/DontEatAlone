@@ -4,11 +4,8 @@ import android.location.Location;
 
 import org.joda.time.DateTime;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 public class Event {
-    private String restaurantName;
+    private String eventName;
     private DateTime date;
     private int duration;
     private String addrasse;
@@ -18,8 +15,8 @@ public class Event {
     private int maxGuest;
     private Location location;
 
-    public Event(String restaurantName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, Location location) {
-        this.restaurantName = restaurantName;
+    public Event(String eventName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, Location location) {
+        this.eventName = eventName;
         this.date = date;
         this.duration = duration;
         this.addrasse = addrasse;
@@ -30,12 +27,12 @@ public class Event {
         this.location = location;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public DateTime getDate() {

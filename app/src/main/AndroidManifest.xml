@@ -13,24 +13,27 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".UserProfileActivity"
-            android:label="@string/title_activity_user_profile">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:label="@string/title_activity_user_profile"
+            android:screenOrientation="portrait">
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
-
         <activity
             android:name=".EditUserProfileActivity"
             android:label="@string/title_activity_edit_user_profile" />
-        <activity android:name=".LoginActivity">
-
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".RegisterWithEmailActivity" />
         <activity
             android:name=".GoingEventsListActivity"
             android:label="@string/going_events_list_activity_tile" />
+        <activity android:name=".EditCreateEvent"
+            android:label="@string/create_event_title">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
