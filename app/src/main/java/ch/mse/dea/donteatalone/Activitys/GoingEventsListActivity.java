@@ -36,7 +36,7 @@ public class GoingEventsListActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-
+                //TODO noch zu implementieren, noch nicht sicher wie.
                 Event event = events.get(position);
 
                 Toast.makeText(

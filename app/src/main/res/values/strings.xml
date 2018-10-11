@@ -52,5 +52,8 @@
     <string name="edit_create_event_dialog_onDelete_title">Delete Event</string>
     <string name="edit_create_event_dialog_onDelete_massage">Do you really want to delet this Event?</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

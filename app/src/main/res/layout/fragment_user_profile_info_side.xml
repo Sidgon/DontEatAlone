@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_profile_main_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activitys.UserProfileActivity">
+
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_middle"
+        android:contentDescription="@string/user_profile_userImage_des"
+        android:src="@drawable/profile_dummy"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/txtProfileName"/>
+
+    <TextView
+        android:id="@+id/txtProfileName"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:text="@string/user_profile_txtProfileName_text"
+        android:textAlignment="center"
+
+        app:layout_constraintBottom_toTopOf="@id/txtUserName" />
+
+    <TextView
+        android:id="@+id/txtUserName"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/user_profile_txtUsername_text"
+        android:textAlignment="center"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>
