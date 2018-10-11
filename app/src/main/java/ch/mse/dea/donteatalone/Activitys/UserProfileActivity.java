@@ -1,9 +1,11 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Activitys;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import ch.mse.dea.donteatalone.R;
 
 public class UserProfileActivity extends AppCompatActivity {
 
@@ -25,5 +27,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void onClick_btnCreatedEvents(View view) {
+        Intent intent = new Intent(this, OwnEventsListActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,4 +1,4 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,16 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Locale;
+import java.util.ArrayList;
+
+import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
+import ch.mse.dea.donteatalone.Objects.Event;
+import ch.mse.dea.donteatalone.R;
 
 public class EventsListArrayAdapter extends ArrayAdapter<Event> {
     private final Context context;
-    private final Event[] events;
+    private final ArrayList<Event> events;
 
-    public EventsListArrayAdapter(Context context, Event[] events) {
+    public EventsListArrayAdapter(Context context, ArrayList<Event> events) {
         super(context,R.layout.activity_events_list_item, events);
 
         this.context=context;
@@ -38,7 +40,7 @@ public class EventsListArrayAdapter extends ArrayAdapter<Event> {
             }
         }
 
-        Event event=events[position];
+        Event event=events.get(position);
         if (event !=null){
             TextView eventName= eventView.findViewById(R.id.going_event_name);
             TextView eventDate= eventView.findViewById(R.id.going_event_date);
@@ -46,11 +48,16 @@ public class EventsListArrayAdapter extends ArrayAdapter<Event> {
             TextView eventAddresse=eventView.findViewById(R.id.going_event_addrasse);
             TextView eventCity=eventView.findViewById(R.id.going_event_postcode_city);
 
+            TextView eventGoingGuests=eventView.findViewById(R.id.going_event_coming_guests);
+            TextView eventMaxGuests=eventView.findViewById(R.id.going_event_max_guests);
+
             eventName.setText(event.getEventName());
             setDate(eventDate,event.getDate());
             setTime(eventTime,event.getDate(),event.getDuration());
             eventAddresse.setText(event.getAddrasse());
             eventCity.setText(event.getPostcode()+" "+event.getCity());
+            eventGoingGuests.setText(event.getGoingGuests()+"");
+            eventMaxGuests.setText(event.getMaxGuest()+"");
         }
 
         return eventView;
@@ -61,21 +68,15 @@ public class EventsListArrayAdapter extends ArrayAdapter<Event> {
     private static void setTime(TextView view, DateTime date, int duration){
         DateTime enddate= date.plusMinutes(duration);
 
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("HH:mm");
-        String starttime = fmt.print(date);
-        String endtime = fmt.print(enddate);
+        String starttime = DataFormatter.getTimeAsString(date);
+        String endtime = DataFormatter.getTimeAsString(enddate);
 
-        view.setText(starttime+"-"+endtime);
+        String str=starttime+"-"+endtime;
+        view.setText(str);
 
     }
 
     private static void setDate(TextView view, DateTime date){
-        date.toLocalDate();
-
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("EEEE, dd.MM.yyyy").withLocale(Locale.getDefault());
-        String str = fmt.print(date);
-
-        view.setText(str);
-
+        view.setText(DataFormatter.getDateAsString(date,"long"));
     }
 }

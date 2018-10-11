@@ -4,21 +4,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoingEventsListActivity">
+    >
 
-    <ListView android:id="@android:id/list"
+    <ListView android:id="@+id/event_listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawSelectorOnTop="false"/>
+        />
 
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/event_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
         android:gravity="center"
-        android:text="@string/going_event_list_noData"
+        android:text="@string/event_list_noData"
         style="@style/TextAppearance.AppCompat.Display1"
         />
 </LinearLayout>

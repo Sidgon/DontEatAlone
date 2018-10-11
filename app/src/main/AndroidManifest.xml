@@ -12,27 +12,34 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".Activitys.UserProfileActivity"
             android:label="@string/title_activity_user_profile"
             android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name=".EditUserProfileActivity"
-            android:label="@string/title_activity_edit_user_profile" />
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".RegisterWithEmailActivity" />
-        <activity
-            android:name=".GoingEventsListActivity"
-            android:label="@string/going_events_list_activity_tile" />
-        <activity android:name=".EditCreateEvent"
-            android:label="@string/create_event_title">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Activitys.EditUserProfileActivity"
+            android:label="@string/title_activity_edit_user_profile" />
+        <activity android:name=".Activitys.LoginActivity"></activity>
+
+        <activity android:name=".Activitys.RegisterWithEmailActivity" />
+
+        <activity
+            android:name=".Activitys.GoingEventsListActivity"
+            />
+
+        <activity
+            android:name=".Activitys.OwnEventsListActivity"
+            android:label="@string/own_events_list_activity_tile"
+            />
+
+        <activity android:name=".Activitys.EditCreateEventActivity"
+            android:label="@string/create_event_title">
         </activity>
     </application>
 

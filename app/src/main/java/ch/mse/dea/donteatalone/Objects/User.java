@@ -1,4 +1,4 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Objects;
 
 import android.util.Base64;
 

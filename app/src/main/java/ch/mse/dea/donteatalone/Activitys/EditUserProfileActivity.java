@@ -1,4 +1,4 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Activitys;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+
+import ch.mse.dea.donteatalone.R;
 
 public class EditUserProfileActivity extends AppCompatActivity {
 

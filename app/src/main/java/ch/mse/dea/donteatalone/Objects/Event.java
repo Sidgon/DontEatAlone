@@ -1,10 +1,11 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Objects;
 
 import android.location.Location;
 
 import org.joda.time.DateTime;
 
 public class Event {
+    private int id;
     private String eventName;
     private DateTime date;
     private int duration;
@@ -13,9 +14,11 @@ public class Event {
     private String city;
     private String country;
     private int maxGuest;
-    private Location location;
+    private double latitude;
+    private double longitude;
 
-    public Event(String eventName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, Location location) {
+    public Event(int id, String eventName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+        this.id = id;
         this.eventName = eventName;
         this.date = date;
         this.duration = duration;
@@ -24,7 +27,8 @@ public class Event {
         this.city = city;
         this.country = country;
         this.maxGuest = maxGuest;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getEventName() {
@@ -91,11 +95,32 @@ public class Event {
         this.maxGuest = maxGuest;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getGoingGuests() {
+        //TODO to implement, get Data from DB
+        return 0;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

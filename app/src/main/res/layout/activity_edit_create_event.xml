@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EditCreateEvent">
+    tools:context=".Activitys.EditCreateEventActivity">
 
 
 
@@ -208,7 +208,7 @@
                 android:text="@string/edit_create_event_btn_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClick_openPicker"
+                android:onClick="onClick_openCountryPicker"
 
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
@@ -218,6 +218,7 @@
                 android:layout_alignParentEnd="true"
                 />
 
+
             <EditText
                 android:id="@+id/maxGuest"
                 android:layout_width="match_parent"
@@ -225,15 +226,42 @@
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginRight="@dimen/margin_middle"
-                android:layout_marginBottom="@dimen/margin_middle"
 
                 android:hint="@string/edit_create_event_max_guest"
                 android:inputType="number"
                 android:layout_below="@id/setCountry"
                 android:autofillHints="@string/edit_create_event_postcode" />
 
+            <Button
+                android:id="@+id/btn_save_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginRight="@dimen/margin_middle"
 
+                android:text="@string/edit_create_event_save"
+                android:layout_below="@id/maxGuest"
 
+                android:onClick="onClick_saveEvent"
+                />
+
+            <Button
+                android:id="@+id/btn_delete_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin_middle"
+                android:layout_marginBottom="@dimen/margin_middle"
+
+                style="@style/DeleteButton"
+
+                android:text="@string/edit_create_event_delete"
+                android:layout_below="@id/btn_save_event"
+
+                android:onClick="onClick_deleteEvent"
+                />
 
         </RelativeLayout>
     </ScrollView>
