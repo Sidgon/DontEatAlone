@@ -1,11 +1,16 @@
 package ch.mse.dea.donteatalone.Objects;
 
+import android.content.Context;
+import android.support.v4.app.NavUtils;
 import android.util.Base64;
+import android.widget.Toast;
 
 import java.security.Key;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
+import ch.mse.dea.donteatalone.R;
 
 public class User {
     private static final String ALGORITHM = "DES/CBC/PKCS5Padding";
@@ -115,6 +120,10 @@ public class User {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public static User getGlobalUser(){
+        return new User(1,"Command1991","Daniel","Steinegger","steinegger.daniel@gmail.com","öajndsöfnDSF",null);
     }
 }
 

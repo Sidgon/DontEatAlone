@@ -1,4 +1,4 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Activitys;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import ch.mse.dea.donteatalone.Objects.UserValidation;
+import ch.mse.dea.donteatalone.R;
 
 
 public class RegisterWithEmailActivity extends AppCompatActivity implements
@@ -105,69 +108,30 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
 
     private boolean validateRegisterForm(String username, String email, String firstname,
                                          String lastname, String password, String passwordrepeat) {
-        boolean valid = true;
+        String str;
+        boolean valid=true;
 
-        //checks if fields are not empty
-        if (TextUtils.isEmpty(username)) {
-            mUsernameTextField.setError("Required.");
-            valid = false;
-        } else {
-            mUsernameTextField.setError(null);
-        }
-        if (TextUtils.isEmpty(email)) {
-            mEmailTextField.setError("Required.");
-            valid = false;
-        } else {
-            mEmailTextField.setError(null);
-        }
-        if (TextUtils.isEmpty(firstname)) {
-            mFirstNameTextField.setError("Required.");
-            valid = false;
-        } else {
-            mFirstNameTextField.setError(null);
-        }
-        if (TextUtils.isEmpty(lastname)) {
-            mLastNameTextField.setError("Required.");
-            valid = false;
-        } else {
-            mLastNameTextField.setError(null);
-        }
-        if (TextUtils.isEmpty(password)) {
-            mPasswordTextField.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordTextField.setError(null);
-        } if (TextUtils.isEmpty(passwordrepeat)) {
-            mPasswordRepeatTextField.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordRepeatTextField.setError(null);
-        }
+        str=UserValidation.username(username);
+        if (str!=null)valid=false;
+        mUsernameTextField.setError(str);
 
-        //checks if entered email is valid and not null
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            mEmailTextField.setError("Please enter a valid email");
-            valid = false;
-            if(TextUtils.isEmpty(email)){
-                mEmailTextField.setError("Required.");
-                valid = false;
-            }
-        } else {
-            mEmailTextField.setError(null);
-        }
+        str=UserValidation.email(email);
+        if (str!=null)valid=false;
+        mEmailTextField.setError(str);
 
-        //check if both password match each other
-        if(!password.equals(passwordrepeat) && !TextUtils.isEmpty(password)
-                && !TextUtils.isEmpty(passwordrepeat)) {
-            mPasswordTextField.setError("Passwords do not match");
-            mPasswordRepeatTextField.setError("Passwords do not match");
-            valid = false;
-        }   else {
-            if(!TextUtils.isEmpty(password) && !TextUtils.isEmpty(passwordrepeat)) {
-                mPasswordTextField.setError(null);
-                mPasswordRepeatTextField.setError(null);
-            }
-        }
+        str=UserValidation.firstname(firstname);
+        if (str!=null)valid=false;
+        mFirstNameTextField.setError(str);
+
+        str=UserValidation.lastname(lastname);
+        if (str!=null)valid=false;
+        mLastNameTextField.setError(str);
+
+        str=UserValidation.password(this,password,passwordrepeat,true);
+        if (str!=null)valid=false;
+        mPasswordTextField.setError(str);
+        mPasswordRepeatTextField.setError(str);
+
         return valid;
     }
 

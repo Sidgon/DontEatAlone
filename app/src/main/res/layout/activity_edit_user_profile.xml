@@ -16,8 +16,8 @@
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
 
-        android:autofillHints="@string/user_username"
-        android:hint="@string/user_username"
+        android:autofillHints="@string/edit_user_profile_username"
+        android:hint="@string/edit_user_profile_username"
         android:inputType="text" />
 
     <EditText
@@ -28,8 +28,8 @@
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
 
-        android:autofillHints="@string/user_email"
-        android:hint="@string/user_email"
+        android:autofillHints="@string/edit_user_profile_email"
+        android:hint="@string/edit_user_profile_email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -40,8 +40,8 @@
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
 
-        android:autofillHints="@string/user_lastname"
-        android:hint="@string/user_firstname"
+        android:autofillHints="@string/edit_user_profile_lastname"
+        android:hint="@string/edit_user_profile_firstname"
         android:inputType="textPersonName" />
 
     <EditText
@@ -53,8 +53,8 @@
         android:layout_marginRight="@dimen/margin_middle"
 
 
-        android:autofillHints="@string/user_lastname"
-        android:hint="@string/user_lastname"
+        android:autofillHints="@string/edit_user_profile_lastname"
+        android:hint="@string/edit_user_profile_lastname"
         android:inputType="textPersonName" />
 
     <CheckBox
@@ -69,13 +69,26 @@
         android:text="@string/edit_user_profile_password_checkbox" />
 
     <EditText
+        android:id="@+id/txtOldPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:autofillHints="@string/edit_user_profile_old_password"
+        android:hint="@string/edit_user_profile_old_password"
+
+        android:inputType="textPassword"
+        android:visibility="gone" />
+
+    <EditText
         android:id="@+id/txtEnterPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_large"
         android:layout_marginRight="@dimen/margin_middle"
-        android:autofillHints="@string/enter_password"
-        android:hint="@string/enter_password"
+        android:layout_marginTop="@dimen/margin_middle"
+        android:autofillHints="@string/edit_user_profile_enter_password"
+        android:hint="@string/edit_user_profile_enter_password"
 
         android:inputType="textPassword"
         android:visibility="gone" />
@@ -87,11 +100,25 @@
         android:layout_marginLeft="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginRight="@dimen/margin_middle"
-        android:autofillHints="@string/repeat_password"
+        android:autofillHints="@string/edit_user_profile__repeat_password"
 
-        android:hint="@string/repeat_password"
+        android:hint="@string/edit_user_profile__repeat_password"
         android:inputType="textPassword"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_save_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_middle"
+
+        android:text="@string/edit_create_event_save"
+        android:layout_below="@id/maxGuest"
+
+        android:onClick="onClick_saveEvent"
+        />
 
 
 </android.support.v7.widget.LinearLayoutCompat>

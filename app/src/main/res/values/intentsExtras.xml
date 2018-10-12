@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="intent_edit_create_event_event">isCreateEvent</string>
+    <string name="intent_edit_user_profile_user">isCreateEvent</string>
 </resources>

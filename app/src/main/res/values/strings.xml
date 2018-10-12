@@ -19,12 +19,14 @@
     <string name="own_events_list_activity_tile">Own Events</string>
     <string name="event_list_item_max_guests">Guests:</string>
 
-    <string name="user_firstname">Firstname</string>
-    <string name="user_lastname">Lastname</string>
-    <string name="user_username">Username</string>
-    <string name="user_email">Email</string>
-    <string name="enter_password">Enter Password</string>
-    <string name="repeat_password">Repeat Password</string>
+    <string name="edit_user_profile_firstname">Firstname</string>
+    <string name="edit_user_profile_lastname">Lastname</string>
+    <string name="edit_user_profile_username">Username</string>
+    <string name="edit_user_profile_email">Email</string>
+    <string name="edit_user_profile_old_password">Old Password</string>
+    <string name="edit_user_profile_enter_password">Enter Password</string>
+    <string name="edit_user_profile__repeat_password">Repeat Password</string>
+    
 
     <string name="edit_event_title">Edit Event</string>
     <string name="create_event_title">Create Event</string>
@@ -64,6 +66,16 @@
     <string name="register_txtPassword">Enter Password</string>
     <string name="register_txtLastName">Lastname</string>
     <string name="register_txtFirstName">Firstname</string>
+    
+    <string name="error_password_wrong_pattern">The password have to contain at least 6 characters and one uppercase letter, lowercase latter and a number. </string>
+    <string name="error_password_contains_conditions">No conditions allowed like AND,NOT,OR. </string>
 
+
+    <string name="user_validation_error_required">Required</string>
+    <string name="user_validation_error_length">Length: min $1$d characters</string>
+    <string name="user_validation_error_valid_email">Please enter a valid email</string>
+    <string name="user_validation_error_valid_password">Please enter a valid password</string>
+    <string name="user_validation_error_passwords_not_match">Passwords do not match</string>
+    <string name="user_validation_error_passwords_wrong_password">Wrong password</string>
 
 </resources>

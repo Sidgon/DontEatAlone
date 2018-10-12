@@ -227,7 +227,10 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClick_saveEvent(View view) {
+        //TODO save Event if validate & validate Views
         EventProvider.setEvent(getViewValues());
+
+        finish();
     }
 
     @Override
