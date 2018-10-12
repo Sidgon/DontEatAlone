@@ -1,6 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="margin_tiny">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_middle">16dp</dimen>
     <dimen name="margin_large">32dp</dimen>
-    <dimen name="divider_size">4dp</dimen>
+
+    <dimen name="divider_size_tiny">1dp</dimen>
+    <dimen name="divider_size_small">2dp</dimen>
+    <dimen name="divider_size_medium">4dp</dimen>
 </resources>
