@@ -35,12 +35,7 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
         //set onclicklistener on sign in button
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        findViewById(R.id.emailRegisterButton).setOnClickListener(this);
     }
 
     private void signIn() {
@@ -72,18 +67,9 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_LONG).show();
-                            //updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        if (!task.isSuccessful()) {
-                            //mStatusTextView.setText("authentication failed");
-                        }
-                        //hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
     private boolean validateForm() {

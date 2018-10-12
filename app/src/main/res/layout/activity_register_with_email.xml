@@ -6,4 +6,106 @@
     android:layout_height="match_parent"
     tools:context=".Activitys.RegisterWithEmailActivity">
 
+    <EditText
+        android:id="@+id/registerUsernameTextField"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/registerEmailTextField"
+        android:layout_width="315dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtEmail"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameTextField" />
+
+    <EditText
+        android:id="@+id/registerFirstNameTextField"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtFirstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerEmailTextField" />
+
+    <EditText
+        android:id="@+id/registerLastNameTextField"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtLastName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerFirstNameTextField" />
+
+    <EditText
+        android:id="@+id/registerPasswordTextField"
+        android:layout_width="315dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtPassword"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerLastNameTextField" />
+    />
+
+    <EditText
+        android:id="@+id/registerPasswordRepeatTextField"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:ems="10"
+        android:hint="@string/register_txtPasswordRepeat"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTextField" />
+
+    <Button
+        android:id="@+id/registerSignUpButton"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginEnd="@dimen/margin_middle"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:ems="10"
+        android:text="@string/register_btnSignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>
