@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,118 +7,130 @@
     android:orientation="vertical"
     tools:context=".Activitys.EditUserProfileActivity">
 
-
-    <EditText
-        android:id="@+id/txtUsername"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
+        app:layout_constraintTop_toTopOf="parent">
 
-        android:autofillHints="@string/edit_user_profile_username"
-        android:hint="@string/edit_user_profile_username"
-        android:inputType="text" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
+            <EditText
+                android:id="@+id/txtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-        android:autofillHints="@string/edit_user_profile_email"
-        android:hint="@string/edit_user_profile_email"
-        android:inputType="textEmailAddress" />
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:autofillHints="@string/edit_user_profile_username"
+                android:hint="@string/edit_user_profile_username"
+                android:inputType="text" />
 
-    <EditText
-        android:id="@+id/txtFirstname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-        android:autofillHints="@string/edit_user_profile_lastname"
-        android:hint="@string/edit_user_profile_firstname"
-        android:inputType="textPersonName" />
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:autofillHints="@string/edit_user_profile_email"
+                android:hint="@string/edit_user_profile_email"
+                android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/txtLastname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
+            <EditText
+                android:id="@+id/txtFirstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:autofillHints="@string/edit_user_profile_lastname"
+                android:hint="@string/edit_user_profile_firstname"
+                android:inputType="textPersonName" />
 
-        android:autofillHints="@string/edit_user_profile_lastname"
-        android:hint="@string/edit_user_profile_lastname"
-        android:inputType="textPersonName" />
-
-    <CheckBox
-        android:id="@+id/checkbox_changePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:text="@string/edit_user_profile_password_checkbox" />
-
-    <EditText
-        android:id="@+id/txtOldPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_marginEnd="@dimen/margin_middle"
-        android:autofillHints="@string/edit_user_profile_old_password"
-        android:hint="@string/edit_user_profile_old_password"
-
-        android:inputType="textPassword"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/txtEnterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:layout_marginRight="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:autofillHints="@string/edit_user_profile_enter_password"
-        android:hint="@string/edit_user_profile_enter_password"
-
-        android:inputType="textPassword"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/txtRepeatPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginRight="@dimen/margin_middle"
-        android:autofillHints="@string/edit_user_profile__repeat_password"
-
-        android:hint="@string/edit_user_profile__repeat_password"
-        android:inputType="textPassword"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btn_save_event"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_middle"
-        android:layout_marginTop="@dimen/margin_large"
-        android:layout_marginRight="@dimen/margin_middle"
-
-        android:text="@string/edit_create_event_save"
-        android:layout_below="@id/maxGuest"
-
-        android:onClick="onClick_saveEvent"
-        />
+            <EditText
+                android:id="@+id/txtLastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
 
-</android.support.v7.widget.LinearLayoutCompat>
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:autofillHints="@string/edit_user_profile_lastname"
+                android:hint="@string/edit_user_profile_lastname"
+                android:inputType="textPersonName" />
+
+            <CheckBox
+                android:id="@+id/checkbox_changePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:text="@string/edit_user_profile_password_checkbox" />
+
+            <EditText
+                android:id="@+id/txtOldPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/edit_user_profile_old_password"
+                android:hint="@string/edit_user_profile_old_password"
+
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+
+                android:inputType="textPassword"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/txtEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/edit_user_profile_enter_password"
+                android:hint="@string/edit_user_profile_enter_password"
+
+
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:inputType="textPassword"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/txtRepeatPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/edit_user_profile__repeat_password"
+
+
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+
+                android:hint="@string/edit_user_profile__repeat_password"
+                android:inputType="textPassword"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_save_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_margin="16dp"
+
+                android:onClick="onClick_saveEvent"
+                android:text="@string/edit_create_event_save" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

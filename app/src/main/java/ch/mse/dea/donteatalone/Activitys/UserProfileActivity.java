@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+
+import java.io.ByteArrayInputStream;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.Objects.User;
@@ -17,6 +20,7 @@ import ch.mse.dea.donteatalone.R;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private static String TAG=UserProfileActivity.class.getName();
     ImageView image;
     TextView txtUsername;
     TextView txtFullName;
@@ -32,8 +36,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         if (user.getImage()!=null){
             Bitmap bmp = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
-            image.setImageBitmap(Bitmap.createScaledBitmap(bmp, image.getWidth(),
-                    image.getHeight(), false));
+            image.setImageBitmap(bmp);
         }
 
         txtFullName.setText(user.getFirstname()+" "+user.getLastname());

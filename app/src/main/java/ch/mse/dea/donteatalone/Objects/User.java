@@ -1,18 +1,21 @@
 package ch.mse.dea.donteatalone.Objects;
 
-import android.content.Context;
-import android.support.v4.app.NavUtils;
 import android.util.Base64;
-import android.widget.Toast;
+
+import com.timgroup.jgravatar.Gravatar;
+import com.timgroup.jgravatar.GravatarDefaultImage;
+import com.timgroup.jgravatar.GravatarRating;
 
 import java.security.Key;
+import java.util.concurrent.ExecutionException;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import ch.mse.dea.donteatalone.R;
+import ch.mse.dea.donteatalone.DataHandling.GravatarTask;
 
 public class User {
+    private static final String TAG = User.class.getName();
     private static final String ALGORITHM = "DES/CBC/PKCS5Padding";
     private static final String KEY = "jasndfjnJNASJNFSjnd__==221423412341325134";
 
@@ -36,35 +39,52 @@ public class User {
         this.image = image;
     }
 
-    public static String encrypt(String value) throws Exception
-    {
+    public static String encrypt(String value) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte [] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
+        byte[] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
         return Base64.encodeToString(encryptedByteValue, Base64.DEFAULT);
 
     }
 
-    private static String decrypt(String value) throws Exception
-    {
+    private static String decrypt(String value) throws Exception {
         Key key = generateKey();
-        Cipher cipher = Cipher.getInstance(ALGORITHM,"");
+        Cipher cipher = Cipher.getInstance(ALGORITHM, "");
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decryptedValue64 = Base64.decode(value, Base64.DEFAULT);
-        byte [] decryptedByteValue = cipher.doFinal(decryptedValue64);
+        byte[] decryptedByteValue = cipher.doFinal(decryptedValue64);
 
-        return new String(decryptedByteValue,"utf-8");
+        return new String(decryptedByteValue, "utf-8");
+
 
     }
 
-    private static Key generateKey() throws Exception
-    {
-        return new SecretKeySpec(KEY.getBytes(),ALGORITHM);
+    private static Key generateKey() throws Exception {
+        return new SecretKeySpec(KEY.getBytes(), ALGORITHM);
     }
 
 
     //---- Getter und Setter
+
+    public static User getGlobalUser() {
+        return new User(1, "Command1991", "Daniel", "Steinegger", "steinegger.daniel@gmail.com", "öajndsöfnDSF", User.getGravatar("steinegger.daniel@gmail.com"));
+    }
+
+    public static byte[] getGravatar(String email) {
+
+
+        try {
+            return new GravatarTask().execute(email).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 
     public int getId() {
         return id;
@@ -122,9 +142,7 @@ public class User {
         this.image = image;
     }
 
-    public static User getGlobalUser(){
-        return new User(1,"Command1991","Daniel","Steinegger","steinegger.daniel@gmail.com","öajndsöfnDSF",null);
-    }
+
 }
 
 

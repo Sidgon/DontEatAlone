@@ -111,9 +111,11 @@ public class EditUserProfileActivity extends AppCompatActivity {
                                                                    if (isChecked) {
                                                                        txtEnterPassword.setVisibility(View.VISIBLE);
                                                                        txtRepeatPassword.setVisibility(View.VISIBLE);
+                                                                       txtOldPassword.setVisibility(View.VISIBLE);
                                                                    } else {
                                                                        txtEnterPassword.setVisibility(View.GONE);
                                                                        txtRepeatPassword.setVisibility(View.GONE);
+                                                                       txtOldPassword.setVisibility(View.GONE);
                                                                    }
                                                                }
                                                            }
