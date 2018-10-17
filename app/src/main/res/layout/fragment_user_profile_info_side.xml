@@ -10,7 +10,7 @@
 
 
     <ImageView
-        android:id="@+id/userImage"
+        android:id="@+id/user_profile_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_middle"
@@ -20,20 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/txtProfileName"/>
+        app:layout_constraintBottom_toTopOf="@id/user_profile_txtUsername"/>
 
     <TextView
-        android:id="@+id/txtProfileName"
+        android:id="@+id/user_profile_txtUsername"
         style="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:text="@string/user_profile_txtProfileName_text"
         android:textAlignment="center"
 
-        app:layout_constraintBottom_toTopOf="@id/txtUserName" />
+        app:layout_constraintBottom_toTopOf="@id/user_profile_txtFullName" />
 
     <TextView
-        android:id="@+id/txtUserName"
+        android:id="@+id/user_profile_txtFullName"
         style="@style/Base.TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="35dp"

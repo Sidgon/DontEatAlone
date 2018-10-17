@@ -95,13 +95,11 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtDate.setText(DataFormatter.getDateAsString(event.getDate(),"long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDate()));
         etxtDuration.setText(String.valueOf(event.getDuration()));
-        etxtDuration.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 60*4)});
         etxtAddress.setText(event.getAddrasse());
         etxtPostcode.setText(String.valueOf(event.getPostcode()));
         etxtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
         etxtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
-        etxtMaxGuest.setFilters(new InputFilter[]{ new InputFilterMinMax(1, 30)});
 
         latitude=event.getLatitude();
         longitude=event.getLongitude();
@@ -227,7 +225,10 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClick_saveEvent(View view) {
+        //TODO save Event if validate & validate Views
         EventProvider.setEvent(getViewValues());
+
+        finish();
     }
 
     @Override

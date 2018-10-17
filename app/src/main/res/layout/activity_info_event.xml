@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activitys.InfoEventActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:stretchColumns="1">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+
+                        android:text="@string/edit_create_event_event_name" />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_eventName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:layout_marginEnd="@dimen/margin_middle"
+
+                        android:text="Event name" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+
+                        android:layout_marginEnd="@dimen/divider_size_tiny"
+
+                        android:text="@string/edit_create_event_txt_date"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+
+                        android:layout_marginEnd="@dimen/margin_middle"
+
+                        android:text="Date:"
+
+
+                        />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+
+                        android:layout_marginEnd="@dimen/divider_size_tiny"
+                        android:text="@string/edit_create_event_txt_time"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:layout_marginEnd="@dimen/margin_middle"
+
+                        android:text="Time" />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+
+                        android:layout_marginTop="@dimen/margin_middle"
+
+
+                        android:text="@string/edit_create_event_duration"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:layout_marginEnd="@dimen/margin_middle"
+
+                        android:text="duration"
+
+                        />
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:text="@string/edit_create_event_address" />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_addresse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:layout_marginEnd="@dimen/margin_middle"
+                        android:text="address" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/activity_info_event_postcode_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_middle"
+
+                        android:text="Postcode and City" />
+
+                </TableRow>
+
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/activity_info_event_countryName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_marginStart="@dimen/margin_middle"
+
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_middle"
+                        android:text="@string/edit_create_event_country"
+
+                        />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:text="@string/edit_create_event_max_guest" />
+
+                    <TextView
+                        android:id="@+id/activity_info_event_maxGuest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_middle"
+                        android:layout_marginTop="@dimen/margin_middle"
+                        android:layout_marginEnd="@dimen/margin_middle"
+                        android:text="10" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/activity_info_event_show_coming_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:onClick="onClick_goingUserActivity"
+
+                android:text="@string/activity_info_event_view_going_user" />
+
+            <Button
+                android:id="@+id/activity_info_event_ungoing"
+                style="@style/DeleteButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:layout_marginBottom="@dimen/margin_middle"
+
+                android:onClick="onClick_ungoingEvent"
+                android:text="@string/activity_info_event_ungoing" />
+
+
+
+        </LinearLayout>
+
+
+</LinearLayout>

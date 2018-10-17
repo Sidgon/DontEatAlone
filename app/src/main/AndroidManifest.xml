@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ch.mse.dea.donteatalone">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -37,6 +39,11 @@
         <activity
             android:name=".Activitys.OwnEventsListActivity"
             android:label="@string/own_events_list_activity_tile"
+            />
+
+        <activity
+            android:name=".Activitys.InfoEventActivity"
+            android:label="@string/activity_info_event_title"
             />
 
         <activity android:name=".Activitys.EditCreateEventActivity"
