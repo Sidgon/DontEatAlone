@@ -54,7 +54,7 @@ public class EventsListArrayAdapter extends ArrayAdapter<Event> {
             eventName.setText(event.getEventName());
             setDate(eventDate,event.getDate());
             setTime(eventTime,event.getDate(),event.getDuration());
-            eventAddresse.setText(event.getAddrasse());
+            eventAddresse.setText(event.getAddresse());
             eventCity.setText(event.getPostcode()+" "+event.getCity());
             eventGoingGuests.setText(event.getGoingGuests()+"");
             eventMaxGuests.setText(event.getMaxGuest()+"");

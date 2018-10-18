@@ -3,18 +3,24 @@ package ch.mse.dea.donteatalone.Activitys;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.ybs.countrypicker.CountryPicker;
 import com.ybs.countrypicker.CountryPickerListener;
@@ -50,11 +56,15 @@ public class EditCreateEventActivity extends AppCompatActivity {
     CountryPicker picker;
     Event event;
 
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_create_event);
         getViews();
+        //init db ref
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         setupCountryPicker();
 
         if (getIntent().getExtras() != null) {
@@ -77,7 +87,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     private Event getViewValues(){
         return new Event(
-                event.getId(),
+                event.getEventId(),
                 txtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(),txtTime.getText().toString(),"long"),
                 Integer.parseInt(etxtDuration.getText().toString()),
@@ -96,7 +106,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtTime.setText(DataFormatter.getTimeAsString(event.getDate()));
         etxtDuration.setText(String.valueOf(event.getDuration()));
         etxtDuration.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 60*4)});
-        etxtAddress.setText(event.getAddrasse());
+        etxtAddress.setText(event.getAddresse());
         etxtPostcode.setText(String.valueOf(event.getPostcode()));
         etxtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
@@ -227,7 +237,24 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClick_saveEvent(View view) {
-        EventProvider.setEvent(getViewValues());
+        String keygen = mDatabase.child("events").push().getKey();
+        mDatabase.child("events").child(keygen).setValue(getViewValues()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        //change intent here
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("CreateEvent:failure", e);
+                        Toast.makeText(EditCreateEventActivity.this,
+                                "Creating an event has failed, please try again later" +
+                                        e.toString(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

@@ -12,7 +12,7 @@ public class User {
     private static final String KEY = "jasndfjnJNASJNFSjnd__==221423412341325134";
 
 
-    private int id;
+    private String userId;
     private String username;
     private String firstname;
     private String lastname;
@@ -20,9 +20,21 @@ public class User {
     private String passswordHash;
     private byte[] image;
 
+    //default constructor needed for firebase snapshots
+    public User(){
 
-    public User(int id, String username, String firstname, String lastname, String email, String passswordHash, byte[] image) {
-        this.id = id;
+    }
+
+    public User(String userId, String username, String firstname, String lastname, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
+    public User(String userId, String username, String firstname, String lastname, String email, String passswordHash, byte[] image) {
+        this.userId = userId;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -61,12 +73,8 @@ public class User {
 
     //---- Getter und Setter
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public String getuserId() {
+        return userId;
     }
 
     public String getUsername() {

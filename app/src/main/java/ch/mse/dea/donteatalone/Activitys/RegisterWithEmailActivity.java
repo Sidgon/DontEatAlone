@@ -1,4 +1,4 @@
-package ch.mse.dea.donteatalone;
+package ch.mse.dea.donteatalone.Activitys;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +10,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import ch.mse.dea.donteatalone.Objects.User;
+import ch.mse.dea.donteatalone.R;
 
 
 public class RegisterWithEmailActivity extends AppCompatActivity implements
@@ -29,6 +36,7 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
     private EditText mPasswordRepeatTextField;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,8 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_register_with_email);
         //set onclicklistener on sign in button
         findViewById(R.id.registerSignUpButton).setOnClickListener(this);
+        //init db ref
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     public void signUp(){
@@ -84,12 +94,19 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //-> change intent here
+                            //Register User in Real-Time DB
+                            signUpFirebaseRealTimeDBUser(user.getUid(),
+                                    mUsernameTextField.getText().toString(),
+                                    mEmailTextField.getText().toString(),
+                                    mFirstNameTextField.getText().toString(),
+                                    mLastNameTextField.getText().toString());
+                            //change activity here
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(RegisterWithEmailActivity.this, "Authentication failed." +
-                                    "please contact an administrator",
+                                    task.getException().toString(),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -97,9 +114,27 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                 });
     }
 
-    public void signUpFirebaseRealTimeDBUser(String username, String email, String firstname,
-                                String lastname, String password){
-
+    public void signUpFirebaseRealTimeDBUser(String userId, String username, String email, String firstname,
+                                String lastname){
+        User user = new User(userId, username, email, firstname, lastname);
+        mDatabase.child("users").child(user.getuserId()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        //change intent here
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "createUserWithEmail:failure", e);
+                        Toast.makeText(RegisterWithEmailActivity.this,
+                                "Registering has failed, please try again later" +
+                                     e.toString(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 

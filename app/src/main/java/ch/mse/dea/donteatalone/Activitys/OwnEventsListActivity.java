@@ -27,11 +27,16 @@ public class OwnEventsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_events_list);
         setTitle(R.string.own_events_list_activity_tile);
 
-        events = UserProvider.getOwnEvents(null);
+        events = UserProvider.getOwnEvents();
 
         setupListView();
 
 
+    }
+
+    private ArrayList<Event> fetchOwnEvents(){
+
+        return null;
     }
 
     private void setupListView() {

@@ -1,26 +1,37 @@
 package ch.mse.dea.donteatalone.Objects;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.Objects.User;
 
 public class UserProvider {
 
-    public static ArrayList<Event> getAllUsers(){
+    private DatabaseReference mDatabase;
+
+    public UserProvider(){
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+    }
+
+    public  ArrayList<Event> getAllUsers(){
         return new ArrayList<>();
     }
 
-    public static void removeUser(Event event){
-
+    public boolean removeUser(Event event){
+        return false;
     }
 
-    public static ArrayList<Event> getGoingEvents(User user){
-        if (user== null){
+    public static ArrayList<Event> getGoingEvents(){
+       /* if (user== null){
             //TODO set user to App user
-        }
+        }*/
 
         ArrayList<Event> events =new ArrayList<>();
         final int numRows = 64;
@@ -31,10 +42,10 @@ public class UserProvider {
         return events;
     }
 
-    public static ArrayList<Event> getOwnEvents(User user){
-        if (user== null){
+    public static ArrayList<Event> getOwnEvents(){
+       /* if (event== null){
             //TODO set user to App user
-        }
+        } */
 
         ArrayList<Event> events =new ArrayList<>();
         final int numRows = 13;
@@ -45,11 +56,14 @@ public class UserProvider {
         return events;
     }
 
-    public static void setUser(Event event){
+    public void setUser(User user){
+
+        mDatabase.child("users").child(user.getuserId()).setValue(user);
 
     }
 
-    public static Event getUser(){
+    public User getUser(String userId){
+
         return null;
     }
 }

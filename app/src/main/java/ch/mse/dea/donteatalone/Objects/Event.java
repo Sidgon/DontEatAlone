@@ -1,15 +1,13 @@
 package ch.mse.dea.donteatalone.Objects;
 
-import android.location.Location;
-
 import org.joda.time.DateTime;
 
 public class Event {
-    private int id;
+    private String eventId;
     private String eventName;
     private DateTime date;
     private int duration;
-    private String addrasse;
+    private String addresse;
     private String postcode;
     private String city;
     private String country;
@@ -17,12 +15,12 @@ public class Event {
     private double latitude;
     private double longitude;
 
-    public Event(int id, String eventName, DateTime date, int duration, String addrasse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
-        this.id = id;
+    public Event(String eventId, String eventName, DateTime date, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+        this.eventId = eventId;
         this.eventName = eventName;
         this.date = date;
         this.duration = duration;
-        this.addrasse = addrasse;
+        this.addresse = addresse;
         this.postcode = postcode;
         this.city = city;
         this.country = country;
@@ -55,12 +53,12 @@ public class Event {
         this.duration = duration;
     }
 
-    public String getAddrasse() {
-        return addrasse;
+    public String getAddresse() {
+        return addresse;
     }
 
-    public void setAddrasse(String addrasse) {
-        this.addrasse = addrasse;
+    public void setAddresse(String addresse) {
+        this.addresse = addresse;
     }
 
     public String getPostcode() {
@@ -116,11 +114,8 @@ public class Event {
         return 0;
     }
 
-    public int getId() {
-        return id;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }

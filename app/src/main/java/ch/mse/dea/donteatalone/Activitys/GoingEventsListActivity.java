@@ -26,7 +26,7 @@ public class GoingEventsListActivity extends AppCompatActivity {
 
         setTitle(R.string.going_events_list_activity_tile);
 
-        events = UserProvider.getGoingEvents(null);
+        events = UserProvider.getGoingEvents();
 
         setupListView();
     }

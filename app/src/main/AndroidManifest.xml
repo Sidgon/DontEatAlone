@@ -12,6 +12,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity android:name=".Activitys.LoginActivity">
+
+        </activity>
+
+        <activity android:name=".Activitys.RegisterWithEmailActivity">
+
+        </activity>
+
         <activity
             android:name=".Activitys.UserProfileActivity"
             android:label="@string/title_activity_user_profile"
@@ -20,15 +28,12 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>>
         </activity>
 
         <activity
             android:name=".Activitys.EditUserProfileActivity"
             android:label="@string/title_activity_edit_user_profile" />
-        <activity android:name=".Activitys.LoginActivity"></activity>
-
-        <activity android:name=".Activitys.RegisterWithEmailActivity" />
 
         <activity
             android:name=".Activitys.GoingEventsListActivity"
