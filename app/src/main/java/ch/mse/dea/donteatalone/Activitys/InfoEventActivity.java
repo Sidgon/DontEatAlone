@@ -1,30 +1,19 @@
 package ch.mse.dea.donteatalone.Activitys;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.gson.Gson;
-import com.ybs.countrypicker.CountryPicker;
-import com.ybs.countrypicker.CountryPickerListener;
-
-import org.joda.time.DateTime;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
-import ch.mse.dea.donteatalone.DataHandling.InputFilterMinMax;
 import ch.mse.dea.donteatalone.Objects.Event;
-import ch.mse.dea.donteatalone.Objects.EventProvider;
 import ch.mse.dea.donteatalone.R;
 
 public class InfoEventActivity extends AppCompatActivity {
@@ -66,8 +55,8 @@ public class InfoEventActivity extends AppCompatActivity {
 
     private void setViewValues(Event event){
         txtEventName.setText(event.getEventName());
-        txtDate.setText(DataFormatter.getDateAsString(event.getDate(),"long"));
-        txtTime.setText(DataFormatter.getTimeAsString(event.getDate()));
+        txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(),"long"));
+        txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(String.valueOf(event.getDuration()));
         txtAddress.setText(event.getAddresse());
         txtPostcodeCity.setText(String.valueOf(event.getPostcode())+" "+event.getCity());

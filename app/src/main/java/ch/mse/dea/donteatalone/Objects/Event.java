@@ -1,11 +1,21 @@
 package ch.mse.dea.donteatalone.Objects;
 
+import android.provider.Settings;
+
+import com.google.firebase.database.Exclude;
+
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Locale;
+
+import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
 
 public class Event {
     private String eventId;
     private String eventName;
-    private DateTime date;
+    private String dateTimeString;
     private int duration;
     private String addresse;
     private String postcode;
@@ -15,10 +25,28 @@ public class Event {
     private double latitude;
     private double longitude;
 
-    public Event(String eventId, String eventName, DateTime date, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("HH:mm "+"dd.MM.yy").withLocale(Locale.getDefault());
+
+
+
+    public Event(String eventId, String eventName, String dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
         this.eventId = eventId;
         this.eventName = eventName;
-        this.date = date;
+        this.dateTimeString = dateTimeString;
+        this.duration = duration;
+        this.addresse = addresse;
+        this.postcode = postcode;
+        this.city = city;
+        this.country = country;
+        this.maxGuest = maxGuest;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Event(String eventId, String eventName, DateTime dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.dateTimeString = dateTimeFormatter.print(dateTimeString);
         this.duration = duration;
         this.addresse = addresse;
         this.postcode = postcode;
@@ -37,12 +65,22 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public DateTime getDate() {
-        return date;
+    public String getDateTimeString() {
+        return dateTimeString;
     }
 
-    public void setDate(DateTime date) {
-        this.date = date;
+    public void setDateTimeString(String dateTimeString) {
+        this.dateTimeString = dateTimeString;
+    }
+
+    @Exclude
+    public void setDateTime(DateTime dateTime) {
+        this.dateTimeString = dateTimeFormatter.print(dateTime);
+    }
+
+    @Exclude
+    public DateTime getDateTime(){
+        return dateTimeFormatter.parseDateTime(dateTimeString);
     }
 
     public int getDuration() {
@@ -109,6 +147,7 @@ public class Event {
         this.longitude = longitude;
     }
 
+    @Exclude
     public int getGoingGuests() {
         //TODO to implement, get Data from DB
         return 0;
@@ -118,4 +157,7 @@ public class Event {
         return eventId;
     }
 
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
 }

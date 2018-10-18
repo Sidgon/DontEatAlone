@@ -1,7 +1,6 @@
 package ch.mse.dea.donteatalone.Objects;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -53,7 +52,7 @@ public class UserValidation {
     public static String password(Context context,String password,boolean showToasts) {
         if (TextUtils.isEmpty(password)) {
             return App.getFromResource(R.string.user_validation_error_required) + ".";
-        } else if (!checkPassordSecuraty(context,password,showToasts)) {
+        } else if (!checkPasswordSecurity(context,password,showToasts)) {
             return App.getFromResource(R.string.user_validation_error_valid_password)+".";
         }
         return null;
@@ -63,16 +62,16 @@ public class UserValidation {
 
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatedPassword)) {
             return App.getFromResource(R.string.user_validation_error_required) + ".";
-        } else if (checkPassordSecuraty(context,password,showToasts)) {
+        } else if (!checkPasswordSecurity(context,password,showToasts)) {
             return App.getFromResource(R.string.user_validation_error_valid_password)+".";
-        }else if (password.equals(repeatedPassword)){
+        }else if (!password.equals(repeatedPassword)){
             return App.getFromResource(R.string.user_validation_error_passwords_not_match)+".";
         }
 
         return null;
     }
 
-    public static boolean checkPassordSecuraty(Context context, String password,boolean showToasts){
+    public static boolean checkPasswordSecurity(Context context, String password, boolean showToasts){
 
         if(!password.matches(".*\\d+.*") &&
                 !password.matches(".*[a-z]+.*") &&

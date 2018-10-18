@@ -21,4 +21,7 @@ public class App extends Application {
     public static String getFromResource(int i, Object... object) {
         return context.getResources().getString(i,object);
     }
+    public static boolean getDebug(){
+        return true;
+    }
 }

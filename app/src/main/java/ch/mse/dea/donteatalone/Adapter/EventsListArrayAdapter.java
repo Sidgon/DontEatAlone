@@ -52,8 +52,8 @@ public class EventsListArrayAdapter extends ArrayAdapter<Event> {
             TextView eventMaxGuests=eventView.findViewById(R.id.going_event_max_guests);
 
             eventName.setText(event.getEventName());
-            setDate(eventDate,event.getDate());
-            setTime(eventTime,event.getDate(),event.getDuration());
+            setDate(eventDate,event.getDateTime());
+            setTime(eventTime,event.getDateTime(),event.getDuration());
             eventAddresse.setText(event.getAddresse());
             eventCity.setText(event.getPostcode()+" "+event.getCity());
             eventGoingGuests.setText(event.getGoingGuests()+"");

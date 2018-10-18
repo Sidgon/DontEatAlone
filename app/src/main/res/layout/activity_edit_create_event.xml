@@ -7,7 +7,6 @@
     tools:context=".Activitys.EditCreateEventActivity">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,56 +20,54 @@
                 android:id="@+id/searchForAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_create_event_get_address"
+                android:layout_alignParentTop="true"
                 android:layout_margin="@dimen/margin_middle"
                 android:onClick="onClick_searchForAddress"
 
-                android:layout_alignParentTop="true"
-                />
+                android:text="@string/edit_create_event_get_address" />
             <!--android:onClick="onClick_searchEvent"-->
 
             <View
                 android:id="@+id/going_event_divider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider_size_medium"
-                android:layout_margin="@dimen/margin_small"
-                android:background="@android:color/darker_gray"
-
                 android:layout_below="@id/searchForAddress"
-                />
+                android:layout_margin="@dimen/margin_small"
+
+                android:background="@android:color/darker_gray" />
 
 
             <EditText
                 android:id="@+id/eventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/going_event_divider"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
 
+                android:layout_marginRight="@dimen/margin_middle"
+                android:autofillHints="@string/edit_create_event_event_name"
                 android:hint="@string/edit_create_event_event_name"
-                android:inputType="text"
-                android:layout_below="@id/going_event_divider"
-                android:autofillHints="@string/edit_create_event_event_name" />
+                android:inputType="text" />
 
             <TextView
                 android:id="@+id/txt_date"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/btn_date"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/margin_middle"
+
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/divider_size_tiny"
-
-                android:textColor="?attr/editTextColor"
                 android:background="?attr/editTextBackground"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMediumInverse"
 
 
                 android:hint="@string/edit_create_event_txt_date"
-                android:layout_alignBottom="@id/btn_date"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
 
-                android:layout_alignParentStart="true"
+                android:textColor="?attr/editTextColor"
 
                 />
 
@@ -78,15 +75,15 @@
                 android:id="@+id/btn_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_create_event_btn_date"
-                android:onClick="onClick_openDatePicker"
+                android:layout_below="@id/eventName"
+                android:layout_alignParentEnd="true"
 
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:layout_below="@id/eventName"
                 android:layout_toEndOf="@id/txt_date"
-                android:layout_alignParentEnd="true"
+                android:onClick="onClick_openDatePicker"
+                android:text="@string/edit_create_event_btn_date"
 
                 />
 
@@ -94,20 +91,20 @@
                 android:id="@+id/txt_time"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/btn_time"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/margin_middle"
+
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/divider_size_tiny"
-
-                android:textColor="?attr/editTextColor"
                 android:background="?attr/editTextBackground"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMediumInverse"
 
 
                 android:hint="@string/edit_create_event_txt_time"
 
-                android:layout_alignBottom="@id/btn_time"
-                android:layout_alignParentStart="true"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                android:textColor="?attr/editTextColor"
 
                 />
 
@@ -115,152 +112,163 @@
                 android:id="@+id/btn_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_create_event_btn_time"
-                android:onClick="onClick_openTimePicker"
+                android:layout_below="@id/btn_date"
+                android:layout_alignParentEnd="true"
 
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:layout_below="@id/btn_date"
                 android:layout_toEndOf="@id/txt_time"
-                android:layout_alignParentEnd="true"
+                android:onClick="onClick_openTimePicker"
+                android:text="@string/edit_create_event_btn_time"
 
                 />
 
-            <EditText
+
+            <SeekBar
+                android:id="@+id/edit_create_event_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_time"
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginRight="@dimen/margin_middle" />
+
+            <TextView
                 android:id="@+id/duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/edit_create_event_seekBar"
                 android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_middle"
+                android:textAlignment="center" />
 
-                android:hint="@string/edit_create_event_duration"
-                android:inputType="number"
-                android:layout_below="@id/txt_time"
-                android:autofillHints="@string/edit_create_event_duration" />
 
             <EditText
                 android:id="@+id/addresse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
-
-                android:hint="@string/edit_create_event_address"
-                android:inputType="textPostalAddress"
                 android:layout_below="@id/duration"
-                android:autofillHints="@string/edit_create_event_address" />
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+
+                android:layout_marginRight="@dimen/margin_middle"
+                android:autofillHints="@string/edit_create_event_address"
+                android:hint="@string/edit_create_event_address"
+                android:inputType="textPostalAddress" />
 
 
             <EditText
                 android:id="@+id/postcode"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/addresse"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_small"
 
+                android:layout_marginRight="@dimen/margin_small"
+                android:autofillHints="@string/edit_create_event_postcode"
                 android:hint="@string/edit_create_event_postcode"
-                android:inputType="number"
-                android:layout_below="@id/addresse"
-                android:autofillHints="@string/edit_create_event_postcode" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
-
-                android:hint="@string/edit_create_event_City"
-                android:inputType="text"
                 android:layout_alignBottom="@id/postcode"
+                android:layout_marginTop="@dimen/margin_middle"
+
+                android:layout_marginRight="@dimen/margin_middle"
                 android:layout_toEndOf="@id/postcode"
-                android:autofillHints="@string/edit_create_event_City" />
+                android:autofillHints="@string/edit_create_event_City"
+                android:hint="@string/edit_create_event_City"
+                android:inputType="text" />
 
 
             <TextView
                 android:id="@+id/countryName"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/setCountry"
                 android:layout_marginStart="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginEnd="@dimen/divider_size_tiny"
 
-                android:textColor="?attr/editTextColor"
+                android:layout_marginEnd="@dimen/divider_size_tiny"
                 android:background="?attr/editTextBackground"
                 android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMediumInverse"
-
-                android:layout_alignBottom="@id/setCountry"
                 android:hint="@string/edit_create_event_country"
 
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
+                android:textColor="?attr/editTextColor"
 
 
                 />
 
             <Button
                 android:id="@+id/setCountry"
-                android:text="@string/edit_create_event_btn_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClick_openCountryPicker"
+                android:layout_below="@id/city"
+                android:layout_alignParentEnd="true"
 
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:layout_below="@id/city"
                 android:layout_toEndOf="@id/countryName"
-                android:layout_alignParentEnd="true"
-                />
+                android:onClick="onClick_openCountryPicker"
+                android:text="@string/edit_create_event_btn_country" />
 
 
-            <EditText
+            <SeekBar
+                android:id="@+id/edit_create_event_seekBar_maxGuest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/setCountry"
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginRight="@dimen/margin_middle" />
+
+
+            <TextView
                 android:id="@+id/maxGuest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/edit_create_event_seekBar_maxGuest"
                 android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginRight="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
 
-                android:hint="@string/edit_create_event_max_guest"
-                android:inputType="number"
-                android:layout_below="@id/setCountry"
-                android:autofillHints="@string/edit_create_event_postcode" />
+                android:layout_marginRight="@dimen/margin_middle" />
 
             <Button
                 android:id="@+id/btn_save_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/maxGuest"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginRight="@dimen/margin_middle"
 
-                android:text="@string/edit_create_event_save"
-                android:layout_below="@id/maxGuest"
-
+                android:layout_marginBottom="@dimen/margin_middle"
                 android:onClick="onClick_saveEvent"
-                />
+
+                android:text="@string/edit_create_event_save" />
 
             <Button
                 android:id="@+id/btn_delete_event"
+                style="@style/DeleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_middle"
-                android:layout_marginBottom="@dimen/margin_middle"
-
-                style="@style/DeleteButton"
-
-                android:text="@string/edit_create_event_delete"
                 android:layout_below="@id/btn_save_event"
+                android:layout_marginLeft="@dimen/margin_middle"
 
+                android:layout_marginRight="@dimen/margin_middle"
+
+                android:layout_marginBottom="@dimen/margin_middle"
                 android:onClick="onClick_deleteEvent"
-                />
+
+                android:text="@string/edit_create_event_delete" />
 
         </RelativeLayout>
     </ScrollView>

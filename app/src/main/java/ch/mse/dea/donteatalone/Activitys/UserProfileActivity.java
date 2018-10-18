@@ -30,7 +30,9 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView txtUsername;
     TextView txtFullName;
     User user;
+
     DatabaseReference mDatabase;
+    ValueEventListener userListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,15 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     public void setUserListener(){
-        ValueEventListener userListener = new ValueEventListener() {
+        userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                /*
+
                 if (user.getImage()!=null){
                     Bitmap bmp = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
                     image.setImageBitmap(bmp);
-                }*/
+                }
                 txtFullName.setText(user.getFirstname()+" "+user.getLastname());
                 txtUsername.setText(user.getUsername());
                 Log.w(TAG, "UserDataChange:" + user.getuserId());
@@ -91,5 +93,16 @@ public class UserProfileActivity extends AppCompatActivity {
     public void onClick_btnCreatedEvents(View view) {
         Intent intent = new Intent(this, OwnEventsListActivity.class);
         startActivity(intent);
+    }
+
+    public void onClick_newEvent(View view) {
+        Intent intent=new Intent(this,EditCreateEventActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mDatabase.removeEventListener(userListener);
     }
 }

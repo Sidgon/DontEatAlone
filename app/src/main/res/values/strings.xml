@@ -50,6 +50,9 @@
     <string name="edit_create_event_dialog_massage">You have unsaved changes, do you really want to lose the data?</string>
     <string name="edit_create_event_dialog_cancel_button">Cancel</string>
     <string name="edit_create_event_dialog_delete_button">Delete</string>
+    <string name="edit_create_event_error_crating_event">Creating an event has failed, please try again later</string>
+    <string name="edit_create_event_error_deleting_event">Deleting of the event has failed, please try again later</string>
+    <string name="edit_create_event_error_updating_event">Updating the event has failed, please try again later</string>
 
     <string name="edit_create_event_dialog_onDelete_title">Delete Event</string>
     <string name="edit_create_event_dialog_onDelete_massage">Do you really want to delet this Event?</string>
@@ -84,5 +87,6 @@
     <string name="activity_info_event_alert_title_ungoing">Ungoing event</string>
     <string name="activity_info_event_alert_massage_going_user">Do you really want to ungoing this Event?</string>
     <string name="activity_info_event_alert_button_going_user">ungoing</string>
+
 
 </resources>
