@@ -69,16 +69,18 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
         if(!validateRegisterForm(username,email,firstname,lastname,password,passwordRepeated,oldPassword)) return null;
 
+        /*
         if (!checkbox_changePassword.isSelected()){
             password=user.getPassswordHash();
         }
+        */
+        //TODO altes passwort
         return new User(
                 user.getuserId(),
                 username,
                 firstname,
                 lastname,
                 email,
-                password,
                 user.getImage()
         );
 

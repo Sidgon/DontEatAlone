@@ -10,6 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayInputStream;
@@ -25,23 +30,40 @@ public class UserProfileActivity extends AppCompatActivity {
     TextView txtUsername;
     TextView txtFullName;
     User user;
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         getViews();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setUserListener();
+    }
 
-        user=User.getGlobalUser();
+    public void setUserListener(){
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                /*
+                if (user.getImage()!=null){
+                    Bitmap bmp = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
+                    image.setImageBitmap(bmp);
+                }*/
+                txtFullName.setText(user.getFirstname()+" "+user.getLastname());
+                txtUsername.setText(user.getUsername());
+                Log.w(TAG, "UserDataChange:" + user.getuserId());
+            }
 
-        if (user.getImage()!=null){
-            Bitmap bmp = BitmapFactory.decodeByteArray(user.getImage(), 0, user.getImage().length);
-            image.setImageBitmap(bmp);
-        }
-
-        txtFullName.setText(user.getFirstname()+" "+user.getLastname());
-        txtUsername.setText(user.getUsername());
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.child("users").child(User.getLoggedUserId()).addValueEventListener(userListener);
     }
 
     private void getViews(){
@@ -56,7 +78,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Gson gson=GsonAdapter.getGson();
         Intent intent=new Intent(this,EditUserProfileActivity.class);
-        intent.putExtra(R.string.intent_edit_user_profile_user+"",gson.toJson(User.getGlobalUser()));
+        intent.putExtra(R.string.intent_edit_user_profile_user+"",gson.toJson(user));
         startActivity(intent);
     }
 
