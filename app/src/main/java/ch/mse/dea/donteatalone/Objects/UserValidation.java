@@ -12,9 +12,9 @@ public class UserValidation {
     public static String username(String username) {
 
         if (TextUtils.isEmpty(username)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
         } else if (username.length() < 4) {
-            return getFromResource(R.string.user_validation_error_length, 4)+".";
+            return App.getFromResource(R.string.user_validation_error_length, 4)+".";
         }
 
         return null;
@@ -22,18 +22,18 @@ public class UserValidation {
 
     public static String firstname(String firstname) {
         if (TextUtils.isEmpty(firstname)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
         } else if (firstname.length() < 4) {
-            return getFromResource(R.string.user_validation_error_length, 4)+".";
+            return App.getFromResource(R.string.user_validation_error_length, 4)+".";
         }
         return null;
     }
 
     public static String lastname(String lastname) {
         if (TextUtils.isEmpty(lastname)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
         } else if (lastname.length() < 4) {
-            return getFromResource(R.string.user_validation_error_length, 4)+".";
+            return App.getFromResource(R.string.user_validation_error_length, 4)+".";
         }
         return null;
     }
@@ -41,20 +41,20 @@ public class UserValidation {
     public static String email(String email) {
 
         if (TextUtils.isEmpty(email)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
         } else if (email.length() < 4) {
-            return getFromResource(R.string.user_validation_error_length, 4);
+            return App.getFromResource(R.string.user_validation_error_length, 4);
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return getFromResource(R.string.user_validation_error_valid_email)+".";
+            return App.getFromResource(R.string.user_validation_error_valid_email)+".";
         }
         return null;
     }
 
     public static String password(Context context,String password,boolean showToasts) {
         if (TextUtils.isEmpty(password)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
-        } else if (checkPassordSecuraty(context,password,showToasts)) {
-            return getFromResource(R.string.user_validation_error_valid_password)+".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
+        } else if (!checkPassordSecuraty(context,password,showToasts)) {
+            return App.getFromResource(R.string.user_validation_error_valid_password)+".";
         }
         return null;
     }
@@ -62,11 +62,11 @@ public class UserValidation {
     public static String password(Context context, String password, String repeatedPassword,boolean showToasts){
 
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatedPassword)) {
-            return getFromResource(R.string.user_validation_error_required) + ".";
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
         } else if (checkPassordSecuraty(context,password,showToasts)) {
-            return getFromResource(R.string.user_validation_error_valid_password)+".";
+            return App.getFromResource(R.string.user_validation_error_valid_password)+".";
         }else if (password.equals(repeatedPassword)){
-            return getFromResource(R.string.user_validation_error_passwords_not_match)+".";
+            return App.getFromResource(R.string.user_validation_error_passwords_not_match)+".";
         }
 
         return null;
@@ -82,7 +82,7 @@ public class UserValidation {
                 Toast toast = Toast.makeText(context, R.string.error_password_wrong_pattern, Toast.LENGTH_LONG);
                 toast.show();
             }
-        }else if(!(password.contains("AND") || password.contains("NOT"))){
+        }else if(password.contains("AND") || password.contains("NOT")){
             if (showToasts) {
                 Toast toast = Toast.makeText(context, R.string.error_password_contains_conditions, Toast.LENGTH_LONG);
                 toast.show();
@@ -94,12 +94,6 @@ public class UserValidation {
         return false;
     }
 
-    private static String getFromResource(int i) {
-        return Resources.getSystem().getString(i);
-    }
 
-    private static String getFromResource(int i, Object... object) {
-        return Resources.getSystem().getString(i, object);
-    }
 
 }

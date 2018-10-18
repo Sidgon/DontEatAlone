@@ -1,5 +1,6 @@
 package ch.mse.dea.donteatalone.Activitys;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.R;
@@ -72,13 +76,13 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
 
         mPasswordRepeatTextField= findViewById(R.id.registerPasswordRepeatTextField);
         String passwordRepeat = mPasswordRepeatTextField.getText().toString();
-
+/*
         //validate form
         if (!validateRegisterForm(username, email, firstname,
                 lastname, password, passwordRepeat)) {
             return;
         }
-
+*/
         //create user for firebase auth
         signUpFirebaseAuthUser(email, password);
 
@@ -97,13 +101,17 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            //start listening for user changes in realtime db
+                            User.setLoggedUserId(user.getUid());
                             //Register User in Real-Time DB
                             signUpFirebaseRealTimeDBUser(user.getUid(),
                                     mUsernameTextField.getText().toString(),
                                     mEmailTextField.getText().toString(),
                                     mFirstNameTextField.getText().toString(),
                                     mLastNameTextField.getText().toString());
-                            //change activity here
+
+                            Intent nextIntent = new Intent(RegisterWithEmailActivity.this, UserProfileActivity.class);
+                            RegisterWithEmailActivity.this.startActivity(nextIntent);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -119,13 +127,14 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
 
     public void signUpFirebaseRealTimeDBUser(String userId, String username, String email, String firstname,
                                 String lastname){
-        User user = new User(userId, username, email, firstname, lastname);
-        mDatabase.child("users").child(user.getuserId()).setValue(user)
+        User user = new User(userId, username, email, firstname, lastname, null);
+        mDatabase.child("users").child(userId).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Write was successful!
                         //change intent here
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
