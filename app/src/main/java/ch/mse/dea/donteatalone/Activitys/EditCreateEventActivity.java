@@ -111,7 +111,6 @@ public class EditCreateEventActivity extends AppCompatActivity {
         etxtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
         etxtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
-        etxtMaxGuest.setFilters(new InputFilter[]{ new InputFilterMinMax(1, 30)});
 
         latitude=event.getLatitude();
         longitude=event.getLongitude();

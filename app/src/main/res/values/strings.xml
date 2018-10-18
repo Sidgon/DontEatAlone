@@ -19,12 +19,14 @@
     <string name="own_events_list_activity_tile">Own Events</string>
     <string name="event_list_item_max_guests">Guests:</string>
 
-    <string name="user_firstname">Firstname</string>
-    <string name="user_lastname">Lastname</string>
-    <string name="user_username">Username</string>
-    <string name="user_email">Email</string>
-    <string name="enter_password">Enter Password</string>
-    <string name="repeat_password">Repeat Password</string>
+    <string name="edit_user_profile_firstname">Firstname</string>
+    <string name="edit_user_profile_lastname">Lastname</string>
+    <string name="edit_user_profile_username">Username</string>
+    <string name="edit_user_profile_email">Email</string>
+    <string name="edit_user_profile_old_password">Old Password</string>
+    <string name="edit_user_profile_enter_password">Enter Password</string>
+    <string name="edit_user_profile__repeat_password">Repeat Password</string>
+    
 
     <string name="edit_event_title">Edit Event</string>
     <string name="create_event_title">Create Event</string>
@@ -39,7 +41,7 @@
     <string name="edit_create_event_City">City</string>
     <string name="edit_create_event_country">Country</string>
     <string name="edit_create_event_btn_country">Set country</string>
-    <string name="edit_create_event_max_guest">Maximal number of guests</string>
+    <string name="edit_create_event_max_guest">Maximal guests</string>
     <string name="edit_create_event_event_name">Event name</string>
     <string name="edit_create_event_delete">Delete Event</string>
     <string name="edit_create_event_save">Save Changes</string>
@@ -64,6 +66,23 @@
     <string name="register_txtPassword">Enter Password</string>
     <string name="register_txtLastName">Lastname</string>
     <string name="register_txtFirstName">Firstname</string>
+    
+    <string name="error_password_wrong_pattern">The password have to contain at least 6 characters and one uppercase letter, lowercase latter and a number. </string>
+    <string name="error_password_contains_conditions">No conditions allowed like AND,NOT,OR. </string>
 
+
+    <string name="user_validation_error_required">Required</string>
+    <string name="user_validation_error_length">Length: min $1$d characters</string>
+    <string name="user_validation_error_valid_email">Please enter a valid email</string>
+    <string name="user_validation_error_valid_password">Please enter a valid password</string>
+    <string name="user_validation_error_passwords_not_match">Passwords do not match</string>
+    <string name="user_validation_error_passwords_wrong_password">Wrong password</string>
+
+    <string name="activity_info_event_title">Info Event</string>
+    <string name="activity_info_event_ungoing">Ungoing event</string>
+    <string name="activity_info_event_view_going_user">Going user</string>
+    <string name="activity_info_event_alert_title_ungoing">Ungoing event</string>
+    <string name="activity_info_event_alert_massage_going_user">Do you really want to ungoing this Event?</string>
+    <string name="activity_info_event_alert_button_going_user">ungoing</string>
 
 </resources>

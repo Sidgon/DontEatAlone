@@ -1,9 +1,9 @@
 package ch.mse.dea.donteatalone.Activitys;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ch.mse.dea.donteatalone.Objects.UserValidation;
 import ch.mse.dea.donteatalone.R;
 
 public class LoginActivity extends AppCompatActivity implements
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements
         mEmailTextField = findViewById(R.id.emailLoginTextField);
         String email = mEmailTextField.getText().toString();
 
-        mPasswordTextField= findViewById(R.id.passwordLoginTextField);
+        mPasswordTextField = findViewById(R.id.passwordLoginTextField);
         String password = mPasswordTextField.getText().toString();
 
         Log.d(TAG, "signIn:" + email);
@@ -75,31 +76,17 @@ public class LoginActivity extends AppCompatActivity implements
 
     private boolean validateForm() {
         boolean valid = true;
+        String str;
 
-        //checks if fields are not empty
         String email = mEmailTextField.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailTextField.setError("Required.");
-            valid = false;
-        } else {
-            mEmailTextField.setError(null);
-        }
+        str=UserValidation.email(email);
+        if (str!=null)valid=false;
+        mEmailTextField.setError(str);
 
         String password = mPasswordTextField.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            mPasswordTextField.setError("Required.");
-            valid = false;
-        } else {
-            mPasswordTextField.setError(null);
-        }
-
-        //checks if entered email is valid
-        if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            mEmailTextField.setError("Please enter a valid email");
-            valid = false;
-        } else {
-            mEmailTextField.setError(null);
-        }
+        str=UserValidation.password(this,password,false);
+        if (str!=null)valid=false;
+        mPasswordTextField.setError(str);
 
         return valid;
     }
