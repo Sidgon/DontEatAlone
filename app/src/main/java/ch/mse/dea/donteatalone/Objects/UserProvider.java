@@ -36,7 +36,7 @@ public class UserProvider {
         ArrayList<Event> events =new ArrayList<>();
         final int numRows = 64;
         for (int i = 0; i < numRows; i++) {
-            events.add(new Event(i,"Restaurant " + i, DateTime.now(), 60 + i * 2, "Musterstrasse " + i, i * 100 + "", "Bern", "Switzerland", i, 0,0));
+            events.add(new Event("Sadly all same ID -> String ID","Restaurant " + i, DateTime.now(), 60 + i * 2, "Musterstrasse " + i, i * 100 + "", "Bern", "Switzerland", i, 0,0));
         }
 
         return events;
@@ -50,7 +50,7 @@ public class UserProvider {
         ArrayList<Event> events =new ArrayList<>();
         final int numRows = 13;
         for (int i = 0; i < numRows; i++) {
-            events.add(new Event(i,"Restaurant " + i, DateTime.now(), 60 + i * 2, "Musterstrasse " + i, i * 100 + "", "Bern", "Switzerland", i, 0,0));
+            events.add(new Event("Sadly all same ID -> String ID","Restaurant " + i, DateTime.now(), 60 + i * 2, "Musterstrasse " + i, i * 100 + "", "Bern", "Switzerland", i, 0,0));
         }
 
         return events;

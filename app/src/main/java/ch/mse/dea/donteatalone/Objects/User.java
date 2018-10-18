@@ -81,9 +81,10 @@ public class User {
 
     public String getuserId() {
         return userId;
+    }
 
     public static User getGlobalUser() {
-        return new User(1, "Command1991", "Daniel", "Steinegger", "steinegger.daniel@gmail.com", "öajndsöfnDSF", User.getGravatar("steinegger.daniel@gmail.com"));
+        return new User("ZUEAI77AEU", "Command1991", "Daniel", "Steinegger", "steinegger.daniel@gmail.com", "öajndsöfnDSF", User.getGravatar("steinegger.daniel@gmail.com"));
     }
 
     public static byte[] getGravatar(String email) {
