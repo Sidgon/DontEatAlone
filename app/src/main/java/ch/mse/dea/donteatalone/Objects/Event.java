@@ -14,6 +14,7 @@ import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
 
 public class Event {
     private String eventId;
+    private String userIdOfCreator;
     private String eventName;
     private String dateTimeString;
     private int duration;
@@ -29,7 +30,7 @@ public class Event {
 
 
 
-    public Event(String eventId, String eventName, String dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+    public Event(String eventId,String userIdOfCreator, String eventName, String dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.dateTimeString = dateTimeString;
@@ -41,9 +42,10 @@ public class Event {
         this.maxGuest = maxGuest;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.userIdOfCreator=userIdOfCreator;
     }
 
-    public Event(String eventId, String eventName, DateTime dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
+    public Event(String eventId,String userIdOfCreator, String eventName, DateTime dateTimeString, int duration, String addresse, String postcode, String city, String country, int maxGuest, double latitude, double longitude) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.dateTimeString = dateTimeFormatter.print(dateTimeString);
@@ -55,6 +57,7 @@ public class Event {
         this.maxGuest = maxGuest;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.userIdOfCreator=userIdOfCreator;
     }
 
     public String getEventName() {
@@ -159,5 +162,13 @@ public class Event {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public String getUserIdOfCreator() {
+        return userIdOfCreator;
+    }
+
+    public void setUserIdOfCreator(String userIdOfCreator) {
+        this.userIdOfCreator = userIdOfCreator;
     }
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,22 +26,22 @@ import com.ybs.countrypicker.CountryPicker;
 import com.ybs.countrypicker.CountryPickerListener;
 
 import org.joda.time.DateTime;
-import org.w3c.dom.Text;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
-import ch.mse.dea.donteatalone.DataHandling.InputFilterMinMax;
 import ch.mse.dea.donteatalone.Objects.App;
 import ch.mse.dea.donteatalone.Objects.Event;
+import ch.mse.dea.donteatalone.Objects.EventValidation;
+import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.R;
 
 public class EditCreateEventActivity extends AppCompatActivity {
 
     private static final String TAG = EditCreateEventActivity.class.getName();
     private final int SEEKBAR_INCREMENT = 10;
-    private final int SEEKBAR_DURATION_MIN_VALUE=10;
-    private final int SEEKBAR_MAX_GUEST_MIN_VALUE=1;
-    private TextView txtEventName;
+    private final int SEEKBAR_DURATION_MIN_VALUE = 10;
+    private final int SEEKBAR_MAX_GUEST_MIN_VALUE = 1;
+    private TextView etxtEventName;
     private TextView txtDate;
     private TextView txtTime;
     private TextView txtDuration;
@@ -60,7 +59,10 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private CountryPicker picker;
     private Event event;
 
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("events");
+    private DatabaseReference mDatabase=FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference refEvents = mDatabase.child("events");
+    private DatabaseReference refUserEvent= mDatabase.child("users").child("events");
+    private DatabaseReference refEventsUserMixin = mDatabase.child("events_user_mixin");
 
     private static String getStringDuration(int duration) {
         return String.format("%02dh %02dmin", (int) Math.floor(duration / 60), (int) duration % 60);
@@ -75,7 +77,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         setupCountryPicker();
 
         if (getIntent().getExtras() != null) {
-            Log.v(TAG, "Edit event");
+            Log.i(TAG, "Edit event");
             Gson gson = GsonAdapter.getGson();
             String json = getIntent().getExtras().getString(R.string.intent_edit_create_event_event + "");
             event = gson.fromJson(json, Event.class);
@@ -84,7 +86,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             btnDeleteEvent.setVisibility(View.VISIBLE);
             isEdit = true;
         } else {
-            Log.v(TAG, "Create event");
+            Log.i(TAG, "Create event");
             setTitle(R.string.create_event_title);
             event = null;
             btnDeleteEvent.setVisibility(View.GONE);
@@ -92,35 +94,35 @@ public class EditCreateEventActivity extends AppCompatActivity {
             longitude = 0;
             isEdit = false;
             if (App.getDebug())
-                setViewValues(new Event("", "Migros", DateTime.now().plusDays(2), 60, "Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 8, 0, 0));
+                setViewValues(new Event("", User.getLoggedUserId(), "Migros", DateTime.now().plusDays(2), 60, "Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 8, 0, 0));
         }
 
         Log.i(TAG, "Finish on Create");
     }
 
 
-
     private Event getViewValues() {
         return new Event(
                 event == null ? "" : event.getEventId(),
-                txtEventName.getText().toString(),
+                event == null ? User.getLoggedUserId() : event.getUserIdOfCreator(),
+                etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
-                seekBarDuration.getProgress() * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE,
+                seekBarDuration.getProgress() * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE,
                 etxtAddress.getText().toString(),
                 etxtPostcode.getText().toString(),
                 etxtCity.getText().toString(),
                 txtCountryName.getText().toString(),
-                seekBarMaxGuest.getProgress()+SEEKBAR_MAX_GUEST_MIN_VALUE,
+                seekBarMaxGuest.getProgress() + SEEKBAR_MAX_GUEST_MIN_VALUE,
                 latitude, longitude
         );
     }
 
     private void setViewValues(Event event) {
-        txtEventName.setText(event.getEventName());
+        etxtEventName.setText(event.getEventName());
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(getStringDuration(event.getDuration()));
-        seekBarDuration.setProgress(event.getDuration());
+        seekBarDuration.setProgress(event.getDuration() / SEEKBAR_INCREMENT);
         etxtAddress.setText(event.getAddresse());
         etxtPostcode.setText(String.valueOf(event.getPostcode()));
         etxtCity.setText(event.getCity());
@@ -130,12 +132,35 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
         latitude = event.getLatitude();
         longitude = event.getLongitude();
+    }
 
+    private boolean validateForm(Event event) {
+        String str;
+        boolean valid = true;
+
+        str = EventValidation.standart(event.getEventName(), 2);
+        if (str != null) valid = false;
+        etxtEventName.setError(str);
+
+        str = EventValidation.standart(event.getAddresse(), 2);
+        if (str != null) valid = false;
+        etxtAddress.setError(str);
+
+        str = EventValidation.standart(event.getPostcode(), 2);
+        if (str != null) valid = false;
+        etxtPostcode.setError(str);
+
+        str = EventValidation.standart(event.getCity(), 2);
+        if (str != null) valid = false;
+        etxtCity.setError(str);
+
+
+        return valid;
 
     }
 
     private void getViews() {
-        txtEventName = findViewById(R.id.eventName);
+        etxtEventName = findViewById(R.id.eventName);
         txtDate = findViewById(R.id.txt_date);
         txtTime = findViewById(R.id.txt_time);
         txtDuration = findViewById(R.id.duration);
@@ -152,17 +177,17 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     }
 
-    private void setSeekBarDuration(){
+    private void setSeekBarDuration() {
         seekBarDuration = findViewById(R.id.edit_create_event_seekBar);
         seekBarDuration.setProgress(60 / SEEKBAR_INCREMENT);
-        seekBarDuration.setMax((360-SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
+        seekBarDuration.setMax((360 - SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
         seekBarDuration.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtDuration.setText(getStringDuration((int) progresValue * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE));
+                txtDuration.setText(getStringDuration((int) progresValue * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE));
             }
 
             @Override
@@ -175,17 +200,17 @@ public class EditCreateEventActivity extends AppCompatActivity {
         });
     }
 
-    private void setSeekBarMaxGuest(){
+    private void setSeekBarMaxGuest() {
         seekBarMaxGuest = findViewById(R.id.edit_create_event_seekBar_maxGuest);
         seekBarMaxGuest.setProgress(8);
-        seekBarMaxGuest.setMax(30-SEEKBAR_DURATION_MIN_VALUE);
+        seekBarMaxGuest.setMax(30 - SEEKBAR_DURATION_MIN_VALUE);
         seekBarMaxGuest.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtDuration.setText(progresValue-SEEKBAR_MAX_GUEST_MIN_VALUE);
+                txtMaxGuest.setText(Integer.toString(progresValue - SEEKBAR_MAX_GUEST_MIN_VALUE));
             }
 
             @Override
@@ -292,7 +317,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (event != null) {
-                            mDatabase.child(event.getEventId()).removeValue()
+                            refEvents.child(event.getEventId()).removeValue()
                                     .addOnFailureListener(
                                             new OnFailureListener() {
                                                 @Override
@@ -320,13 +345,35 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClick_saveEvent(View view) {
+        Event event = getViewValues();
+        String eventKey = refEvents.push().getKey();
 
-        if (!isEdit) {
-            String key=mDatabase.push().getKey();
-            if (key!=null) {
-                Event event=getViewValues();
-                event.setEventId(key);
-                mDatabase.child(key).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+        if (validateForm(event)) {
+            if (!isEdit) {
+                if (eventKey != null) {
+                    event.setEventId(eventKey);
+                    refEvents.child(eventKey).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "CreateEvent:failure", e);
+                            Toast.makeText(EditCreateEventActivity.this,
+                                    getString(R.string.edit_create_event_error_crating_event),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Log.w(TAG, "CreateEvent:failure:NoKey");
+                    Toast.makeText(EditCreateEventActivity.this,
+                            getString(R.string.edit_create_event_error_crating_event),
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                refEvents.child(event.getEventId()).setValue(event, Event.class).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         finish();
@@ -334,33 +381,13 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG,"CreateEvent:failure", e);
+                        Log.w("UpdateEvent:failure", e);
                         Toast.makeText(EditCreateEventActivity.this,
-                                getString(R.string.edit_create_event_error_crating_event),
+                                getString(R.string.edit_create_event_error_updating_event),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
-            }else {
-                Log.w(TAG,"CreateEvent:failure:NoKey");
-                Toast.makeText(EditCreateEventActivity.this,
-                        getString(R.string.edit_create_event_error_crating_event),
-                        Toast.LENGTH_SHORT).show();
             }
-        } else {
-            mDatabase.child(event.getEventId()).setValue(event, Event.class).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    finish();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w("UpdateEvent:failure", e);
-                    Toast.makeText(EditCreateEventActivity.this,
-                            getString(R.string.edit_create_event_error_updating_event),
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 
