@@ -73,7 +73,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
             password=user.getPassswordHash();
         }
         return new User(
-                user.getId(),
+                user.getuserId(),
                 username,
                 firstname,
                 lastname,
