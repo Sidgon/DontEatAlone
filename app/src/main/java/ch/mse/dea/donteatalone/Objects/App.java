@@ -24,4 +24,11 @@ public class App extends Application {
     public static boolean getDebug(){
         return true;
     }
+
+    public static void print(String str){
+        System.out.println("-");
+        System.out.println("------------------------");
+        System.out.println(str);
+        System.out.println("------------------------");
+    }
 }

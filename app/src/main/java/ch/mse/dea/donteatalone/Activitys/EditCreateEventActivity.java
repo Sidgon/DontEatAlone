@@ -51,6 +51,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private TextView txtCountryName;
     private TextView txtMaxGuest;
     private Button btnDeleteEvent;
+    private Button btnSaveEvent;
     private double latitude;
     private double longitude;
     private boolean isEdit;
@@ -61,8 +62,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase=FirebaseDatabase.getInstance().getReference();
     private DatabaseReference refEvents = mDatabase.child("events");
-    private DatabaseReference refUserEvent= mDatabase.child("users").child("events");
-    private DatabaseReference refEventsUserMixin = mDatabase.child("events_user_mixin");
+    private DatabaseReference refEventUsers= mDatabase.child("event_users");
+    private DatabaseReference refUsersEvents = mDatabase.child("users_events");
+    private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
 
     private static String getStringDuration(int duration) {
         return String.format("%02dh %02dmin", (int) Math.floor(duration / 60), (int) duration % 60);
@@ -84,12 +86,14 @@ public class EditCreateEventActivity extends AppCompatActivity {
             setViewValues(event);
             setTitle(R.string.edit_event_title);
             btnDeleteEvent.setVisibility(View.VISIBLE);
+            btnSaveEvent.setText(R.string.edit_create_event_save);
             isEdit = true;
         } else {
             Log.i(TAG, "Create event");
             setTitle(R.string.create_event_title);
             event = null;
             btnDeleteEvent.setVisibility(View.GONE);
+            btnSaveEvent.setText(R.string.edit_create_event_create);
             latitude = 0;
             longitude = 0;
             isEdit = false;
@@ -107,12 +111,12 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 event == null ? User.getLoggedUserId() : event.getUserIdOfCreator(),
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
-                seekBarDuration.getProgress() * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE,
+                seekBarDuration.getProgress() * SEEKBAR_INCREMENT,
                 etxtAddress.getText().toString(),
                 etxtPostcode.getText().toString(),
                 etxtCity.getText().toString(),
                 txtCountryName.getText().toString(),
-                seekBarMaxGuest.getProgress() + SEEKBAR_MAX_GUEST_MIN_VALUE,
+                seekBarMaxGuest.getProgress(),
                 latitude, longitude
         );
     }
@@ -123,7 +127,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(getStringDuration(event.getDuration()));
         seekBarDuration.setProgress(event.getDuration() / SEEKBAR_INCREMENT);
-        etxtAddress.setText(event.getAddresse());
+        etxtAddress.setText(event.getAddress());
         etxtPostcode.setText(String.valueOf(event.getPostcode()));
         etxtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
@@ -142,7 +146,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         if (str != null) valid = false;
         etxtEventName.setError(str);
 
-        str = EventValidation.standart(event.getAddresse(), 2);
+        str = EventValidation.standart(event.getAddress(), 2);
         if (str != null) valid = false;
         etxtAddress.setError(str);
 
@@ -165,12 +169,13 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtTime = findViewById(R.id.txt_time);
         txtDuration = findViewById(R.id.duration);
         //etxtDuration.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60 * 4)});
-        etxtAddress = findViewById(R.id.addresse);
+        etxtAddress = findViewById(R.id.address);
         etxtPostcode = findViewById(R.id.postcode);
         etxtCity = findViewById(R.id.city);
         txtCountryName = findViewById(R.id.countryName);
         txtMaxGuest = findViewById(R.id.maxGuest);
         btnDeleteEvent = findViewById(R.id.btn_delete_event);
+        btnSaveEvent = findViewById(R.id.btn_save_event);
 
         setSeekBarDuration();
         setSeekBarMaxGuest();
@@ -299,6 +304,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     }
 
+
     public void onClick_deleteEvent(View view) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -317,7 +323,15 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (event != null) {
-                            refEvents.child(event.getEventId()).removeValue()
+                            refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    refEventUsers.child(event.getEventId()).removeValue();
+                                    refUsersEvents.child(User.getLoggedUserId()).child(event.getEventId()).removeValue();
+                                    refUsersGoingEvents.child(User.getLoggedUserId()).child(event.getEventId()).removeValue();
+                                    finish();
+                                }
+                            })
                                     .addOnFailureListener(
                                             new OnFailureListener() {
                                                 @Override
@@ -346,16 +360,25 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     public void onClick_saveEvent(View view) {
         Event event = getViewValues();
-        String eventKey = refEvents.push().getKey();
 
         if (validateForm(event)) {
             if (!isEdit) {
+                // Es wird ein neues Event erstellt und dazu einen Key von der Database angefordert
+                final String eventKey = refEvents.push().getKey();
                 if (eventKey != null) {
+                    //Falls der key nicht null ist wird das Event der Database übergeben.
                     event.setEventId(eventKey);
                     refEvents.child(eventKey).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+
+                            //Falls der Event erstellt werden konnte wird dier Key an die anderen listen übergeben.
+                            refEventUsers.child(eventKey).child(User.getLoggedUserId()).child("isComing").setValue(true);
+                            refUsersEvents.child(User.getLoggedUserId()).child(eventKey).child("boolean").setValue(true);
+                            refUsersGoingEvents.child(User.getLoggedUserId()).child(eventKey).child("boolean").setValue(true);
+
                             finish();
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -373,7 +396,8 @@ public class EditCreateEventActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
             } else {
-                refEvents.child(event.getEventId()).setValue(event, Event.class).addOnSuccessListener(new OnSuccessListener<Void>() {
+                // Falls das event nur editiert wurde wird es upgedated
+                refEvents.child(event.getEventId()).updateChildren(event.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         finish();
@@ -394,32 +418,38 @@ public class EditCreateEventActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        if (!event.haveSameContent(getViewValues())) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        // set title
-        alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_title);
+            // set title
+            alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_title);
 
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(R.string.edit_create_event_dialog_massage)
-                .setCancelable(false)
-                .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage(R.string.edit_create_event_dialog_massage)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.i(TAG, "Event not saved");
-                        finish();
-                        dialog.cancel();
-                    }
-                });
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Log.i(TAG, "Event not saved");
+                            finish();
+                            dialog.cancel();
+                        }
+                    });
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+
+            alertDialog.show();
+        }else {
+            finish();
+        }
     }
 
 

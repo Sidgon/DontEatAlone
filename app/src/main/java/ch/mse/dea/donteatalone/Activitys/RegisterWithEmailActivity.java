@@ -90,7 +90,7 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
             return;
         }
 
-        if (!App.getDebug()) signUpFirebaseAuthUser(email, password);
+        signUpFirebaseAuthUser(email, password);
 
 
     }

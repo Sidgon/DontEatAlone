@@ -129,6 +129,20 @@
 
                 android:onClick="onClick_saveEvent"
                 android:text="@string/edit_create_event_save" />
+
+            <Button
+                android:id="@+id/btn_delete_event"
+                style="@style/DeleteButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="@dimen/margin_middle"
+                android:layout_marginRight="@dimen/margin_middle"
+                android:layout_marginBottom="@dimen/margin_middle"
+
+                android:onClick="onClick_deleteEvent"
+
+                android:text="@string/edit_user_profile_delete" />
         </LinearLayout>
     </ScrollView>
 

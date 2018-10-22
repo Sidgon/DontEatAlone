@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import ch.mse.dea.donteatalone.DataHandling.GravatarTask;
@@ -31,7 +32,7 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.imageString=null;
+        this.imageString = null;
     }
 
     public User(String userId, String username, String firstname, String lastname, String email, byte[] image) {
@@ -104,12 +105,13 @@ public class User {
 
     @Exclude
     public byte[] getImage() {
-        return Base64.decode(imageString,Base64.DEFAULT);
+        return Base64.decode(imageString, Base64.DEFAULT);
     }
 
     @Exclude
     public void setImage(byte[] image) {
-        this.imageString = Base64.encodeToString(image, Base64.DEFAULT); ;
+        this.imageString = Base64.encodeToString(image, Base64.DEFAULT);
+        ;
     }
 
 
@@ -120,7 +122,15 @@ public class User {
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
-}
 
+    public boolean haveSameContent(User user) {
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getFirstname(), user.getFirstname()) &&
+                Objects.equals(getLastname(), user.getLastname()) &&
+                Objects.equals(getEmail(), user.getEmail());
+    }
+
+}
 
 

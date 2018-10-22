@@ -58,7 +58,7 @@ public class InfoEventActivity extends AppCompatActivity {
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(),"long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(String.valueOf(event.getDuration()));
-        txtAddress.setText(event.getAddresse());
+        txtAddress.setText(event.getAddress());
         txtPostcodeCity.setText(String.valueOf(event.getPostcode())+" "+event.getCity());
         txtCountryName.setText(event.getCountry());
         txtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
