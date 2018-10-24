@@ -2,6 +2,7 @@ package ch.mse.dea.donteatalone.Objects;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 public class App extends Application {
 
@@ -30,5 +31,12 @@ public class App extends Application {
         System.out.println("------------------------");
         System.out.println(str);
         System.out.println("------------------------");
+    }
+
+    public static void log(String TAG,String str){
+        Log.v(TAG,"-");
+        Log.v(TAG,"------------------------");
+        Log.v(TAG,str);
+        Log.v(TAG,"------------------------");
     }
 }

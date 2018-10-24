@@ -13,12 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
+import ch.mse.dea.donteatalone.Objects.App;
 import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.Objects.UserValidation;
 import ch.mse.dea.donteatalone.R;
@@ -49,11 +49,30 @@ public class EditUserProfileActivity extends AppCompatActivity {
     private DatabaseReference refEventUsers = mDatabase.child("event_users");
     private DatabaseReference refUsersEvents = mDatabase.child("users_events");
     private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
+
+
     private FirebaseAuth mAuth;
 
     private User user;
 
     private Intent intent;
+
+    public static String mapToString(Map<String, Object> map) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Map.Entry<String, Object>> iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, Object> entry = iter.next();
+            sb.append(entry.getKey());
+            sb.append('=').append('"');
+            sb.append(entry.getValue());
+            sb.append('"');
+            if (iter.hasNext()) {
+                sb.append(',').append('\n');
+            }
+        }
+        return sb.toString();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,80 +269,123 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (user != null) {
+                            final Map<String, Object> map = new HashMap<>();
+                            final boolean[] wait = new boolean[1];
 
-
-                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-                            fuser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            refUsersGoingEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
-                                    refUsers.child(user.getuserId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            //Remove User from all going events and delete al going events of User
-                                            refUsersGoingEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                                        if (snapshot != null && snapshot.getKey() != null) {
-                                                            refEventUsers.child(snapshot.getKey()).child(user.getuserId()).removeValue();
-                                                        }
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
-                                            refUsersGoingEvents.child(user.getuserId()).removeValue();
-
-                                            //Delete all Events of User
-                                            refUsersEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                                        if (snapshot != null && snapshot.getKey() != null) {
-                                                            refEvents.child(snapshot.getKey()).removeValue();
-                                                            refEventUsers.child(snapshot.getKey()).removeValue();
-                                                        }
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
-                                            refUsersEvents.child(user.getuserId()).removeValue();
-
-
-                                            finish();
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        if (snapshot != null && snapshot.getKey() != null) {
+                                            map.put("/event_users/" + snapshot.getKey() + "/" + user.getuserId(), null);
                                         }
-                                    })
-                                            .addOnFailureListener(
-                                                    new OnFailureListener() {
+                                    }
+
+                                    refUsersEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            for (final DataSnapshot usersEvent : dataSnapshot.getChildren()) {
+                                                if (usersEvent != null && usersEvent.getKey() != null) {
+                                                    map.put("/events/" + usersEvent.getKey(), null);
+                                                    map.put("/event_users/" + usersEvent.getKey(), null);
+
+                                                    wait[0] = true;
+                                                    App.log(TAG, "test1");
+                                                    refEventUsers.child(usersEvent.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.w("DeleteEvent:failure", e);
-                                                            Toast.makeText(EditUserProfileActivity.this,
-                                                                    getString(R.string.edit_user_profile_error_deleting_event),
-                                                                    Toast.LENGTH_SHORT).show();
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            App.log(TAG, "test2");
+                                                            for (DataSnapshot eventUsers : dataSnapshot.getChildren()) {
+                                                                map.put("/users_going_events/" + eventUsers.getKey() + "/" + usersEvent.getKey(), null);
+                                                            }
+                                                            wait[0] = false;
+                                                            App.log(TAG, "test3");
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                                         }
-                                                    }
-                                            );
+                                                    });
 
+                                                }
+                                            }
+
+
+
+
+
+                                            map.put("/users/" + user.getuserId(), null);
+                                            map.put("/users_going_events/" + user.getuserId(), null);
+                                            map.put("/users_events/" + user.getuserId(), null);
+
+
+                                            App.log(TAG, mapToString(map));
+
+//                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+//                                    fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//                                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+//                                            fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Log.i(TAG, "Account gelöscht: \n   -ID: " + user.getuserId() + " \n   -Name: " + user.getEmail());
+//                                                    finish();
+//                                                }
+//                                            }).addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Log.w("DeleteEvent:failure", e);
+//                                                    Toast.makeText(EditUserProfileActivity.this,
+//                                                            getString(R.string.edit_user_profile_error_deleting_event),
+//                                                            Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.w("DeleteEvent:failure", e);
+//                                    Toast.makeText(EditUserProfileActivity.this,
+//                                            getString(R.string.edit_user_profile_error_deleting_event),
+//                                            Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            Log.w("DeleteEvent:failure", databaseError.getDetails());
+                                            Toast.makeText(EditUserProfileActivity.this,
+                                                    getString(R.string.edit_user_profile_error_deleting_event),
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.w("DeleteEvent:failure", databaseError.getDetails());
+                                    Toast.makeText(EditUserProfileActivity.this,
+                                            getString(R.string.edit_user_profile_error_deleting_event),
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             });
 
 
-                            Log.i(TAG, "Account gelöscht: \n   -ID: " + user.getuserId() + " \n   -Name: " + user.getEmail());
-                            dialog.cancel();
                         }
+                        dialog.cancel();
                     }
                 });
 

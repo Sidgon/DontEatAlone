@@ -43,7 +43,6 @@ public class OwnEventsListActivity extends AppCompatActivity {
         adapter = new EventsListArrayAdapter(this, new ArrayList<Event>());
 
         getEvents();
-        App.print("OwnEvent Events: " + adapter.getCount());
 
         setupListView();
 

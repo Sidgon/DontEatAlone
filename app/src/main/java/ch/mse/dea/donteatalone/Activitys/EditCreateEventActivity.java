@@ -27,6 +27,9 @@ import com.ybs.countrypicker.CountryPickerListener;
 
 import org.joda.time.DateTime;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
 import ch.mse.dea.donteatalone.Objects.App;
@@ -60,9 +63,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private CountryPicker picker;
     private Event event;
 
-    private DatabaseReference mDatabase=FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference refEvents = mDatabase.child("events");
-    private DatabaseReference refEventUsers= mDatabase.child("event_users");
+    private DatabaseReference refEventUsers = mDatabase.child("event_users");
     private DatabaseReference refUsersEvents = mDatabase.child("users_events");
     private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
 
@@ -321,33 +324,36 @@ public class EditCreateEventActivity extends AppCompatActivity {
                     }
                 })
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                    public void onClick(final DialogInterface dialog, int id) {
                         if (event != null) {
-                            refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            Map<String, Object> map = new HashMap<>();
+
+                            map.put("/events/" + event.getEventId(), null);
+                            map.put("/event_users/" + event.getEventId(), null);
+                            map.put("/users_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
+                            map.put("/users_going_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
+
+                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    refEventUsers.child(event.getEventId()).removeValue();
-                                    refUsersEvents.child(User.getLoggedUserId()).child(event.getEventId()).removeValue();
-                                    refUsersGoingEvents.child(User.getLoggedUserId()).child(event.getEventId()).removeValue();
                                     finish();
                                 }
-                            })
-                                    .addOnFailureListener(
-                                            new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("DeleteEvent:failure", e);
-                                                    Toast.makeText(EditCreateEventActivity.this,
-                                                            getString(R.string.edit_create_event_error_deleting_event),
-                                                            Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w("DeleteEvent:failure", e);
+                                                            Toast.makeText(EditCreateEventActivity.this,
+                                                                    getString(R.string.edit_create_event_error_deleting_event),
+                                                                    Toast.LENGTH_SHORT).show();
 
-                                                }
-                                            }
-                                    );
+                                                            Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
 
-                            Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
-                            dialog.cancel();
+                                                        }
+                                                    }
+                            );
+
                         }
+                        dialog.cancel();
                     }
                 });
 
@@ -447,7 +453,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
 
             alertDialog.show();
-        }else {
+        } else {
             finish();
         }
     }
