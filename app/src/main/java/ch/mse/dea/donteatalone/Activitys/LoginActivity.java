@@ -1,5 +1,6 @@
 package ch.mse.dea.donteatalone.Activitys;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,7 +85,9 @@ public class LoginActivity extends AppCompatActivity implements
 
                                 //start new intent
                                 Intent nextIntent = new Intent(LoginActivity.this, UserProfileActivity.class);
+                                nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 LoginActivity.this.startActivity(nextIntent);
+                                finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_LONG).show();
@@ -126,5 +129,11 @@ public class LoginActivity extends AppCompatActivity implements
             Intent nextIntent = new Intent(LoginActivity.this, RegisterWithEmailActivity.class);
             LoginActivity.this.startActivity(nextIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        System.exit(0);
     }
 }

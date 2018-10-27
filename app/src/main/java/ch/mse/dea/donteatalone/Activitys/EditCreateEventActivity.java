@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -326,14 +327,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, int id) {
                         if (event != null) {
-                            Map<String, Object> map = new HashMap<>();
 
-                            map.put("/events/" + event.getEventId(), null);
-                            map.put("/event_users/" + event.getEventId(), null);
-                            map.put("/users_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
-                            map.put("/users_going_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
 
-                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     finish();
@@ -351,6 +347,32 @@ public class EditCreateEventActivity extends AppCompatActivity {
                                                         }
                                                     }
                             );
+
+//                            Map<String, Object> map = new HashMap<>();
+//
+//                            map.put("/events/" + event.getEventId(), null);
+//                            map.put("/event_users/" + event.getEventId(), null);
+//                            map.put("/users_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
+//                            map.put("/users_going_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
+//
+//                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    finish();
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                                        @Override
+//                                                        public void onFailure(@NonNull Exception e) {
+//                                                            Log.w("DeleteEvent:failure", e);
+//                                                            Toast.makeText(EditCreateEventActivity.this,
+//                                                                    getString(R.string.edit_create_event_error_deleting_event),
+//                                                                    Toast.LENGTH_SHORT).show();
+//
+//                                                            Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
+//
+//                                                        }
+//                                                    }
+//                            );
 
                         }
                         dialog.cancel();

@@ -1,5 +1,6 @@
 package ch.mse.dea.donteatalone.Activitys;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +8,20 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +35,7 @@ import java.util.Map;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.Objects.App;
+import ch.mse.dea.donteatalone.Objects.SyncTaskHandler;
 import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.Objects.UserValidation;
 import ch.mse.dea.donteatalone.R;
@@ -35,63 +44,53 @@ public class EditUserProfileActivity extends AppCompatActivity {
     private static final String TAG = EditUserProfileActivity.class.getName();
 
     private EditText txtUsername;
-    private EditText txtEmail;
     private EditText txtFirstname;
     private EditText txtLastname;
-    private CheckBox checkbox_changePassword;
-    private EditText txtOldPassword;
-    private EditText txtEnterPassword;
-    private EditText txtRepeatPassword;
 
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference refEvents = mDatabase.child("events");
-    private DatabaseReference refUsers = mDatabase.child("users");
-    private DatabaseReference refEventUsers = mDatabase.child("event_users");
-    private DatabaseReference refUsersEvents = mDatabase.child("users_events");
-    private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
+    private Context context;
 
+    private DatabaseReference mDatabase=FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference refUsers= mDatabase.child("users");
 
-    private FirebaseAuth mAuth;
+    private Map<String, Object> map = new HashMap<>();
 
     private User user;
 
-    private Intent intent;
-
-    public static String mapToString(Map<String, Object> map) {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Map.Entry<String, Object>> iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<String, Object> entry = iter.next();
-            sb.append(entry.getKey());
-            sb.append('=').append('"');
-            sb.append(entry.getValue());
-            sb.append('"');
-            if (iter.hasNext()) {
-                sb.append(',').append('\n');
-            }
-        }
-        return sb.toString();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
-        getViews();
-        registerListener();
+        context = this;
+    }
 
-        if (getIntent().getExtras() != null) {
-            Gson gson = GsonAdapter.getGson();
-            String json = getIntent().getExtras().getString(R.string.intent_edit_user_profile_user + "");
-            user = gson.fromJson(json, User.class);
-            setViewValues(user);
-        } else {
-            Log.d(TAG, "User couldn't get from Intent");
-            finish();
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser!=null) {
+            App.log(TAG,"Im in on Start");
+            getViews();
+
+            if (getIntent().getExtras() != null) {
+                Gson gson = GsonAdapter.getGson();
+                String json = getIntent().getExtras().getString(R.string.intent_edit_user_profile_user + "");
+                user = gson.fromJson(json, User.class);
+                setViewValues(user);
+            } else {
+                Log.d(TAG, "Couldn't extract User from Intent");
+                finish();
+            }
+        }else {
+            Toast.makeText(this,R.string.user_not_logedin,Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
-
-
     }
 
     private User getViewValues() {
@@ -99,26 +98,13 @@ public class EditUserProfileActivity extends AppCompatActivity {
         String username = txtUsername.getText().toString();
         String firstname = txtFirstname.getText().toString();
         String lastname = txtLastname.getText().toString();
-        String email = txtEmail.getText().toString();
-        String oldPassword = txtOldPassword.getText().toString();
-        String password = txtEnterPassword.getText().toString();
-        String passwordRepeated = txtRepeatPassword.getText().toString();
 
-        if (!validateRegisterForm(username, email, firstname, lastname, password, passwordRepeated, oldPassword))
-            return null;
-
-        /*
-        if (!checkbox_changePassword.isSelected()){
-            password=user.getPassswordHash();
-        }
-        */
-        //TODO altes passwort
         return new User(
-                user.getuserId(),
+                user.getUserId(),
                 username,
                 firstname,
                 lastname,
-                email,
+                user.getEmail(),
                 user.getImage()
         );
 
@@ -128,52 +114,23 @@ public class EditUserProfileActivity extends AppCompatActivity {
         txtUsername.setText(user.getUsername());
         txtFirstname.setText(user.getFirstname());
         txtLastname.setText(user.getLastname());
-        txtEmail.setText(user.getEmail());
     }
 
     private void getViews() {
-        checkbox_changePassword = findViewById(R.id.checkbox_changePassword);
         txtUsername = findViewById(R.id.txtUsername);
         txtFirstname = findViewById(R.id.txtFirstname);
         txtLastname = findViewById(R.id.txtLastname);
-        txtEmail = findViewById(R.id.txtEmail);
-        txtOldPassword = findViewById(R.id.txtOldPassword);
-        txtEnterPassword = findViewById(R.id.txtEnterPassword);
-        txtRepeatPassword = findViewById(R.id.txtRepeatPassword);
-
     }
 
-    private void registerListener() {
 
-        checkbox_changePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                               @Override
-                                                               public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                                   if (isChecked) {
-                                                                       txtEnterPassword.setVisibility(View.VISIBLE);
-                                                                       txtRepeatPassword.setVisibility(View.VISIBLE);
-                                                                       txtOldPassword.setVisibility(View.VISIBLE);
-                                                                   } else {
-                                                                       txtEnterPassword.setVisibility(View.GONE);
-                                                                       txtRepeatPassword.setVisibility(View.GONE);
-                                                                       txtOldPassword.setVisibility(View.GONE);
-                                                                   }
-                                                               }
-                                                           }
-        );
-    }
-
-    private boolean validateRegisterForm(String username, String email, String firstname,
-                                         String lastname, String password, String passwordrepeat, String oldpassword) {
+    private boolean validateRegisterForm(String username, String firstname,
+                                         String lastname) {
         String str;
         boolean valid = true;
 
         str = UserValidation.username(username);
         if (str != null) valid = false;
         txtUsername.setError(str);
-
-        str = UserValidation.email(email);
-        if (str != null) valid = false;
-        txtEmail.setError(str);
 
         str = UserValidation.firstname(firstname);
         if (str != null) valid = false;
@@ -183,36 +140,32 @@ public class EditUserProfileActivity extends AppCompatActivity {
         if (str != null) valid = false;
         txtLastname.setError(str);
 
-        if (checkbox_changePassword.isSelected()) {
-
-            if (true) {
-                //TODO Check in firebase if old password is correct
-
-
-                str = UserValidation.password(this, password, passwordrepeat, true);
-                if (str != null) valid = false;
-                txtEnterPassword.setError(str);
-                txtRepeatPassword.setError(str);
-
-
-            } else {
-                txtOldPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
-                valid = false;
-            }
-        }
-
         return valid;
     }
 
     public void onClick_saveEvent(View view) {
         User user = getViewValues();
 
-        if (user == null) return;
+        if (validateRegisterForm(user.getUsername(), user.getFirstname(), user.getLastname())) {
+            refUsers.child(user.getUserId()).updateChildren(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    showToast(R.string.edit_user_profile_error_updating_user);
+                }
+            });
+        } else {
+            showToast(R.string.edit_user_profile_error_updating_user);
+        }
 
-        //TODO save user Data
+    }
 
-        finish();
-
+    private void showToast(int resourceStringId) {
+        Toast.makeText(this, resourceStringId, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -268,123 +221,40 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 })
                 .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (user != null) {
-                            final Map<String, Object> map = new HashMap<>();
-                            final boolean[] wait = new boolean[1];
+                        final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null && fuser!=null) {
 
-                            refUsersGoingEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        if (snapshot != null && snapshot.getKey() != null) {
-                                            map.put("/event_users/" + snapshot.getKey() + "/" + user.getuserId(), null);
-                                        }
-                                    }
-
-                                    refUsersEvents.child(user.getuserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        refUsers.child(user.getUserId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                    fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            for (final DataSnapshot usersEvent : dataSnapshot.getChildren()) {
-                                                if (usersEvent != null && usersEvent.getKey() != null) {
-                                                    map.put("/events/" + usersEvent.getKey(), null);
-                                                    map.put("/event_users/" + usersEvent.getKey(), null);
-
-                                                    wait[0] = true;
-                                                    App.log(TAG, "test1");
-                                                    refEventUsers.child(usersEvent.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                            App.log(TAG, "test2");
-                                                            for (DataSnapshot eventUsers : dataSnapshot.getChildren()) {
-                                                                map.put("/users_going_events/" + eventUsers.getKey() + "/" + usersEvent.getKey(), null);
-                                                            }
-                                                            wait[0] = false;
-                                                            App.log(TAG, "test3");
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                        }
-                                                    });
-
-                                                }
-                                            }
-
-
-
-
-
-                                            map.put("/users/" + user.getuserId(), null);
-                                            map.put("/users_going_events/" + user.getuserId(), null);
-                                            map.put("/users_events/" + user.getuserId(), null);
-
-
-                                            App.log(TAG, mapToString(map));
-
-//                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//                                    FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-//                                    fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                        @Override
-//                                        public void onSuccess(Void aVoid) {
-//                                            FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-//                                            fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                @Override
-//                                                public void onSuccess(Void aVoid) {
-//                                                    Log.i(TAG, "Account gelöscht: \n   -ID: " + user.getuserId() + " \n   -Name: " + user.getEmail());
-//                                                    finish();
-//                                                }
-//                                            }).addOnFailureListener(new OnFailureListener() {
-//                                                @Override
-//                                                public void onFailure(@NonNull Exception e) {
-//                                                    Log.w("DeleteEvent:failure", e);
-//                                                    Toast.makeText(EditUserProfileActivity.this,
-//                                                            getString(R.string.edit_user_profile_error_deleting_event),
-//                                                            Toast.LENGTH_SHORT).show();
-//                                                }
-//                                            });
-//                                        }
-//                                    });
-//                                }
-//                            }).addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.w("DeleteEvent:failure", e);
-//                                    Toast.makeText(EditUserProfileActivity.this,
-//                                            getString(R.string.edit_user_profile_error_deleting_event),
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-
-
+                                        public void onSuccess(Void aVoid) {
+                                            App.log(TAG, "Account gelöscht: \n   -ID: " + user.getUserId() + " \n   -Name: " + user.getEmail());
+                                            loginIntent();
                                         }
-
+                                    }).addOnFailureListener(new OnFailureListener() {
                                         @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            Log.w("DeleteEvent:failure", databaseError.getDetails());
-                                            Toast.makeText(EditUserProfileActivity.this,
-                                                    getString(R.string.edit_user_profile_error_deleting_event),
-                                                    Toast.LENGTH_SHORT).show();
+                                        public void onFailure(@NonNull Exception e) {
+                                            App.log(TAG,"DeleteEvent:failure");
+                                            showToast(R.string.edit_user_profile_error_deleting_event);
                                         }
                                     });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                App.log(TAG, "DeleteEvent:failure no User");
+                                showToast(R.string.edit_user_profile_error_deleting_event);
+                            }
+                        });
 
 
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                    Log.w("DeleteEvent:failure", databaseError.getDetails());
-                                    Toast.makeText(EditUserProfileActivity.this,
-                                            getString(R.string.edit_user_profile_error_deleting_event),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-
+                        }else {
+                            Log.w(TAG, "DeleteEvent:failure no User");
+                            showToast(R.string.edit_user_profile_error_deleting_event);
                         }
+
                         dialog.cancel();
                     }
                 });
@@ -393,6 +263,163 @@ public class EditUserProfileActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+
+    }
+
+    private void loginIntent() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    public void onClick_changePassword(View view) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.popup_edit_user_profile_password, null);
+
+        final EditText txtOldPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtOldPassword);
+        final EditText txtEnterPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtEnterPassword);
+        final EditText txtRepeatPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtRepeatPassword);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setView(promptsView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
+                .setPositiveButton(R.string.edit_user_profile_change_button, null)
+                .create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                final DialogInterface DIALOG = dialog;
+                Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                negativeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DIALOG.cancel();
+                    }
+                });
+
+                Button positivButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                positivButton.setOnClickListener(new View.OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        App.log(TAG,
+                                "Old Password=" + txtOldPassword.getText().toString() +
+                                        "\nNew Password=" + txtEnterPassword.getText().toString() +
+                                        "\nRepeated Password=" + txtRepeatPassword.getText().toString()
+                        );
+
+                        String str = UserValidation.password(context, txtEnterPassword.getText().toString(), txtRepeatPassword.getText().toString(), true);
+                        txtEnterPassword.setError(str);
+                        txtRepeatPassword.setError(str);
+
+
+                        if (str == null && firebaseUser!=null && firebaseUser.getEmail()!=null) {
+                            AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtOldPassword.getText().toString());
+
+                            firebaseUser.reauthenticate(credential)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            App.log(TAG, "User re-authenticated.");
+                                            if (task.isSuccessful()) {
+                                                firebaseUser.updatePassword(txtEnterPassword.getText().toString());
+                                                DIALOG.cancel();
+                                            } else {
+                                                txtOldPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+        // show it
+        alertDialog.show();
+
+    }
+
+    public void onClick_changeEmail(View view) {
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.popup_edit_user_profil_email, null);
+
+        final EditText txtPassword = promptsView.findViewById(R.id.user_edit_popup_email_txtPassword);
+        final EditText txtEmail = promptsView.findViewById(R.id.user_edit_popup_email_txtEmail);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setView(promptsView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
+                .setPositiveButton(R.string.edit_user_profile_change_button, null)
+                .create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                if (firebaseUser != null && firebaseUser.getEmail()!=null) {
+                    txtEmail.setText(firebaseUser.getEmail());
+
+                    final DialogInterface DIALOG = dialog;
+                    Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    negativeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            DIALOG.cancel();
+                        }
+                    });
+
+                    Button positivButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    positivButton.setOnClickListener(new View.OnClickListener() {
+
+
+                        @Override
+                        public void onClick(View view) {
+
+                            String str = UserValidation.email(txtEmail.getText().toString());
+                            txtEmail.setError(str);
+
+                            String str2 = UserValidation.notEmpty(txtPassword.getText().toString(),0);
+                            txtPassword.setError(str2);
+
+                            if (str == null && str2==null && firebaseUser!=null && firebaseUser.getEmail()!=null) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtPassword.getText().toString());
+
+                                firebaseUser.reauthenticate(credential)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                App.log(TAG, "User re-authenticated.");
+                                                if (task.isSuccessful()) {
+                                                    firebaseUser.updateEmail(txtEmail.getText().toString());
+                                                    DIALOG.cancel();
+                                                } else {
+                                                    txtPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+
+
+                }else {
+                    showToast(R.string.error_no_connection_to_database);
+                }
+            }
+        });
+
+        // show it
+        alertDialog.show();
 
     }
 }

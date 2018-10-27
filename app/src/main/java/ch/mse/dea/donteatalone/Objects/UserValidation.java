@@ -7,6 +7,7 @@ import android.widget.Toast;
 import ch.mse.dea.donteatalone.R;
 
 public class UserValidation {
+    private static final String TAG= UserValidation.class.getName();
 
     public static String username(String username) {
 
@@ -73,12 +74,13 @@ public class UserValidation {
 
     public static boolean checkPasswordSecurity(Context context, String password, boolean showToasts){
 
-        if(!password.matches(".*\\d+.*") &&
-                !password.matches(".*[a-z]+.*") &&
-                !password.matches(".*[A-Z]+.*") &&
+        if(!password.matches(".*\\d+.*") ||
+                !password.matches(".*[a-z]+.*") ||
+                !password.matches(".*[A-Z]+.*") ||
                 password.length()<6){
+
             if (showToasts) {
-                Toast toast = Toast.makeText(context, R.string.error_password_wrong_pattern, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(context, R.string.error_password_wrong_pattern, Toast.LENGTH_LONG*2);
                 toast.show();
             }
         }else if(password.contains("AND") || password.contains("NOT")){
@@ -91,6 +93,17 @@ public class UserValidation {
         }
 
         return false;
+    }
+
+    public static String notEmpty(String str,int minLength) {
+
+        if (TextUtils.isEmpty(str)) {
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
+        } else if (minLength>0 && str.length() < minLength) {
+            return App.getFromResource(R.string.user_validation_error_length, minLength)+".";
+        }
+
+        return null;
     }
 
 

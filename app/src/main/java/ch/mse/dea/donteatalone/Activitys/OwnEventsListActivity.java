@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,14 +42,25 @@ public class OwnEventsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
         setTitle(R.string.own_events_list_activity_tile);
+    }
 
-        adapter = new EventsListArrayAdapter(this, new ArrayList<Event>());
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        getEvents();
+        if (currentUser!=null) {
+            adapter = new EventsListArrayAdapter(this, new ArrayList<Event>());
+            getEvents();
+            setupListView();
+        }else {
+            Toast.makeText(this,R.string.user_not_logedin,Toast.LENGTH_LONG).show();
 
-        setupListView();
-
-
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     private void setupListView() {

@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Iterator;
+import java.util.Map;
+
 public class App extends Application {
 
     private static Context context;
@@ -38,5 +41,22 @@ public class App extends Application {
         Log.v(TAG,"------------------------");
         Log.v(TAG,str);
         Log.v(TAG,"------------------------");
+    }
+
+    public static String mapToString(Map<String, Object> map) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<Map.Entry<String, Object>> iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, Object> entry = iter.next();
+            sb.append(entry.getKey());
+            sb.append('=').append('"');
+            sb.append(entry.getValue());
+            sb.append('"');
+            if (iter.hasNext()) {
+                sb.append(',').append('\n');
+            }
+        }
+        return sb.toString();
+
     }
 }

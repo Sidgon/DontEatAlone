@@ -4,6 +4,8 @@ import android.util.Base64;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -44,6 +46,19 @@ public class User {
         this.imageString = Base64.encodeToString(image, Base64.DEFAULT);
     }
 
+    @Exclude
+    public Map<String,Object> toMap(){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userId",getUserId());
+        map.put("username",getUsername());
+        map.put("firstname",getFirstname());
+        map.put("lastname",getLastname());
+        map.put("email",getEmail());
+        map.put("imageString",getImageString());
+
+        return map;
+    }
+
     //---- Getter und Setter
 
     public static String getLoggedUserId() {
@@ -67,7 +82,7 @@ public class User {
 
     }
 
-    public String getuserId() {
+    public String getUserId() {
         return userId;
     }
 

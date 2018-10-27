@@ -48,7 +48,8 @@
                 android:layout_marginRight="@dimen/margin_middle"
                 android:autofillHints="@string/edit_create_event_event_name"
                 android:hint="@string/edit_create_event_event_name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/txt_date"
@@ -62,6 +63,7 @@
                 android:layout_marginEnd="@dimen/divider_size_tiny"
                 android:background="?attr/editTextBackground"
                 android:gravity="center_vertical"
+                android:maxLines="1"
 
 
                 android:hint="@string/edit_create_event_txt_date"
@@ -99,6 +101,7 @@
                 android:layout_marginEnd="@dimen/divider_size_tiny"
                 android:background="?attr/editTextBackground"
                 android:gravity="center_vertical"
+                android:maxLines="1"
 
 
                 android:hint="@string/edit_create_event_txt_time"
@@ -156,7 +159,8 @@
                 android:layout_marginRight="@dimen/margin_middle"
                 android:autofillHints="@string/edit_create_event_address"
                 android:hint="@string/edit_create_event_address"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress"
+                android:maxLines="1"/>
 
 
             <EditText
@@ -170,7 +174,8 @@
                 android:layout_marginRight="@dimen/margin_small"
                 android:autofillHints="@string/edit_create_event_postcode"
                 android:hint="@string/edit_create_event_postcode"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLines="1"/>
 
             <EditText
                 android:id="@+id/city"
@@ -184,7 +189,8 @@
                 android:layout_toEndOf="@id/postcode"
                 android:autofillHints="@string/edit_create_event_City"
                 android:hint="@string/edit_create_event_City"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLines="1"/>
 
 
             <TextView

@@ -115,6 +115,7 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                                     mLastNameTextField.getText().toString());
 
                             Intent nextIntent = new Intent(RegisterWithEmailActivity.this, UserProfileActivity.class);
+                            nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             RegisterWithEmailActivity.this.startActivity(nextIntent);
 
                         } else {

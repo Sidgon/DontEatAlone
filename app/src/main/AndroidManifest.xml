@@ -36,6 +36,7 @@
 
         <activity
             android:name=".Activitys.EditUserProfileActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_edit_user_profile" />
 
         <activity
@@ -53,6 +54,7 @@
             />
 
         <activity android:name=".Activitys.EditCreateEventActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/create_event_title">
         </activity>
 
