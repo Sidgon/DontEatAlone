@@ -2,15 +2,12 @@ package ch.mse.dea.donteatalone.Objects;
 
 import android.util.Base64;
 
-import com.timgroup.jgravatar.Gravatar;
-import com.timgroup.jgravatar.GravatarDefaultImage;
-import com.timgroup.jgravatar.GravatarRating;
+import com.google.firebase.database.Exclude;
 
-import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 
 import ch.mse.dea.donteatalone.DataHandling.GravatarTask;
 
@@ -24,10 +21,10 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
-    private byte[] image;
+    private String imageString;
 
     //default constructor needed for firebase snapshots
-    public User(){
+    public User() {
 
     }
 
@@ -37,6 +34,7 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.imageString = null;
     }
 
     public User(String userId, String username, String firstname, String lastname, String email, byte[] image) {
@@ -45,14 +43,23 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.image = image;
+        this.imageString = Base64.encodeToString(image, Base64.DEFAULT);
+    }
+
+    @Exclude
+    public Map<String,Object> toMap(){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("userId",getUserId());
+        map.put("username",getUsername());
+        map.put("firstname",getFirstname());
+        map.put("lastname",getLastname());
+        map.put("email",getEmail());
+        map.put("imageString",getImageString());
+
+        return map;
     }
 
     //---- Getter und Setter
-
-    public String getuserId() {
-        return userId;
-    }
 
     public static String getLoggedUserId() {
         return loggedUserId;
@@ -67,14 +74,16 @@ public class User {
 
         try {
             return new GravatarTask().execute(email).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
         return null;
 
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getUsername() {
@@ -109,16 +118,34 @@ public class User {
         this.email = email;
     }
 
+    @Exclude
     public byte[] getImage() {
-        return image;
+        return Base64.decode(imageString, Base64.DEFAULT);
     }
 
+    @Exclude
     public void setImage(byte[] image) {
-        this.image = image;
+        this.imageString = Base64.encodeToString(image, Base64.DEFAULT);
+        ;
     }
 
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
+
+    public boolean haveSameContent(User user) {
+        return Objects.equals(userId, user.userId) &&
+                Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getFirstname(), user.getFirstname()) &&
+                Objects.equals(getLastname(), user.getLastname()) &&
+                Objects.equals(getEmail(), user.getEmail());
+    }
 
 }
-
 
 

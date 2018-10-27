@@ -1,13 +1,13 @@
 package ch.mse.dea.donteatalone.Objects;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import ch.mse.dea.donteatalone.R;
 
 public class UserValidation {
+    private static final String TAG= UserValidation.class.getName();
 
     public static String username(String username) {
 
@@ -53,7 +53,7 @@ public class UserValidation {
     public static String password(Context context,String password,boolean showToasts) {
         if (TextUtils.isEmpty(password)) {
             return App.getFromResource(R.string.user_validation_error_required) + ".";
-        } else if (!checkPassordSecuraty(context,password,showToasts)) {
+        } else if (!checkPasswordSecurity(context,password,showToasts)) {
             return App.getFromResource(R.string.user_validation_error_valid_password)+".";
         }
         return null;
@@ -63,23 +63,24 @@ public class UserValidation {
 
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatedPassword)) {
             return App.getFromResource(R.string.user_validation_error_required) + ".";
-        } else if (checkPassordSecuraty(context,password,showToasts)) {
+        } else if (!checkPasswordSecurity(context,password,showToasts)) {
             return App.getFromResource(R.string.user_validation_error_valid_password)+".";
-        }else if (password.equals(repeatedPassword)){
+        }else if (!password.equals(repeatedPassword)){
             return App.getFromResource(R.string.user_validation_error_passwords_not_match)+".";
         }
 
         return null;
     }
 
-    public static boolean checkPassordSecuraty(Context context, String password,boolean showToasts){
+    public static boolean checkPasswordSecurity(Context context, String password, boolean showToasts){
 
-        if(!password.matches(".*\\d+.*") &&
-                !password.matches(".*[a-z]+.*") &&
-                !password.matches(".*[A-Z]+.*") &&
+        if(!password.matches(".*\\d+.*") ||
+                !password.matches(".*[a-z]+.*") ||
+                !password.matches(".*[A-Z]+.*") ||
                 password.length()<6){
+
             if (showToasts) {
-                Toast toast = Toast.makeText(context, R.string.error_password_wrong_pattern, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(context, R.string.error_password_wrong_pattern, Toast.LENGTH_LONG*2);
                 toast.show();
             }
         }else if(password.contains("AND") || password.contains("NOT")){
@@ -92,6 +93,17 @@ public class UserValidation {
         }
 
         return false;
+    }
+
+    public static String notEmpty(String str,int minLength) {
+
+        if (TextUtils.isEmpty(str)) {
+            return App.getFromResource(R.string.user_validation_error_required) + ".";
+        } else if (minLength>0 && str.length() < minLength) {
+            return App.getFromResource(R.string.user_validation_error_length, minLength)+".";
+        }
+
+        return null;
     }
 
 

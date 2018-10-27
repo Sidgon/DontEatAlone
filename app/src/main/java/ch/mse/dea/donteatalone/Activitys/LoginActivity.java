@@ -1,5 +1,6 @@
 package ch.mse.dea.donteatalone.Activitys;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ch.mse.dea.donteatalone.Objects.App;
+import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.Objects.UserValidation;
 import ch.mse.dea.donteatalone.R;
 
@@ -34,17 +37,29 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_login);
+        getViews();
+
+        if(App.getDebug()) setDummyData();
+
         //set onclicklistener on sign in button
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailRegisterButton).setOnClickListener(this);
     }
 
+
+    private void setDummyData(){
+        mEmailTextField.setText("steinegger.daniel@gmail.com");
+        mPasswordTextField.setText("Password1");
+    }
+    private void getViews(){
+        mEmailTextField = findViewById(R.id.emailLoginTextField);
+        mPasswordTextField = findViewById(R.id.passwordLoginTextField);
+    }
+
     private void signIn() {
         //get username and login from textbox
-        mEmailTextField = findViewById(R.id.emailLoginTextField);
-        String email = mEmailTextField.getText().toString();
 
-        mPasswordTextField = findViewById(R.id.passwordLoginTextField);
+        String email = mEmailTextField.getText().toString();
         String password = mPasswordTextField.getText().toString();
 
         Log.d(TAG, "signIn:" + email);
@@ -61,11 +76,22 @@ public class LoginActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            String userId = mAuth.getCurrentUser().getUid();
+                            FirebaseUser user = mAuth.getCurrentUser();
 
-                            //start new intent
-                            Intent nextIntent = new Intent(LoginActivity.this, UserProfileActivity.class);
-                            LoginActivity.this.startActivity(nextIntent);
+                            if (user!=null) {
+                                String userId = user.getUid();
+                                User.setLoggedUserId(userId);
+
+
+                                //start new intent
+                                Intent nextIntent = new Intent(LoginActivity.this, UserProfileActivity.class);
+                                nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                LoginActivity.this.startActivity(nextIntent);
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             // If sign in fails, display a message to the user
                             Log.d(TAG, "signInWithEmail:failure", task.getException());
@@ -103,5 +129,11 @@ public class LoginActivity extends AppCompatActivity implements
             Intent nextIntent = new Intent(LoginActivity.this, RegisterWithEmailActivity.class);
             LoginActivity.this.startActivity(nextIntent);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        System.exit(0);
     }
 }

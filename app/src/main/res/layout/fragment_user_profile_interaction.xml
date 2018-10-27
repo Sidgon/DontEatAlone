@@ -18,10 +18,21 @@
         android:onClick="onClick_btnEditProfile"
         android:text="@string/user_profile_btnEditProfile_text" />
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_middle"
+        android:layout_marginRight="@dimen/margin_middle"
+        android:onClick="onClick_btnLogout"
+        android:text="@string/user_profile_btnLogout_text" />
+
     <View
         android:id="@+id/going_event_divider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_size_medium"
+        android:layout_height="@dimen/divider_size_small"
         android:layout_margin="@dimen/margin_small"
         android:background="@android:color/darker_gray" />
 
