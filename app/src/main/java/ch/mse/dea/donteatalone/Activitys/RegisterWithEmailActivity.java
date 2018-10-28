@@ -106,7 +106,6 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             //start listening for user changes in realtime db
-                            User.setLoggedUserId(user.getUid());
                             //Register User in Real-Time DB
                             signUpFirebaseRealTimeDBUser(user.getUid(),
                                     mUsernameTextField.getText().toString(),
@@ -114,7 +113,7 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                                     mFirstNameTextField.getText().toString(),
                                     mLastNameTextField.getText().toString());
 
-                            Intent nextIntent = new Intent(RegisterWithEmailActivity.this, UserProfileActivity.class);
+                            Intent nextIntent = new Intent(RegisterWithEmailActivity.this, MainActivity.class);
                             nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             RegisterWithEmailActivity.this.startActivity(nextIntent);
 

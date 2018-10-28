@@ -14,50 +14,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".Activitys.LoginActivity">
+        <activity android:name=".Activitys.LoginActivity"></activity>
+        <activity android:name=".Activitys.RegisterWithEmailActivity"></activity>
+        <activity
+            android:name=".Activitys.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"></activity>
+        <activity
+            android:name=".Activitys.EditUserProfileActivity"
+            android:label="@string/title_activity_edit_user_profile"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activitys.InfoEventActivity"
+            android:label="@string/activity_info_event_title" />
+        <activity
+            android:name=".Activitys.EditCreateEventActivity"
+            android:label="@string/create_event_title"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".Activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>>
-        </activity>
-
-        <activity android:name=".Activitys.RegisterWithEmailActivity">
-
-        </activity>
-
-        <activity
-            android:name=".Activitys.UserProfileActivity"
-            android:label="@string/title_activity_user_profile"
+            </intent-filter>
             >
-
         </activity>
-
-        <activity
-            android:name=".Activitys.EditUserProfileActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_activity_edit_user_profile" />
-
-        <activity
-            android:name=".Activitys.GoingEventsListActivity"
-            />
-
-        <activity
-            android:name=".Activitys.OwnEventsListActivity"
-            android:label="@string/own_events_list_activity_tile"
-            />
-
-        <activity
-            android:name=".Activitys.InfoEventActivity"
-            android:label="@string/activity_info_event_title"
-            />
-
-        <activity android:name=".Activitys.EditCreateEventActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/create_event_title">
-        </activity>
-
+        <activity android:name=".Activitys.GoingUserToEventListActivity"></activity>
     </application>
 
 </manifest>

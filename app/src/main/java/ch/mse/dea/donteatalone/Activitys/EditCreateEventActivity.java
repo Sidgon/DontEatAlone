@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,6 +65,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private CountryPicker picker;
     private Event event;
 
+    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference refEvents = mDatabase.child("events");
     private DatabaseReference refEventUsers = mDatabase.child("event_users");
@@ -102,7 +104,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             longitude = 0;
             isEdit = false;
             if (App.getDebug())
-                setViewValues(new Event("", User.getLoggedUserId(), "Migros", DateTime.now().plusDays(2), 60, "Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 8, 0, 0));
+                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60, "Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 8, 0, 0));
         }
 
         Log.i(TAG, "Finish on Create");
@@ -112,7 +114,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private Event getViewValues() {
         return new Event(
                 event == null ? "" : event.getEventId(),
-                event == null ? User.getLoggedUserId() : event.getUserIdOfCreator(),
+                event == null ? firebaseUser.getUid(): event.getUserIdOfCreator(),
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
                 seekBarDuration.getProgress() * SEEKBAR_INCREMENT,
@@ -401,9 +403,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
 
                             //Falls der Event erstellt werden konnte wird dier Key an die anderen listen übergeben.
-                            refEventUsers.child(eventKey).child(User.getLoggedUserId()).child("isComing").setValue(true);
-                            refUsersEvents.child(User.getLoggedUserId()).child(eventKey).child("boolean").setValue(true);
-                            refUsersGoingEvents.child(User.getLoggedUserId()).child(eventKey).child("boolean").setValue(true);
+                            refEventUsers.child(eventKey).child(firebaseUser.getUid()).child("isComing").setValue(true);
+                            refUsersEvents.child(firebaseUser.getUid()).child(eventKey).child("boolean").setValue(true);
+                            refUsersGoingEvents.child(firebaseUser.getUid()).child(eventKey).child("boolean").setValue(true);
 
                             finish();
 
@@ -446,7 +448,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (!event.haveSameContent(getViewValues())) {
+        if (event !=null && !event.haveSameContent(getViewValues())) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
             // set title
