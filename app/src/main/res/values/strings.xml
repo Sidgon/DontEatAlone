@@ -79,7 +79,7 @@
     <string name="register_txtPassword">Enter Password</string>
     <string name="register_txtLastName">Lastname</string>
     <string name="register_txtFirstName">Firstname</string>
-    
+
     <string name="error_password_wrong_pattern">The password have to contain at least 6 characters and one uppercase letter, lowercase latter and a number. </string>
     <string name="error_password_contains_conditions">No conditions allowed like AND,NOT,OR. </string>
     <string name="error_no_connection_to_database">No network connection</string>
@@ -97,6 +97,8 @@
     <string name="activity_info_event_alert_title_ungoing">Ungoing event</string>
     <string name="activity_info_event_alert_massage_going_user">Do you really want to ungoing this Event?</string>
     <string name="activity_info_event_alert_button_going_user">ungoing</string>
+
+    <string name="title_activity_maps">Maps</string>
 
 
 </resources>
