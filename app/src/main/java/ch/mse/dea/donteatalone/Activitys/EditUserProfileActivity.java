@@ -62,34 +62,17 @@ public class EditUserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
         context = this;
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        getViews();
 
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser!=null) {
-            App.log(TAG,"Im in on Start");
-            getViews();
-
-            if (getIntent().getExtras() != null) {
-                Gson gson = GsonAdapter.getGson();
-                String json = getIntent().getExtras().getString(R.string.intent_edit_user_profile_user + "");
-                user = gson.fromJson(json, User.class);
-                setViewValues(user);
-            } else {
-                Log.d(TAG, "Couldn't extract User from Intent");
-                finish();
-            }
-        }else {
-            Toast.makeText(this,R.string.user_not_logedin,Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        if (getIntent().getExtras() != null) {
+            Gson gson = GsonAdapter.getGson();
+            String json = getIntent().getExtras().getString(R.string.intent_edit_user_profile_user + "");
+            user = gson.fromJson(json, User.class);
+            setViewValues(user);
+        } else {
+            Log.d(TAG, "Couldn't extract User from Intent");
+            finish();
         }
     }
 

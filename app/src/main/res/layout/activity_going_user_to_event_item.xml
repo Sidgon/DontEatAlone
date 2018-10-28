@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/eventUsers_user_profile_image"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/user_profile_userImage_des"
+        android:src="@drawable/profile_dummy"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/eventUsers_user_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Muster username"
+        android:layout_margin="@dimen/margin_middle"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+
+        app:layout_constraintTop_toTopOf="@id/eventUsers_user_profile_image"
+        app:layout_constraintBottom_toBottomOf="@id/eventUsers_user_profile_image"
+        app:layout_constraintStart_toEndOf="@id/eventUsers_user_profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <View
+        android:id="@+id/going_user_to_event_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size_tiny"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:background="@android:color/background_dark"
+        android:descendantFocusability="blocksDescendants"
+
+
+
+        app:layout_constraintTop_toBottomOf="@id/eventUsers_user_profile_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+
+</android.support.constraint.ConstraintLayout>

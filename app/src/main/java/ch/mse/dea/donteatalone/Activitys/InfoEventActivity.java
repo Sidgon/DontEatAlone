@@ -3,6 +3,7 @@ package ch.mse.dea.donteatalone.Activitys;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,8 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
@@ -23,50 +27,44 @@ import ch.mse.dea.donteatalone.R;
 public class InfoEventActivity extends AppCompatActivity {
 
     private static final String TAG = InfoEventActivity.class.getName();
+    private FirebaseDatabase mDatabase=FirebaseDatabase.getInstance();
+    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
 
-    TextView txtEventName;
-    TextView txtDate;
-    TextView txtTime;
-    TextView txtDuration;
-    TextView txtAddress;
-    TextView txtPostcodeCity;
 
-    TextView txtCountryName;
-    TextView txtMaxGuest;
-    Button btnUngoing;
+    private TextView txtEventName;
+    private TextView txtDate;
+    private TextView txtTime;
+    private TextView txtDuration;
+    private TextView txtAddress;
+    private TextView txtPostcodeCity;
 
-    Event event;
+    private TextView txtCountryName;
+    private TextView txtMaxGuest;
+    private Button btnUngoing;
+
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_event);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (getIntent().getExtras() != null) {
+            getViews();
+            Gson gson = GsonAdapter.getGson();
+            String json = getIntent().getExtras().getString(R.string.intent_info_event + "");
+            event = gson.fromJson(json, Event.class);
 
-        if (currentUser != null) {
-            if (getIntent().getExtras() != null) {
-                getViews();
-                Gson gson = GsonAdapter.getGson();
-                String json = getIntent().getExtras().getString(R.string.intent_info_event + "");
-                event = gson.fromJson(json, Event.class);
+            Log.v(TAG, "----------------------------------");
+            Log.v(TAG, event.getEventName());
+            setViewValues(event);
 
-                Log.v(TAG, "----------------------------------");
-                Log.v(TAG, event.getEventName());
-                setViewValues(event);
+            if (event.getUserIdOfCreator().equals(firebaseUser.getUid())){
+                btnUngoing.setVisibility(View.GONE);
             }
-        } else {
-            Toast.makeText(this, R.string.user_not_logedin, Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
+
+
     }
 
 
@@ -112,10 +110,20 @@ public class InfoEventActivity extends AppCompatActivity {
                     }
                 })
                 .setNegativeButton(R.string.activity_info_event_alert_button_going_user, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                    public void onClick(final DialogInterface dialog, int id) {
 
-                        //TODO delete user from Event.
-                        dialog.cancel();
+                        mDatabase.getReference("event_users").child(event.getEventId()).child(firebaseUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(InfoEventActivity.this,R.string.activity_info_event_falure_ungoing_event,Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
 
@@ -123,11 +131,14 @@ public class InfoEventActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+
     }
 
     public void onClick_goingUserActivity(View view) {
-        //TODO Add an activity with a list which contains all coming user.
-        finish();
+        Gson gson = GsonAdapter.getGson();
+        Intent intent = new Intent(this, GoingUserToEventListActivity.class);
+        intent.putExtra(R.string.intent_going_user_to_event + "", gson.toJson(event));
+        startActivity(intent);
     }
 
 }

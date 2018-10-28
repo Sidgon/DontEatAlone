@@ -2,6 +2,7 @@ package ch.mse.dea.donteatalone.Objects;
 
 import android.util.Base64;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -14,8 +15,6 @@ import ch.mse.dea.donteatalone.DataHandling.GravatarTask;
 public class User {
     private static final String TAG = User.class.getName();
 
-    private static String loggedUserId;
-
     private String userId;
     private String username;
     private String firstname;
@@ -23,9 +22,13 @@ public class User {
     private String email;
     private String imageString;
 
-    //default constructor needed for firebase snapshots
+
     public User() {
 
+    }
+
+    public User(String userId) {
+        this.userId=userId;
     }
 
     public User(String userId, String username, String firstname, String lastname, String email) {
@@ -60,14 +63,6 @@ public class User {
     }
 
     //---- Getter und Setter
-
-    public static String getLoggedUserId() {
-        return loggedUserId;
-    }
-
-    public static void setLoggedUserId(String loggedUserId) {
-        User.loggedUserId = loggedUserId;
-    }
 
     public static byte[] getGravatar(String email) {
 
@@ -138,6 +133,7 @@ public class User {
         this.imageString = imageString;
     }
 
+    @Exclude
     public boolean haveSameContent(User user) {
         return Objects.equals(userId, user.userId) &&
                 Objects.equals(getUsername(), user.getUsername()) &&
@@ -146,6 +142,19 @@ public class User {
                 Objects.equals(getEmail(), user.getEmail());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getUserId(), user.getUserId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUserId());
+    }
 }
 
 

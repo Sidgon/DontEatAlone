@@ -28,41 +28,28 @@ import ch.mse.dea.donteatalone.R;
 public class UserProfileActivity extends AppCompatActivity {
 
     private static String TAG = UserProfileActivity.class.getName();
-    ImageView image;
-    TextView txtUsername;
-    TextView txtFullName;
-    User user;
+    private ImageView image;
+    private TextView txtUsername;
+    private TextView txtFullName;
+    private User user;
 
-    DatabaseReference mDatabase;
+    private DatabaseReference mDatabase;
+    private FirebaseUser firebaseUser =FirebaseAuth.getInstance().getCurrentUser();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        getViews();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setUserListener();
 
-        if (currentUser!=null) {
-            getViews();
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-            setUserListener();
-        }else {
-            Toast.makeText(this,R.string.user_not_logedin,Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
     }
 
     public void setUserListener() {
-        mDatabase.child("users").child(User.getLoggedUserId()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
@@ -109,25 +96,6 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClick_btnGoingEvents(View view) {
-        Intent intent = new Intent(this, GoingEventsListActivity.class);
-        startActivity(intent);
 
-    }
 
-    public void onClick_btnCreatedEvents(View view) {
-        Intent intent = new Intent(this, OwnEventsListActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClick_newEvent(View view) {
-        Intent intent = new Intent(this, EditCreateEventActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FirebaseAuth.getInstance().signOut();
-    }
 }
