@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/main_navigation_item_map"
+        android:title="@string/menu_item_main_navigation_map"
+        android:icon="@drawable/ic_place_black_24dp" />
+    <item android:id="@+id/main_navigation_item_goning_events"
+        android:title="@string/menu_item_main_navigation_going_events"
+        android:icon="@drawable/ic_beenhere_black_24dp" />
+    <item android:id="@+id/main_navigation_item_own_events"
+        android:title="@string/menu_item_main_navigation_own_events"
+        android:icon="@drawable/ic_restaurant_black_24dp" />
+</menu>
