@@ -111,5 +111,7 @@
     <string name="going_user_to_event_list_noData">No user yet</string>
     <string name="going_user_to_event_list_title">Going Users</string>
 
+    <string name="title_activity_maps">Maps</string>
+
 
 </resources>
