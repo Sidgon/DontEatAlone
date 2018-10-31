@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -72,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_LOCATION_PERM);
-        loadMap();
+
     }
 
     @Override
@@ -174,10 +175,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, mLastLocation.toString());
     }
 
-    //loads phones location with previously given permission and launches map
-    public void loadMap(){
-
-    }
 
     // load db with events
     public void setEventListener() {
@@ -193,6 +190,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Log.d(TAG, "Exepction reading from firebase");
                     }
                 }
+
+
+
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
