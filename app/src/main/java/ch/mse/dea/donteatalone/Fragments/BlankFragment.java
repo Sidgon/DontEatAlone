@@ -4,12 +4,14 @@ package ch.mse.dea.donteatalone.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -40,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import ch.mse.dea.donteatalone.Activitys.EditCreateEventActivity;
 import ch.mse.dea.donteatalone.Adapter.EventsListArrayAdapter;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.R;
@@ -84,29 +88,16 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                              Bundle savedInstanceState) {
 
         refView=inflater.inflate(R.layout.activity_maps, container, false);
+        //register button event
+        onClick_MyLocationButton(refView);
         // Inflate the layout for this fragment
-        ActivityCompat.requestPermissions(getActivity(),
+        requestPermissions(
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_LOCATION_PERM);
 
 
         return refView;
     }
-
-    /*
-        @Override
-        protected void onRestart() {
-            super.onRestart();
-            mMap.clear();
-            try {
-                loadMap();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    */
 
     //lets you allow location access in app instead of going to phone settings
     @Override
@@ -205,7 +196,6 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
                 loadMap();
 
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -271,8 +261,15 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
-            //mMap.setOnMarkerClickListener(this);
-            mMap.animateCamera(cu);
+            mMap.animateCamera(cu, new GoogleMap.CancelableCallback(){
+                //needed because zoom is too much in bounds, workaround for google map
+                //https://stackoverflow.com/questions/32044086/fix-zoom-level-between-two-marker-in-google-map
+                public void onCancel(){}
+                public void onFinish(){
+                    CameraUpdate zout = CameraUpdateFactory.zoomBy(-0.5f);
+                    mMap.animateCamera(zout);
+                }
+            });
         }
         // Set a listener for marker click.
         mMap.setOnMarkerClickListener(this);
@@ -302,6 +299,29 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             }
         }
         return closestLocation;
+    }
+
+    public void onClick_MyLocationButton(View view){
+        FloatingActionButton fabs= view.findViewById(R.id.my_location_fab);
+        fabs.show();
+        fabs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    getPhoneLocation();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
+                        mLastLocation.getLongitude()), -0.5f));
+
+
+
+            }
+        });
     }
 
     public boolean onMarkerClick(final Marker marker) {
