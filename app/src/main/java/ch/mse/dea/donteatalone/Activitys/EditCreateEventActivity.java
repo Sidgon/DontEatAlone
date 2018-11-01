@@ -392,31 +392,6 @@ public class EditCreateEventActivity extends AppCompatActivity {
                                                     }
                             );
 
-//                            Map<String, Object> map = new HashMap<>();
-//
-//                            map.put("/events/" + event.getEventId(), null);
-//                            map.put("/event_users/" + event.getEventId(), null);
-//                            map.put("/users_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
-//                            map.put("/users_going_events/" + User.getLoggedUserId() + "/" + event.getEventId(), null);
-//
-//                            mDatabase.updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//                                    finish();
-//                                }
-//                            }).addOnFailureListener(new OnFailureListener() {
-//                                                        @Override
-//                                                        public void onFailure(@NonNull Exception e) {
-//                                                            Log.w("DeleteEvent:failure", e);
-//                                                            Toast.makeText(EditCreateEventActivity.this,
-//                                                                    getString(R.string.edit_create_event_error_deleting_event),
-//                                                                    Toast.LENGTH_SHORT).show();
-//
-//                                                            Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
-//
-//                                                        }
-//                                                    }
-//                            );
 
                         }
                         dialog.cancel();
@@ -443,11 +418,6 @@ public class EditCreateEventActivity extends AppCompatActivity {
                     refEvents.child(eventKey).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
-                            //Falls der Event erstellt werden konnte wird dier Key an die anderen listen übergeben.
-                            refEventUsers.child(eventKey).child(firebaseUser.getUid()).child("isComing").setValue(true);
-                            refUsersEvents.child(firebaseUser.getUid()).child(eventKey).child("boolean").setValue(true);
-                            refUsersGoingEvents.child(firebaseUser.getUid()).child(eventKey).child("boolean").setValue(true);
 
                             finish();
 

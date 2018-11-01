@@ -12,7 +12,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,7 +27,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -39,12 +38,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import ch.mse.dea.donteatalone.Activitys.EditCreateEventActivity;
+import ch.mse.dea.donteatalone.Activitys.InfoEventActivity;
 import ch.mse.dea.donteatalone.Adapter.EventsListArrayAdapter;
+import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.R;
 
@@ -87,7 +89,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        refView=inflater.inflate(R.layout.activity_maps, container, false);
+        refView = inflater.inflate(R.layout.activity_maps, container, false);
         //register button event
         onClick_MyLocationButton(refView);
         // Inflate the layout for this fragment
@@ -119,7 +121,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                         e.printStackTrace();
                     }
                     //get current user from authentication service
-                    mAuth=FirebaseAuth.getInstance();
+                    mAuth = FirebaseAuth.getInstance();
                     currentUser = mAuth.getCurrentUser();
                     //add db refs
                     mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -148,16 +150,16 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         }
     }
 
-    public void getPhoneLocation()throws ExecutionException, InterruptedException {
+    public void getPhoneLocation() throws ExecutionException, InterruptedException {
         //get location of phone
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         // Define the criteria how to select the location provider -> use
         // default
         Criteria criteria = new Criteria();
-        criteria.setAccuracy( Criteria.ACCURACY_FINE );
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
         provider = locationManager.getBestProvider(criteria, false);
-        if ( provider == null ) {
-            Log.e( TAG, "No location provider found!" );
+        if (provider == null) {
+            Log.e(TAG, "No location provider found!");
             return;
         }
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -176,7 +178,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         }
         mLastLocation = locationManager.getLastKnownLocation(provider);
 
-        if(mLastLocation!=null) Log.d(TAG, mLastLocation.toString());
+        if (mLastLocation != null) Log.d(TAG, mLastLocation.toString());
     }
 
     // load db with events
@@ -184,12 +186,11 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         refEvents.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                events = new ArrayList<> ();
+                events = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if (snapshot.getKey() != null && snapshot.getValue()!=null) {
+                    if (snapshot.getKey() != null && snapshot.getValue() != null) {
                         events.add(snapshot.getValue(Event.class));
-                    }
-                    else{
+                    } else {
                         Log.d(TAG, "Exepction reading from firebase");
                     }
                 }
@@ -197,6 +198,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                 loadMap();
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -205,7 +207,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
 
-    private void loadMap(){
+    private void loadMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -221,22 +223,24 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             Marker[] markers = new Marker[events.size()];
             //loop all event entries
             for (int i = 0; i < events.size(); i++) {
+
+                Event event = events.get(i);
+     
+
                 //check if logged user is owner off event and change its color
                 String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                if (events.get(i).getUserIdOfCreator().equals(loggedUserId))
+                if (event.getUserIdOfCreator().equals(loggedUserId))
                 {
                     markers[i] = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(events.get(i).getLatitude(), events.get(i).getLongitude()))
-                            .title(events.get(i).getAddress())
+                        .position(new LatLng(event.getLatitude(), event.getLongitude())));
                             .icon(BitmapDescriptorFactory.defaultMarker(45)));
-                    markers[i].setTag(0);
+                   markers[i].setTag(event.getEventId());
                 }
                 else{
                 markers[i] = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(events.get(i).getLatitude(), events.get(i).getLongitude()))
-                        .title(events.get(i).getAddress())
+                        .position(new LatLng(event.getLatitude(), event.getLongitude())));
                         .icon(BitmapDescriptorFactory.defaultMarker(0)));
-                markers[i].setTag(0);
+                markers[i].setTag(event.getEventId());
                 }
             }
         }
@@ -270,11 +274,13 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
-            mMap.animateCamera(cu, new GoogleMap.CancelableCallback(){
+            mMap.animateCamera(cu, new GoogleMap.CancelableCallback() {
                 //needed because zoom is too much in bounds, workaround for google map
                 //https://stackoverflow.com/questions/32044086/fix-zoom-level-between-two-marker-in-google-map
-                public void onCancel(){}
-                public void onFinish(){
+                public void onCancel() {
+                }
+
+                public void onFinish() {
                     CameraUpdate zout = CameraUpdateFactory.zoomBy(-0.5f);
                     mMap.animateCamera(zout);
                 }
@@ -286,23 +292,23 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
     //calculate closest restaurants relative to phone location
-    public Location calculateClosest(){
+    public Location calculateClosest() {
 
-        closestLocation=new Location("");
+        closestLocation = new Location("");
 
         float smallestDistance = -1;
         ArrayList<Location> locations = new ArrayList<>();
         //create a list of all possible locations available
-        for (int i=0; i<events.size(); i++){
+        for (int i = 0; i < events.size(); i++) {
             Location temp = new Location("");
             temp.setLatitude(events.get(i).getLatitude());
             temp.setLongitude(events.get(i).getLongitude());
             locations.add(temp);
         }
         //algo which calculates closes from list
-        for(Location location : locations){
+        for (Location location : locations) {
             float distance = mLastLocation.distanceTo(location);
-            if(smallestDistance == -1 || distance < smallestDistance){
+            if (smallestDistance == -1 || distance < smallestDistance) {
                 closestLocation = location;
                 smallestDistance = distance;
             }
@@ -310,8 +316,8 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         return closestLocation;
     }
 
-    public void onClick_MyLocationButton(View view){
-        FloatingActionButton fabs= view.findViewById(R.id.my_location_fab);
+    public void onClick_MyLocationButton(View view) {
+        FloatingActionButton fabs = view.findViewById(R.id.my_location_fab);
         fabs.show();
         fabs.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -333,22 +339,70 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);
 
-
             }
         });
     }
 
     public boolean onMarkerClick(final Marker marker) {
+        Event temp = null;
+        String userID = FirebaseAuth.getInstance().getUid();
+        for (Event e : events) {
+            if (e.getEventId().equals(marker.getTag())) {
+                temp = e;
+                break;
+            }
+        }
 
-        // Retrieve the data from the marker.
-        String addressClicked =  marker.getTitle();
+        final Event event=temp;
 
-        //open eventview here
+        if (event!=null) {
 
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
+            if (event.getUserIdOfCreator().equals(userID)) {
+                Gson gson = GsonAdapter.getGson();
+                Intent intent = new Intent(getActivity(), EditCreateEventActivity.class);
+                intent.putExtra(R.string.intent_edit_create_event_event + "", gson.toJson(event));
+                startActivity(intent);
+
+            } else {
+
+                FirebaseDatabase.getInstance().getReference("users_going_events").child(userID).child(event.getEventId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Gson gson = GsonAdapter.getGson();
+
+                        Intent intent = new Intent(getActivity(), InfoEventActivity.class);
+                        intent.putExtra(R.string.intent_info_event + "", gson.toJson(event));
+                        intent.putExtra(R.string.intent_info_event_going_user +"",dataSnapshot.exists() ? InfoEventActivity.IS_GOING : InfoEventActivity.IS_NOT_GOING);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        } else {
+            Toast.makeText(getActivity(),R.string.activity_maps_marker_no_event_found,Toast.LENGTH_LONG);
+        }
+
+
         return false;
+    }
+
+    private String markerTitle(Event event){
+        String str="";
+
+        if (event!=null){
+            str+=event.getEventName()+"\n";
+            str+=event.getDateTimeString();
+            str+=event.getAddress()+"\n";
+            str+=event.getPostcode()+" "+event.getAddress()+"\n";
+        }
+
+        return str;
     }
 
 }

@@ -92,12 +92,14 @@
     <string name="user_validation_error_passwords_wrong_password">Wrong password</string>
 
     <string name="activity_info_event_title">Info Event</string>
-    <string name="activity_info_event_ungoing">Ungoing event</string>
+    <string name="activity_info_event_ungoing_event">Ungoing event</string>
+    <string name="activity_info_event_going_event">Going event</string>
     <string name="activity_info_event_view_going_user">Going user</string>
     <string name="activity_info_event_alert_title_ungoing">Ungoing event</string>
     <string name="activity_info_event_alert_massage_going_user">Do you really want to ungoing this Event?</string>
     <string name="activity_info_event_alert_button_going_user">Ungoing Event</string>
     <string name="activity_info_event_falure_ungoing_event">Ungoing event has failed, please try again later</string>
+    <string name="activity_info_event_going_event_database">Going to event has failed, please try again later</string>
 
     <string name="menu_item_main_navigation_map">Map</string>
     <string name="menu_item_main_navigation_going_events">Going Events</string>
@@ -111,7 +113,8 @@
     <string name="going_user_to_event_list_noData">No user yet</string>
     <string name="going_user_to_event_list_title">Going Users</string>
 
-    <string name="title_activity_maps">Maps</string>
+    <string name="activity_maps_title">Maps</string>
+    <string name="activity_maps_marker_no_event_found">Sorry, event not found, please check internet connection and try it again.</string>
 
 
 </resources>

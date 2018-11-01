@@ -57,7 +57,7 @@
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".Activitys.MapsActivity"
-            android:label="@string/title_activity_maps"/>
+            android:label="@string/activity_maps_title"/>
         <activity android:name=".Activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
