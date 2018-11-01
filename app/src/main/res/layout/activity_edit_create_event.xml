@@ -148,7 +148,7 @@
                 android:textAlignment="center" />
 
 
-            <EditText
+            <TextView
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:maxLines="1"/>
 
 
-            <EditText
+            <TextView
                 android:id="@+id/postcode"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
                 android:inputType="number"
                 android:maxLines="1"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
