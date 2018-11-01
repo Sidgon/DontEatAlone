@@ -3,6 +3,7 @@ package ch.mse.dea.donteatalone.Activitys;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,9 +56,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private TextView txtDate;
     private TextView txtTime;
     private TextView txtDuration;
-    private EditText etxtAddress;
-    private EditText etxtPostcode;
-    private EditText etxtCity;
+    private TextView txtAddress;
+    private TextView txtPostcode;
+    private TextView txtCity;
     private TextView txtCountryName;
     private TextView txtMaxGuest;
     private Button btnDeleteEvent;
@@ -71,6 +77,10 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private DatabaseReference refEventUsers = mDatabase.child("event_users");
     private DatabaseReference refUsersEvents = mDatabase.child("users_events");
     private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
+
+    private int PLACE_PICKER_REQUEST = 1;
+    private PlacePicker.IntentBuilder builder;
+    private Place pickedPlace;
 
     private static String getStringDuration(int duration) {
         return String.format("%02dh %02dmin", (int) Math.floor(duration / 60), (int) duration % 60);
@@ -118,9 +128,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
                 seekBarDuration.getProgress() * SEEKBAR_INCREMENT,
-                etxtAddress.getText().toString(),
-                etxtPostcode.getText().toString(),
-                etxtCity.getText().toString(),
+                txtAddress.getText().toString(),
+                txtPostcode.getText().toString(),
+                txtCity.getText().toString(),
                 txtCountryName.getText().toString(),
                 seekBarMaxGuest.getProgress(),
                 latitude, longitude
@@ -133,9 +143,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(getStringDuration(event.getDuration()));
         seekBarDuration.setProgress(event.getDuration() / SEEKBAR_INCREMENT);
-        etxtAddress.setText(event.getAddress());
-        etxtPostcode.setText(String.valueOf(event.getPostcode()));
-        etxtCity.setText(event.getCity());
+        txtAddress.setText(event.getAddress());
+        txtPostcode.setText(String.valueOf(event.getPostcode()));
+        txtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
         txtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
         seekBarMaxGuest.setProgress(event.getMaxGuest());
@@ -154,15 +164,15 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
         str = EventValidation.standart(event.getAddress(), 2);
         if (str != null) valid = false;
-        etxtAddress.setError(str);
+        txtAddress.setError(str);
 
         str = EventValidation.standart(event.getPostcode(), 2);
         if (str != null) valid = false;
-        etxtPostcode.setError(str);
+        txtPostcode.setError(str);
 
         str = EventValidation.standart(event.getCity(), 2);
         if (str != null) valid = false;
-        etxtCity.setError(str);
+        txtCity.setError(str);
 
 
         return valid;
@@ -175,9 +185,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtTime = findViewById(R.id.txt_time);
         txtDuration = findViewById(R.id.duration);
         //etxtDuration.setFilters(new InputFilter[]{new InputFilterMinMax(0, 60 * 4)});
-        etxtAddress = findViewById(R.id.address);
-        etxtPostcode = findViewById(R.id.postcode);
-        etxtCity = findViewById(R.id.city);
+        txtAddress = findViewById(R.id.address);
+        txtPostcode = findViewById(R.id.postcode);
+        txtCity = findViewById(R.id.city);
         txtCountryName = findViewById(R.id.countryName);
         txtMaxGuest = findViewById(R.id.maxGuest);
         btnDeleteEvent = findViewById(R.id.btn_delete_event);
@@ -253,9 +263,41 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClick_searchForAddress(View view) {
-        //TODO implement Map to find Restaurant
-        latitude = 0;
-        longitude = 0;
+            PLACE_PICKER_REQUEST += 1;
+            builder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                pickedPlace = PlacePicker.getPlace(data, this);
+                String fulladdress = pickedPlace.getAddress().toString();
+                Log.d("", fulladdress);
+                //manipulate address String "Kirchbreitestrasse 14, 6033 Buchrain, Switzerland" to get information
+                String [] addressPLZPlaceCountry = fulladdress.split(",");
+                //plz + ort are not divided by "," therefore split again
+                String [] plzPlace = addressPLZPlaceCountry [1] .split("\\s");
+                //remove leading whitespace from country
+                String country = addressPLZPlaceCountry[2].trim();
+                //put into textboxes
+                txtAddress.setText(addressPLZPlaceCountry[0]);
+                txtPostcode.setText(plzPlace [1]);
+                txtCity.setText(plzPlace[2]);
+                txtCountryName.setText(country);
+                //save picked latlng position off place
+                LatLng latlng = pickedPlace.getLatLng();
+                latitude = latlng.latitude;
+                longitude = latlng.longitude;
+            }
+        }
     }
 
     public void onClick_openDatePicker(View view) {

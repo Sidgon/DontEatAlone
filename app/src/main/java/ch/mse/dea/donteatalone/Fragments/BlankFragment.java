@@ -221,14 +221,23 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             Marker[] markers = new Marker[events.size()];
             //loop all event entries
             for (int i = 0; i < events.size(); i++) {
-                //check if logged user is NOT the owner of the event
-                //if (!events.get(i).getUserIdOfCreator().equals(currentUser.getUid())) {
-                //creates a marker
+                //check if logged user is owner off event and change its color
+                String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if (events.get(i).getUserIdOfCreator().equals(loggedUserId))
+                {
+                    markers[i] = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(events.get(i).getLatitude(), events.get(i).getLongitude()))
+                            .title(events.get(i).getAddress())
+                            .icon(BitmapDescriptorFactory.defaultMarker(45)));
+                    markers[i].setTag(0);
+                }
+                else{
                 markers[i] = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(events.get(i).getLatitude(), events.get(i).getLongitude()))
-                        .title(events.get(i).getAddress()));
+                        .title(events.get(i).getAddress())
+                        .icon(BitmapDescriptorFactory.defaultMarker(0)));
                 markers[i].setTag(0);
-                //}
+                }
             }
         }
 
@@ -236,7 +245,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             Marker currentposition = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                     .title("You")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    .icon(BitmapDescriptorFactory.defaultMarker(200)));
             currentposition.setTag(0);
 
             calculateClosest();
@@ -315,9 +324,14 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                     e.printStackTrace();
                 }
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
-                        mLastLocation.getLongitude()), -0.5f));
+                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
+               //         mLastLocation.getLongitude()), -0.5f));
 
+                CameraUpdate center=CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude()
+                        , mLastLocation.getLongitude()));
+                CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+                mMap.moveCamera(center);
+                mMap.animateCamera(zoom);
 
 
             }

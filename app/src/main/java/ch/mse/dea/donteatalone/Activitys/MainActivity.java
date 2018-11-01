@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                                 fragmentTransaction.show(blankFragment);
                                 fragmentTransaction.hide(goingEventsListFragment);
                                 fragmentTransaction.hide(ownEventsListFragment);
-
                                 fragmentTransaction.commit();
                                 break;
                             case R.id.main_navigation_item_goning_events:
