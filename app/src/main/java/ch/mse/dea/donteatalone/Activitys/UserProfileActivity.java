@@ -85,7 +85,12 @@ public class UserProfileActivity extends AppCompatActivity {
     public void onClick_btnLogout(View view) {
         FirebaseAuth.getInstance().signOut();
         moveTaskToBack(true);
-        System.exit(0);
+        //System.exit(0);
+
+        Intent intent = new Intent(this,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     public void onClick_btnEditProfile(View view) {

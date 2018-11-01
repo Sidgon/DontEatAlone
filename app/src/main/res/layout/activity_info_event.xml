@@ -225,17 +225,15 @@
 
             <Button
                 android:id="@+id/activity_info_event_ungoing"
-                style="@style/DeleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
 
                 android:layout_marginStart="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
                 android:layout_marginBottom="@dimen/margin_middle"
 
-                android:onClick="onClick_ungoingEvent"
-                android:text="@string/activity_info_event_ungoing" />
+                android:onClick="onClick_goingOrUngoingEvent"
+                android:text="no text" />
 
 
 

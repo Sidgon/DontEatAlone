@@ -129,11 +129,10 @@ public class RegisterWithEmailActivity extends AppCompatActivity implements
                 });
     }
 
-    public void signUpFirebaseRealTimeDBUser(String userId, String username, String email, String firstname,
+    public void signUpFirebaseRealTimeDBUser(final String userId, String username, String email, String firstname,
                                              String lastname) {
         User user = new User(userId, username, firstname, lastname,email, User.getGravatar(email));
-        mDatabase.child("users").child(userId).setValue(user)
-                .addOnFailureListener(new OnFailureListener() {
+        mDatabase.child("users").child(userId).setValue(user).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "createUserWithEmail:failure", e);
