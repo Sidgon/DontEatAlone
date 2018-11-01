@@ -225,22 +225,20 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             for (int i = 0; i < events.size(); i++) {
 
                 Event event = events.get(i);
-     
+
 
                 //check if logged user is owner off event and change its color
                 String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                if (event.getUserIdOfCreator().equals(loggedUserId))
-                {
+                if (event.getUserIdOfCreator().equals(loggedUserId)) {
                     markers[i] = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(event.getLatitude(), event.getLongitude())));
+                            .position(new LatLng(event.getLatitude(), event.getLongitude()))
                             .icon(BitmapDescriptorFactory.defaultMarker(45)));
-                   markers[i].setTag(event.getEventId());
-                }
-                else{
-                markers[i] = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(event.getLatitude(), event.getLongitude())));
-                        .icon(BitmapDescriptorFactory.defaultMarker(0)));
-                markers[i].setTag(event.getEventId());
+                    markers[i].setTag(event.getEventId());
+                } else {
+                    markers[i] = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(event.getLatitude(), event.getLongitude()))
+                            .icon(BitmapDescriptorFactory.defaultMarker(0)));
+                    markers[i].setTag(event.getEventId());
                 }
             }
         }
@@ -331,11 +329,11 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                 }
 
                 //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(),
-               //         mLastLocation.getLongitude()), -0.5f));
+                //         mLastLocation.getLongitude()), -0.5f));
 
-                CameraUpdate center=CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude()
+                CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude()
                         , mLastLocation.getLongitude()));
-                CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+                CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
                 mMap.moveCamera(center);
                 mMap.animateCamera(zoom);
 
@@ -353,9 +351,9 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
             }
         }
 
-        final Event event=temp;
+        final Event event = temp;
 
-        if (event!=null) {
+        if (event != null) {
 
             if (event.getUserIdOfCreator().equals(userID)) {
                 Gson gson = GsonAdapter.getGson();
@@ -373,7 +371,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
                         Intent intent = new Intent(getActivity(), InfoEventActivity.class);
                         intent.putExtra(R.string.intent_info_event + "", gson.toJson(event));
-                        intent.putExtra(R.string.intent_info_event_going_user +"",dataSnapshot.exists() ? InfoEventActivity.IS_GOING : InfoEventActivity.IS_NOT_GOING);
+                        intent.putExtra(R.string.intent_info_event_going_user + "", dataSnapshot.exists() ? InfoEventActivity.IS_GOING : InfoEventActivity.IS_NOT_GOING);
                         startActivity(intent);
                     }
 
@@ -385,21 +383,21 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
             }
         } else {
-            Toast.makeText(getActivity(),R.string.activity_maps_marker_no_event_found,Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(), R.string.activity_maps_marker_no_event_found, Toast.LENGTH_LONG);
         }
 
 
         return false;
     }
 
-    private String markerTitle(Event event){
-        String str="";
+    private String markerTitle(Event event) {
+        String str = "";
 
-        if (event!=null){
-            str+=event.getEventName()+"\n";
-            str+=event.getDateTimeString();
-            str+=event.getAddress()+"\n";
-            str+=event.getPostcode()+" "+event.getAddress()+"\n";
+        if (event != null) {
+            str += event.getEventName() + "\n";
+            str += event.getDateTimeString();
+            str += event.getAddress() + "\n";
+            str += event.getPostcode() + " " + event.getAddress() + "\n";
         }
 
         return str;
