@@ -109,19 +109,19 @@
             android:id="@+id/going_event_addrasse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dragonerstrasse 55" />
+             />
 
         <TextView
             android:id="@+id/going_event_postcode_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="5600 Lenzburg" />
+             />
 
         <TextView
             android:id="@+id/going_event_country"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Switzerland" />
+             />
 
     </LinearLayout>
 

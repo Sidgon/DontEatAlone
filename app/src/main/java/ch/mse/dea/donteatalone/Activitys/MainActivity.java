@@ -2,11 +2,13 @@ package ch.mse.dea.donteatalone.Activitys;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ch.mse.dea.donteatalone.Adapter.NetworkChangeReceiver;
 import ch.mse.dea.donteatalone.Fragments.BlankFragment;
 import ch.mse.dea.donteatalone.Fragments.GoingEventsListFragment;
 import ch.mse.dea.donteatalone.Fragments.OwnEventsListFragment;
@@ -26,11 +29,13 @@ import ch.mse.dea.donteatalone.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    FragmentManager fragmentManager = this.getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction;
-    BlankFragment blankFragment;
-    OwnEventsListFragment ownEventsListFragment;
-    GoingEventsListFragment goingEventsListFragment;
+    private static final String TAG = MainActivity.class.getName();
+    private FragmentManager fragmentManager = this.getSupportFragmentManager();
+    private FragmentTransaction fragmentTransaction;
+    private BlankFragment blankFragment;
+    private OwnEventsListFragment ownEventsListFragment;
+    private GoingEventsListFragment goingEventsListFragment;
+
 
 
 
@@ -98,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         loginCheck();
+
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(getPackageName() + "android.net.conn.CONNECTIVITY_CHANGE");
+//
+//        networkChangeReceiver = new NetworkChangeReceiver(this);
+//        registerReceiver(networkChangeReceiver,filter);
     }
 
     @Override

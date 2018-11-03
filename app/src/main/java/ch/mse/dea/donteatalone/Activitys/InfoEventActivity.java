@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
+import ch.mse.dea.donteatalone.Objects.App;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.R;
 
@@ -101,89 +102,93 @@ public class InfoEventActivity extends AppCompatActivity {
 
 
     public void onClick_goingOrUngoingEvent(View view) {
-        if (isGoing == IS_GOING) {
-            // Der User nimmt bereits am event teil und will jetzt das event verlassen.
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        if (App.isNetworkAvailable(true)) {
+            if (isGoing == IS_GOING) {
+                // Der User nimmt bereits am event teil und will jetzt das event verlassen.
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-            // set title
-            alertDialogBuilder.setTitle(R.string.activity_info_event_alert_title_ungoing);
+                // set title
+                alertDialogBuilder.setTitle(R.string.activity_info_event_alert_title_ungoing);
 
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage(R.string.activity_info_event_alert_massage_going_user)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setNegativeButton(R.string.activity_info_event_alert_button_going_user, new DialogInterface.OnClickListener() {
-                        public void onClick(final DialogInterface dialog, int id) {
+                // set dialog message
+                alertDialogBuilder
+                        .setMessage(R.string.activity_info_event_alert_massage_going_user)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton(R.string.activity_info_event_alert_button_going_user, new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
 
-                            mDatabase.getReference("event_users").child(event.getEventId()).child(firebaseUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                                mDatabase.getReference("event_users").child(event.getEventId()).child(firebaseUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
 
-                                    mDatabase.getReference("users_going_events").child(firebaseUser.getUid()).child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            dialog.cancel();
-                                            finish();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_falure_ungoing_event, Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                                        mDatabase.getReference("users_going_events").child(firebaseUser.getUid()).child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                dialog.cancel();
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_falure_ungoing_event, Toast.LENGTH_LONG).show();
+                                            }
+                                        });
 
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_falure_ungoing_event, Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_falure_ungoing_event, Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
 
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        }
-        if (isGoing == IS_NOT_GOING) {
-            //Wenn der User bis jetzt noch nicht am Event teil nimmt, will er das jetzt tun.
-            mDatabase.getReference("users_going_events").child(firebaseUser.getUid()).child(event.getEventId()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    mDatabase.getReference("event_users").child(event.getEventId()).child(firebaseUser.getUid()).child("isComming").setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_going_event_database, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_going_event_database, Toast.LENGTH_LONG).show();
-                }
-            });
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+            if (isGoing == IS_NOT_GOING) {
+                //Wenn der User bis jetzt noch nicht am Event teil nimmt, will er das jetzt tun.
+                mDatabase.getReference("users_going_events").child(firebaseUser.getUid()).child(event.getEventId()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        mDatabase.getReference("event_users").child(event.getEventId()).child(firebaseUser.getUid()).child("isComming").setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_going_event_database, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(InfoEventActivity.this, R.string.activity_info_event_going_event_database, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
         }
 
 
     }
 
     public void onClick_goingUserActivity(View view) {
-        Gson gson = GsonAdapter.getGson();
-        Intent intent = new Intent(this, GoingUserToEventListActivity.class);
-        intent.putExtra(R.string.intent_going_user_to_event + "", gson.toJson(event));
-        startActivity(intent);
+        if(App.isNetworkAvailable(true)) {
+            Gson gson = GsonAdapter.getGson();
+            Intent intent = new Intent(this, GoingUserToEventListActivity.class);
+            intent.putExtra(R.string.intent_going_user_to_event + "", gson.toJson(event));
+            startActivity(intent);
+        }
     }
 
 }

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,19 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.ybs.countrypicker.CountryPicker;
-import com.ybs.countrypicker.CountryPickerListener;
 
 import org.joda.time.DateTime;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.DataHandling.DataFormatter;
 import ch.mse.dea.donteatalone.Objects.App;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.Objects.EventValidation;
-import ch.mse.dea.donteatalone.Objects.User;
 import ch.mse.dea.donteatalone.R;
 
 public class EditCreateEventActivity extends AppCompatActivity {
@@ -71,12 +65,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private CountryPicker picker;
     private Event event;
 
-    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference refEvents = mDatabase.child("events");
-    private DatabaseReference refEventUsers = mDatabase.child("event_users");
-    private DatabaseReference refUsersEvents = mDatabase.child("users_events");
-    private DatabaseReference refUsersGoingEvents = mDatabase.child("users_going_events");
 
     private int PLACE_PICKER_REQUEST = 1;
     private PlacePicker.IntentBuilder builder;
@@ -91,8 +82,6 @@ public class EditCreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_create_event);
         getViews();
-
-        setupCountryPicker();
 
         if (getIntent().getExtras() != null) {
             Log.i(TAG, "Edit event");
@@ -124,15 +113,15 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private Event getViewValues() {
         return new Event(
                 event == null ? "" : event.getEventId(),
-                event == null ? firebaseUser.getUid(): event.getUserIdOfCreator(),
+                event == null ? firebaseUser.getUid() : event.getUserIdOfCreator(),
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
-                seekBarDuration.getProgress() * SEEKBAR_INCREMENT,
+                seekBarDuration.getProgress() * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE,
                 txtAddress.getText().toString(),
                 txtPostcode.getText().toString(),
                 txtCity.getText().toString(),
                 txtCountryName.getText().toString(),
-                seekBarMaxGuest.getProgress(),
+                seekBarMaxGuest.getProgress()+SEEKBAR_MAX_GUEST_MIN_VALUE,
                 latitude, longitude
         );
     }
@@ -141,14 +130,12 @@ public class EditCreateEventActivity extends AppCompatActivity {
         etxtEventName.setText(event.getEventName());
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
-        txtDuration.setText(getStringDuration(event.getDuration()));
-        seekBarDuration.setProgress(event.getDuration() / SEEKBAR_INCREMENT);
+        seekBarDuration.setProgress((event.getDuration()-SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
         txtAddress.setText(event.getAddress());
         txtPostcode.setText(String.valueOf(event.getPostcode()));
         txtCity.setText(event.getCity());
         txtCountryName.setText(event.getCountry());
-        txtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
-        seekBarMaxGuest.setProgress(event.getMaxGuest());
+        seekBarMaxGuest.setProgress(event.getMaxGuest()-SEEKBAR_MAX_GUEST_MIN_VALUE);
 
         latitude = event.getLatitude();
         longitude = event.getLongitude();
@@ -161,19 +148,6 @@ public class EditCreateEventActivity extends AppCompatActivity {
         str = EventValidation.standart(event.getEventName(), 2);
         if (str != null) valid = false;
         etxtEventName.setError(str);
-
-        str = EventValidation.standart(event.getAddress(), 2);
-        if (str != null) valid = false;
-        txtAddress.setError(str);
-
-        str = EventValidation.standart(event.getPostcode(), 2);
-        if (str != null) valid = false;
-        txtPostcode.setError(str);
-
-        str = EventValidation.standart(event.getCity(), 2);
-        if (str != null) valid = false;
-        txtCity.setError(str);
-
 
         return valid;
 
@@ -208,7 +182,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtDuration.setText(getStringDuration((int) progresValue * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE));
+                txtDuration.setText((getString(R.string.edit_create_event_duration_field)+" "+getStringDuration(progresValue * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE)));
             }
 
             @Override
@@ -224,14 +198,14 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private void setSeekBarMaxGuest() {
         seekBarMaxGuest = findViewById(R.id.edit_create_event_seekBar_maxGuest);
         seekBarMaxGuest.setProgress(8);
-        seekBarMaxGuest.setMax(30 - SEEKBAR_DURATION_MIN_VALUE);
+        seekBarMaxGuest.setMax(30 - SEEKBAR_MAX_GUEST_MIN_VALUE);
         seekBarMaxGuest.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtMaxGuest.setText(Integer.toString(progresValue - SEEKBAR_MAX_GUEST_MIN_VALUE));
+                txtMaxGuest.setText((getString(R.string.edit_create_event_max_guest)+" "+(progresValue + SEEKBAR_MAX_GUEST_MIN_VALUE)));
             }
 
             @Override
@@ -244,30 +218,14 @@ public class EditCreateEventActivity extends AppCompatActivity {
         });
     }
 
-    private void setupCountryPicker() {
-        picker = CountryPicker.newInstance("Select Country");  // dialog title
-        picker.setListener(new CountryPickerListener() {
-            @Override
-            public void onSelectCountry(String name, String code, String dialCode, int flagDrawableResID) {
-                TextView countryName = findViewById(R.id.countryName);
-                countryName.setText(name);
-                picker.dismiss();
-
-            }
-        });
-
-    }
-
-    public void onClick_openCountryPicker(View view) {
-        picker.show(getSupportFragmentManager(), "COUNTRY_PICKER");
-    }
-
     public void onClick_searchForAddress(View view) {
-            PLACE_PICKER_REQUEST += 1;
-            builder = new PlacePicker.IntentBuilder();
+        PLACE_PICKER_REQUEST += 1;
+        builder = new PlacePicker.IntentBuilder();
 
         try {
-            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+            if(App.isNetworkAvailable(true)) {
+                startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+            }
         } catch (GooglePlayServicesRepairableException e) {
             e.printStackTrace();
         } catch (GooglePlayServicesNotAvailableException e) {
@@ -282,20 +240,33 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 String fulladdress = pickedPlace.getAddress().toString();
                 Log.d("", fulladdress);
                 //manipulate address String "Kirchbreitestrasse 14, 6033 Buchrain, Switzerland" to get information
-                String [] addressPLZPlaceCountry = fulladdress.split(",");
-                //plz + ort are not divided by "," therefore split again
-                String [] plzPlace = addressPLZPlaceCountry [1] .split("\\s");
-                //remove leading whitespace from country
-                String country = addressPLZPlaceCountry[2].trim();
-                //put into textboxes
-                txtAddress.setText(addressPLZPlaceCountry[0]);
-                txtPostcode.setText(plzPlace [1]);
-                txtCity.setText(plzPlace[2]);
-                txtCountryName.setText(country);
+                String[] addressPLZPlaceCountry = fulladdress.split(",");
+
+                if (addressPLZPlaceCountry.length==3) {
+                    //plz + ort are not divided by "," therefore split again
+                    String[] plzPlace = addressPLZPlaceCountry[1].split("\\s");
+                    //remove leading whitespace from country
+                    String country = addressPLZPlaceCountry[2].trim();
+                    //put into textboxes
+                    txtAddress.setText(addressPLZPlaceCountry[0]);
+                    txtPostcode.setText(plzPlace[1]);
+                    txtCity.setText(plzPlace[2]);
+                    txtCountryName.setText(country);
+                }else if(addressPLZPlaceCountry.length==2){
+                    //plz + ort are not divided by "," therefore split again
+                    //remove leading whitespace from country
+                    String country = addressPLZPlaceCountry[1].trim();
+                    //put into textboxes
+                    txtAddress.setText(addressPLZPlaceCountry[0]);
+                    txtPostcode.setText(" ");
+                    txtCity.setText(" ");
+                    txtCountryName.setText(country);
+                }
                 //save picked latlng position off place
                 LatLng latlng = pickedPlace.getLatLng();
                 latitude = latlng.latitude;
                 longitude = latlng.longitude;
+
             }
         }
     }
@@ -354,105 +325,110 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
 
     public void onClick_deleteEvent(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        // set title
-        alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_onDelete_title);
+        if (App.isNetworkAvailable(true)) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(R.string.edit_create_event_dialog_onDelete_massage)
-                .setCancelable(false)
-                .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, int id) {
-                        if (event != null) {
+            // set title
+            alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_onDelete_title);
 
-
-                            refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.w("DeleteEvent:failure", e);
-                                                            Toast.makeText(EditCreateEventActivity.this,
-                                                                    getString(R.string.edit_create_event_error_deleting_event),
-                                                                    Toast.LENGTH_SHORT).show();
-
-                                                            Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
-
-                                                        }
-                                                    }
-                            );
-
-
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage(R.string.edit_create_event_dialog_onDelete_massage)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
                         }
-                        dialog.cancel();
-                    }
-                });
+                    })
+                    .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, int id) {
+                            if (event != null) {
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+
+                                refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w("DeleteEvent:failure", e);
+                                                                Toast.makeText(EditCreateEventActivity.this,
+                                                                        getString(R.string.edit_create_event_error_deleting_event),
+                                                                        Toast.LENGTH_SHORT).show();
+
+                                                                Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
+
+                                                            }
+                                                        }
+                                );
+
+
+                            }
+                            dialog.cancel();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
 
     }
 
     public void onClick_saveEvent(View view) {
-        Event event = getViewValues();
+        if (App.isNetworkAvailable(true)) {
+            Event event = getViewValues();
 
-        if (validateForm(event)) {
-            if (!isEdit) {
-                // Es wird ein neues Event erstellt und dazu einen Key von der Database angefordert
-                final String eventKey = refEvents.push().getKey();
-                if (eventKey != null) {
-                    //Falls der key nicht null ist wird das Event der Database übergeben.
-                    event.setEventId(eventKey);
-                    refEvents.child(eventKey).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+            if (validateForm(event)) {
+                if (!isEdit) {
+                    // Es wird ein neues Event erstellt und dazu einen Key von der Database angefordert
+                    final String eventKey = refEvents.push().getKey();
+                    if (eventKey != null) {
+                        //Falls der key nicht null ist wird das Event der Database übergeben.
+                        event.setEventId(eventKey);
+                        refEvents.child(eventKey).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                finish();
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "CreateEvent:failure", e);
+                                Toast.makeText(EditCreateEventActivity.this,
+                                        getString(R.string.edit_create_event_error_crating_event),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Log.w(TAG, "CreateEvent:failure:NoKey");
+                        Toast.makeText(EditCreateEventActivity.this,
+                                getString(R.string.edit_create_event_error_crating_event),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Falls das event nur editiert wurde wird es upgedated
+                    refEvents.child(event.getEventId()).updateChildren(event.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-
                             finish();
-
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "CreateEvent:failure", e);
+                            Log.w("UpdateEvent:failure", e);
                             Toast.makeText(EditCreateEventActivity.this,
-                                    getString(R.string.edit_create_event_error_crating_event),
+                                    getString(R.string.edit_create_event_error_updating_event),
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else {
-                    Log.w(TAG, "CreateEvent:failure:NoKey");
-                    Toast.makeText(EditCreateEventActivity.this,
-                            getString(R.string.edit_create_event_error_crating_event),
-                            Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                // Falls das event nur editiert wurde wird es upgedated
-                refEvents.child(event.getEventId()).updateChildren(event.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("UpdateEvent:failure", e);
-                        Toast.makeText(EditCreateEventActivity.this,
-                                getString(R.string.edit_create_event_error_updating_event),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         }
     }
@@ -460,7 +436,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (event !=null && !event.haveSameContent(getViewValues())) {
+        if (event != null && !event.haveSameContent(getViewValues())) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
             // set title

@@ -16,32 +16,12 @@
             android:layout_height="match_parent">
 
 
-            <Button
-                android:id="@+id/searchForAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_margin="@dimen/margin_middle"
-                android:onClick="onClick_searchForAddress"
-
-                android:text="@string/edit_create_event_get_address" />
-            <!--android:onClick="onClick_searchEvent"-->
-
-            <View
-                android:id="@+id/going_event_divider"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/divider_size_medium"
-                android:layout_below="@id/searchForAddress"
-                android:layout_margin="@dimen/margin_small"
-
-                android:background="@android:color/darker_gray" />
-
 
             <EditText
                 android:id="@+id/eventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/going_event_divider"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
 
@@ -148,94 +128,14 @@
                 android:textAlignment="center" />
 
 
-            <TextView
-                android:id="@+id/address"
+            <SeekBar
+                android:id="@+id/edit_create_event_seekBar_maxGuest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/duration"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_large"
-
-                android:layout_marginRight="@dimen/margin_middle"
-                android:autofillHints="@string/edit_create_event_address"
-                android:hint="@string/edit_create_event_address"
-                android:inputType="textPostalAddress"
-                android:maxLines="1"/>
-
-
-            <TextView
-                android:id="@+id/postcode"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/address"
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-
-                android:layout_marginRight="@dimen/margin_small"
-                android:autofillHints="@string/edit_create_event_postcode"
-                android:hint="@string/edit_create_event_postcode"
-                android:inputType="number"
-                android:maxLines="1"/>
-
-            <TextView
-                android:id="@+id/city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_alignBottom="@id/postcode"
-                android:layout_marginTop="@dimen/margin_middle"
-
-                android:layout_marginRight="@dimen/margin_middle"
-                android:layout_toEndOf="@id/postcode"
-                android:autofillHints="@string/edit_create_event_City"
-                android:hint="@string/edit_create_event_City"
-                android:inputType="text"
-                android:maxLines="1"/>
-
-
-            <TextView
-                android:id="@+id/countryName"
-                android:layout_width="220dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/setCountry"
-                android:layout_marginStart="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_middle"
-
-                android:layout_marginEnd="@dimen/divider_size_tiny"
-                android:background="?attr/editTextBackground"
-                android:gravity="center_vertical"
-                android:hint="@string/edit_create_event_country"
-
-                android:textAppearance="?android:attr/textAppearanceMediumInverse"
-                android:textColor="?attr/editTextColor"
-
-
-                />
-
-            <Button
-                android:id="@+id/setCountry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/city"
-                android:layout_alignParentEnd="true"
-
-                android:layout_marginTop="@dimen/margin_middle"
-                android:layout_marginEnd="@dimen/margin_middle"
-
-                android:layout_toEndOf="@id/countryName"
-                android:onClick="onClick_openCountryPicker"
-                android:text="@string/edit_create_event_btn_country" />
-
-
-            <SeekBar
-                android:id="@+id/edit_create_event_seekBar_maxGuest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/setCountry"
-                android:layout_marginLeft="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginRight="@dimen/margin_middle" />
-
 
             <TextView
                 android:id="@+id/maxGuest"
@@ -248,13 +148,91 @@
 
                 android:layout_marginRight="@dimen/margin_middle" />
 
-            <Button
-                android:id="@+id/btn_save_event"
+            <TextView
+                android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/maxGuest"
                 android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_large"
+
+                android:layout_marginRight="@dimen/margin_middle"
+                android:autofillHints="@string/edit_create_event_address"
+                android:hint="@string/edit_create_event_address"
+                android:inputType="textPostalAddress"
+                android:maxLines="1"/>
+
+
+            <TextView
+                android:id="@+id/postcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address"
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
+
+                android:layout_marginEnd="@dimen/margin_small"
+                android:autofillHints="@string/edit_create_event_postcode"
+                android:hint="@string/edit_create_event_postcode"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_alignBottom="@id/postcode"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:layout_toEndOf="@id/postcode"
+                android:autofillHints="@string/edit_create_event_City"
+                android:hint="@string/edit_create_event_City"
+                android:maxLines="1"/>
+
+
+            <TextView
+                android:id="@+id/countryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/city"
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_small"
+
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:gravity="center_vertical"
+                android:hint="@string/edit_create_event_country"
+                />
+
+            <Button
+                android:id="@+id/searchForAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/countryName"
+                android:layout_marginStart="@dimen/margin_middle"
+                android:layout_marginTop="@dimen/margin_middle"
+                android:layout_marginEnd="@dimen/margin_middle"
+                android:onClick="onClick_searchForAddress"
+
+                android:text="@string/edit_create_event_get_address" />
+            <!--android:onClick="onClick_searchEvent"-->
+
+            <View
+                android:id="@+id/going_event_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/divider_size_medium"
+                android:layout_below="@id/searchForAddress"
+
+                android:layout_margin="@dimen/margin_middle"
+
+                android:background="@android:color/darker_gray" />
+
+
+            <Button
+                android:id="@+id/btn_save_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/going_event_divider"
+                android:layout_marginLeft="@dimen/margin_middle"
                 android:layout_marginRight="@dimen/margin_middle"
 
                 android:layout_marginBottom="@dimen/margin_middle"

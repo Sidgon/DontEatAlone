@@ -19,7 +19,6 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -36,7 +35,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import ch.mse.dea.donteatalone.Adapter.EventsListArrayAdapter;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.R;
 
@@ -48,7 +46,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //define db refs
     private DatabaseReference mDatabase;
     private DatabaseReference refEvents;
-    private EventsListArrayAdapter adapter;
     private ArrayList<Event> events;
 
     //map
