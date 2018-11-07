@@ -2,20 +2,38 @@ package ch.mse.dea.donteatalone.Objects;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Iterator;
 import java.util.Map;
 
+import ch.mse.dea.donteatalone.R;
+
 public class App extends Application {
 
     private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         context=this;
+    }
 
+
+
+    public static boolean isNetworkAvailable(boolean showToast) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+        boolean isNetworkAvailable=(activeNetworkInfo != null && activeNetworkInfo.isConnected());
+
+        if (showToast && !isNetworkAvailable) Toast.makeText(App.context, R.string.no_internet_connection_try_later,Toast.LENGTH_LONG).show();
+
+        return isNetworkAvailable;
     }
 
     public static String getFromResource(int i) {
@@ -25,6 +43,7 @@ public class App extends Application {
     public static String getFromResource(int i, Object... object) {
         return context.getResources().getString(i,object);
     }
+
     public static boolean getDebug(){
         return true;
     }

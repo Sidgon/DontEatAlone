@@ -41,6 +41,7 @@ public class EventsListFirebaseAdapter extends FirebaseListAdapter<Event> {
         TextView eventTime = convertView.findViewById(R.id.going_event_time);
         TextView eventAddresse = convertView.findViewById(R.id.going_event_addrasse);
         TextView eventCity = convertView.findViewById(R.id.going_event_postcode_city);
+        TextView eventCountry= convertView.findViewById(R.id.going_event_country);
 
         TextView eventGoingGuests = convertView.findViewById(R.id.going_event_coming_guests);
         TextView eventMaxGuests = convertView.findViewById(R.id.going_event_max_guests);
@@ -52,5 +53,6 @@ public class EventsListFirebaseAdapter extends FirebaseListAdapter<Event> {
         eventCity.setText(event.getPostcode() + " " + event.getCity());
         eventGoingGuests.setText(event.getGoingGuests() + "");
         eventMaxGuests.setText(event.getMaxGuest() + "");
+        eventCountry.setText(event.getCountry());
     }
 }

@@ -126,23 +126,25 @@ public class EditUserProfileActivity extends AppCompatActivity {
         return valid;
     }
 
-    public void onClick_saveEvent(View view) {
-        User user = getViewValues();
+    public void onClick_saveUser(View view) {
+        if(App.isNetworkAvailable(true)) {
+            User user = getViewValues();
 
-        if (validateRegisterForm(user.getUsername(), user.getFirstname(), user.getLastname())) {
-            refUsers.child(user.getUserId()).updateChildren(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    finish();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    showToast(R.string.edit_user_profile_error_updating_user);
-                }
-            });
-        } else {
-            showToast(R.string.edit_user_profile_error_updating_user);
+            if (validateRegisterForm(user.getUsername(), user.getFirstname(), user.getLastname())) {
+                refUsers.child(user.getUserId()).updateChildren(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showToast(R.string.edit_user_profile_error_updating_user);
+                    }
+                });
+            } else {
+                showToast(R.string.edit_user_profile_error_updating_user);
+            }
         }
 
     }
@@ -187,64 +189,66 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick_deleteEvent(View view) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    public void onClick_deleteUser(View view) {
+        if (App.isNetworkAvailable(true)) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        // set title
-        alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_onDelete_title);
+            // set title
+            alertDialogBuilder.setTitle(R.string.edit_create_event_dialog_onDelete_title);
 
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(R.string.edit_create_event_dialog_onDelete_massage)
-                .setCancelable(false)
-                .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-                        if (user != null && fuser!=null) {
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage(R.string.edit_create_event_dialog_onDelete_massage)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton(R.string.edit_create_event_dialog_delete_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user != null && fuser != null) {
 
-                        refUsers.child(user.getUserId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                    fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            App.log(TAG, "Account gelöscht: \n   -ID: " + user.getUserId() + " \n   -Name: " + user.getEmail());
-                                            loginIntent();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            App.log(TAG,"DeleteEvent:failure");
-                                            showToast(R.string.edit_user_profile_error_deleting_event);
-                                        }
-                                    });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                App.log(TAG, "DeleteEvent:failure no User");
+                                refUsers.child(user.getUserId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        fuser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                App.log(TAG, "Account gelöscht: \n   -ID: " + user.getUserId() + " \n   -Name: " + user.getEmail());
+                                                loginIntent();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                App.log(TAG, "DeleteUser:failure");
+                                                showToast(R.string.edit_user_profile_error_deleting_event);
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        App.log(TAG, "DeleteUser:failure no User");
+                                        showToast(R.string.edit_user_profile_error_deleting_event);
+                                    }
+                                });
+
+
+                            } else {
+                                Log.w(TAG, "DeleteUser:failure no User");
                                 showToast(R.string.edit_user_profile_error_deleting_event);
                             }
-                        });
 
-
-                        }else {
-                            Log.w(TAG, "DeleteEvent:failure no User");
-                            showToast(R.string.edit_user_profile_error_deleting_event);
+                            dialog.cancel();
                         }
+                    });
 
-                        dialog.cancel();
-                    }
-                });
-
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
 
     }
@@ -256,101 +260,26 @@ public class EditUserProfileActivity extends AppCompatActivity {
     }
 
     public void onClick_changePassword(View view) {
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(App.isNetworkAvailable(true)) {
+            final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.popup_edit_user_profile_password, null);
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.popup_edit_user_profile_password, null);
 
-        final EditText txtOldPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtOldPassword);
-        final EditText txtEnterPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtEnterPassword);
-        final EditText txtRepeatPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtRepeatPassword);
+            final EditText txtOldPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtOldPassword);
+            final EditText txtEnterPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtEnterPassword);
+            final EditText txtRepeatPassword = promptsView.findViewById(R.id.user_edit_popup_password_txtRepeatPassword);
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setView(promptsView)
-                .setCancelable(false)
-                .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
-                .setPositiveButton(R.string.edit_user_profile_change_button, null)
-                .create();
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setView(promptsView)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
+                    .setPositiveButton(R.string.edit_user_profile_change_button, null)
+                    .create();
 
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-
-                final DialogInterface DIALOG = dialog;
-                Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                negativeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DIALOG.cancel();
-                    }
-                });
-
-                Button positivButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                positivButton.setOnClickListener(new View.OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        App.log(TAG,
-                                "Old Password=" + txtOldPassword.getText().toString() +
-                                        "\nNew Password=" + txtEnterPassword.getText().toString() +
-                                        "\nRepeated Password=" + txtRepeatPassword.getText().toString()
-                        );
-
-                        String str = UserValidation.password(context, txtEnterPassword.getText().toString(), txtRepeatPassword.getText().toString(), true);
-                        txtEnterPassword.setError(str);
-                        txtRepeatPassword.setError(str);
-
-
-                        if (str == null && firebaseUser!=null && firebaseUser.getEmail()!=null) {
-                            AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtOldPassword.getText().toString());
-
-                            firebaseUser.reauthenticate(credential)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            App.log(TAG, "User re-authenticated.");
-                                            if (task.isSuccessful()) {
-                                                firebaseUser.updatePassword(txtEnterPassword.getText().toString());
-                                                DIALOG.cancel();
-                                            } else {
-                                                txtOldPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-
-            }
-        });
-
-        // show it
-        alertDialog.show();
-
-    }
-
-    public void onClick_changeEmail(View view) {
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.popup_edit_user_profil_email, null);
-
-        final EditText txtPassword = promptsView.findViewById(R.id.user_edit_popup_email_txtPassword);
-        final EditText txtEmail = promptsView.findViewById(R.id.user_edit_popup_email_txtEmail);
-
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setView(promptsView)
-                .setCancelable(false)
-                .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
-                .setPositiveButton(R.string.edit_user_profile_change_button, null)
-                .create();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                if (firebaseUser != null && firebaseUser.getEmail()!=null) {
-                    txtEmail.setText(firebaseUser.getEmail());
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
 
                     final DialogInterface DIALOG = dialog;
                     Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -367,15 +296,19 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onClick(View view) {
+                            App.log(TAG,
+                                    "Old Password=" + txtOldPassword.getText().toString() +
+                                            "\nNew Password=" + txtEnterPassword.getText().toString() +
+                                            "\nRepeated Password=" + txtRepeatPassword.getText().toString()
+                            );
 
-                            String str = UserValidation.email(txtEmail.getText().toString());
-                            txtEmail.setError(str);
+                            String str = UserValidation.password(context, txtEnterPassword.getText().toString(), txtRepeatPassword.getText().toString(), true);
+                            txtEnterPassword.setError(str);
+                            txtRepeatPassword.setError(str);
 
-                            String str2 = UserValidation.notEmpty(txtPassword.getText().toString(),0);
-                            txtPassword.setError(str2);
 
-                            if (str == null && str2==null && firebaseUser!=null && firebaseUser.getEmail()!=null) {
-                                AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtPassword.getText().toString());
+                            if (str == null && firebaseUser != null && firebaseUser.getEmail() != null) {
+                                AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtOldPassword.getText().toString());
 
                                 firebaseUser.reauthenticate(credential)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -383,10 +316,10 @@ public class EditUserProfileActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 App.log(TAG, "User re-authenticated.");
                                                 if (task.isSuccessful()) {
-                                                    firebaseUser.updateEmail(txtEmail.getText().toString());
+                                                    firebaseUser.updatePassword(txtEnterPassword.getText().toString());
                                                     DIALOG.cancel();
                                                 } else {
-                                                    txtPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
+                                                    txtOldPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
                                                 }
                                             }
                                         });
@@ -395,14 +328,89 @@ public class EditUserProfileActivity extends AppCompatActivity {
                     });
 
 
-                }else {
-                    showToast(R.string.error_no_connection_to_database);
                 }
-            }
-        });
+            });
 
-        // show it
-        alertDialog.show();
+            // show it
+            alertDialog.show();
+        }
+
+    }
+
+    public void onClick_changeEmail(View view) {
+        if(App.isNetworkAvailable(true)) {
+            final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.popup_edit_user_profil_email, null);
+
+            final EditText txtPassword = promptsView.findViewById(R.id.user_edit_popup_email_txtPassword);
+            final EditText txtEmail = promptsView.findViewById(R.id.user_edit_popup_email_txtEmail);
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setView(promptsView)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.edit_create_event_dialog_cancel_button, null)
+                    .setPositiveButton(R.string.edit_user_profile_change_button, null)
+                    .create();
+
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    if (firebaseUser != null && firebaseUser.getEmail() != null) {
+                        txtEmail.setText(firebaseUser.getEmail());
+
+                        final DialogInterface DIALOG = dialog;
+                        Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        negativeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DIALOG.cancel();
+                            }
+                        });
+
+                        Button positivButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        positivButton.setOnClickListener(new View.OnClickListener() {
+
+
+                            @Override
+                            public void onClick(View view) {
+
+                                String str = UserValidation.email(txtEmail.getText().toString());
+                                txtEmail.setError(str);
+
+                                String str2 = UserValidation.notEmpty(txtPassword.getText().toString(), 0);
+                                txtPassword.setError(str2);
+
+                                if (str == null && str2 == null && firebaseUser != null && firebaseUser.getEmail() != null) {
+                                    AuthCredential credential = EmailAuthProvider.getCredential(firebaseUser.getEmail(), txtPassword.getText().toString());
+
+                                    firebaseUser.reauthenticate(credential)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    App.log(TAG, "User re-authenticated.");
+                                                    if (task.isSuccessful()) {
+                                                        firebaseUser.updateEmail(txtEmail.getText().toString());
+                                                        DIALOG.cancel();
+                                                    } else {
+                                                        txtPassword.setError(getResources().getString(R.string.user_validation_error_passwords_wrong_password));
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        });
+
+
+                    } else {
+                        showToast(R.string.error_no_connection_to_database);
+                    }
+                }
+            });
+
+            // show it
+            alertDialog.show();
+        }
 
     }
 }

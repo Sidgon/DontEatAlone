@@ -46,6 +46,7 @@
     <string name="edit_create_event_btn_time">Set time</string>
     <string name="edit_create_event_txt_time">Start time</string>
     <string name="edit_create_event_duration">Duration in minutes</string>
+    <string name="edit_create_event_duration_field">Duration</string>
     <string name="edit_create_event_address">Address</string>
     <string name="edit_create_event_postcode">Postcode</string>
     <string name="edit_create_event_City">City</string>
@@ -115,6 +116,10 @@
 
     <string name="activity_maps_title">Maps</string>
     <string name="activity_maps_marker_no_event_found">Sorry, event not found, please check internet connection and try it again.</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_internet_connection_try_later">No internet connection, please try again later</string>
+    <string name="no_internet_reconnection">To internet reconnected</string>
 
 
 </resources>

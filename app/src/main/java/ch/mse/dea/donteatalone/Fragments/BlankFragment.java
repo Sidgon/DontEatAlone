@@ -45,7 +45,6 @@ import java.util.concurrent.ExecutionException;
 
 import ch.mse.dea.donteatalone.Activitys.EditCreateEventActivity;
 import ch.mse.dea.donteatalone.Activitys.InfoEventActivity;
-import ch.mse.dea.donteatalone.Adapter.EventsListArrayAdapter;
 import ch.mse.dea.donteatalone.Adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.Objects.Event;
 import ch.mse.dea.donteatalone.R;
@@ -62,7 +61,6 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     //define db refs
     private DatabaseReference mDatabase;
     private DatabaseReference refEvents;
-    private EventsListArrayAdapter adapter;
     private ArrayList<Event> events;
 
     //map
