@@ -1,6 +1,7 @@
 package ch.mse.dea.donteatalone.objects;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
@@ -69,10 +70,10 @@ public class User {
         try {
             return new GravatarTask().execute(email).get();
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            Log.v(TAG,e.toString());
         }
 
-        return null;
+        return new byte[0];
 
     }
 
@@ -120,7 +121,6 @@ public class User {
     @Exclude
     public void setImage(byte[] image) {
         this.imageString = Base64.encodeToString(image, Base64.DEFAULT);
-        ;
     }
 
 
