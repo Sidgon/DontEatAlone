@@ -67,7 +67,7 @@
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:onClick="onClick_saveUser"
+                android:onClick="onClickSaveUser"
                 android:text="@string/edit_create_event_save" />
 
             <View
@@ -85,7 +85,7 @@
                 android:layout_marginStart="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:onClick="onClick_changeEmail"
+                android:onClick="onClickChangeEmail"
                 android:text="@string/edit_user_profile_change_email" />
 
             <Button
@@ -97,7 +97,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_middle"
 
-                android:onClick="onClick_changePassword"
+                android:onClick="onClickChangePassword"
                 android:text="@string/edit_user_profile_change_password" />
 
             <Button
@@ -111,7 +111,7 @@
                 android:layout_marginEnd="@dimen/margin_middle"
                 android:layout_marginBottom="@dimen/margin_middle"
 
-                android:onClick="onClick_deleteUser"
+                android:onClick="onClickDeleteUser"
 
                 android:text="@string/edit_user_profile_delete" />
         </LinearLayout>

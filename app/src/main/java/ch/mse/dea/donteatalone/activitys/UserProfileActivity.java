@@ -81,7 +81,7 @@ public class UserProfileActivity extends AppCompatActivity {
         txtUsername = findViewById(R.id.user_profile_txtUsername);
     }
 
-    public void onClick_btnLogout(View view) {
+    public void onClickBtnLogout() {
         FirebaseAuth.getInstance().signOut();
         moveTaskToBack(true);
 
@@ -91,7 +91,7 @@ public class UserProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onClick_btnEditProfile(View view) {
+    public void onClickBtnEditProfile() {
 
         Gson gson = GsonAdapter.getGson();
         Intent intent = new Intent(this, EditUserProfileActivity.class);

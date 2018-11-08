@@ -79,9 +79,9 @@ public class InfoEventActivity extends AppCompatActivity {
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         txtDuration.setText(String.valueOf(event.getDuration()));
-        txtAddress.setText(event.getAddress().getAddress());
-        txtPostcodeCity.setText(String.valueOf(event.getAddress().getPostcode()) + " " + event.getAddress().getCity());
-        txtCountryName.setText(event.getAddress().getCountry());
+        txtAddress.setText(event.getLocation().getAddress());
+        txtPostcodeCity.setText(String.valueOf(event.getLocation().getPostcode()) + " " + event.getLocation().getCity());
+        txtCountryName.setText(event.getLocation().getCountry());
         txtMaxGuest.setText(String.valueOf(event.getMaxGuest()));
     }
 
@@ -100,7 +100,7 @@ public class InfoEventActivity extends AppCompatActivity {
     }
 
 
-    public void onClick_goingOrUngoingEvent(View view) {
+    public void onClickGoingOrUngoingEvent() {
         if (App.isNetworkAvailable(true)) {
             if (isGoing == IS_GOING) {
                 // Der User nimmt bereits am event teil und will jetzt das event verlassen.
@@ -181,7 +181,7 @@ public class InfoEventActivity extends AppCompatActivity {
 
     }
 
-    public void onClick_goingUserActivity(View view) {
+    public void onClickGoingUserActivity() {
         if(App.isNetworkAvailable(true)) {
             Gson gson = GsonAdapter.getGson();
             Intent intent = new Intent(this, GoingUserToEventListActivity.class);

@@ -21,7 +21,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         int status = NetworkUtil.getConnectivityStatusString(context);
         if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
 
-            showToast(!(status == NetworkUtil.NETWORK_STATUS_NOT_CONNECTED),context);
+            showToast(status != NetworkUtil.NETWORK_STATUS_NOT_CONNECTED,context);
 
         }
     }

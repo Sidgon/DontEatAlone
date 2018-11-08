@@ -154,7 +154,7 @@
 
                         android:layout_marginTop="@dimen/margin_middle"
                         android:layout_marginEnd="@dimen/margin_middle"
-                        android:text="address" />
+                        android:text="location" />
                 </TableRow>
 
                 <TableRow>
@@ -219,7 +219,7 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginEnd="@dimen/margin_middle"
                 android:layout_marginBottom="@dimen/margin_middle"
-                android:onClick="onClick_goingUserActivity"
+                android:onClick="onClickGoingUserActivity"
 
                 android:text="@string/activity_info_event_view_going_user" />
 
@@ -232,7 +232,7 @@
                 android:layout_marginEnd="@dimen/margin_middle"
                 android:layout_marginBottom="@dimen/margin_middle"
 
-                android:onClick="onClick_goingOrUngoingEvent"
+                android:onClick="onClickGoingOrUngoingEvent"
                 android:text="no text" />
 
 

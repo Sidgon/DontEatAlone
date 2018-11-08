@@ -19,7 +19,7 @@ public class Event {
     private String dateTimeString;
     private int duration;
     private int maxGuest;
-    private Address address;
+    private Location location;
 
     public Event() {
     }
@@ -29,12 +29,12 @@ public class Event {
     }
 
 
-    public Event(String eventId, String userIdOfCreator, String eventName, DateTime dateTimeString, int duration, int maxGuest, Address address) {
+    public Event(String eventId, String userIdOfCreator, String eventName, DateTime dateTimeString, int duration, int maxGuest, Location location) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.dateTimeString = dateTimeFormatter.print(dateTimeString);
         this.duration = duration;
-        this.address = address;
+        this.location = location;
         this.maxGuest = maxGuest;
         this.userIdOfCreator = userIdOfCreator;
     }
@@ -42,7 +42,7 @@ public class Event {
     @Exclude
     public Map<String,Object> toMap(){
         HashMap<String,Object> map = new HashMap<>();
-        map.put("address",getAddress());
+        map.put("location", getLocation());
         map.put("dateTimeString",getDateTimeString());
         map.put("duration",getDuration());
         map.put("eventId",getEventId());
@@ -60,7 +60,7 @@ public class Event {
                 Objects.equals(getUserIdOfCreator(), event.getUserIdOfCreator()) &&
                 Objects.equals(getEventName(), event.getEventName()) &&
                 Objects.equals(getDateTimeString(), event.getDateTimeString()) &&
-                Objects.equals(getAddress(), event.getAddress());
+                Objects.equals(getLocation(), event.getLocation());
     }
 
     @Override
@@ -113,12 +113,12 @@ public class Event {
         this.duration = duration;
     }
 
-    public Address getAddress() {
-        return address;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
 

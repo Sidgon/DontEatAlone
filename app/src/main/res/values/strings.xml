@@ -40,7 +40,7 @@
 
     <string name="edit_event_title">Edit Event</string>
     <string name="create_event_title">Create Event</string>
-    <string name="edit_create_event_get_address">Search address of Location</string>
+    <string name="edit_create_event_get_address">Search location of Location</string>
     <string name="edit_create_event_btn_date">Set Date</string>
     <string name="edit_create_event_txt_date">Date</string>
     <string name="edit_create_event_btn_time">Set time</string>

@@ -49,11 +49,11 @@ public class EventsListFirebaseAdapter extends FirebaseListAdapter<Event> {
         eventName.setText(event.getEventName());
         setDate(eventDate, event.getDateTime());
         setTime(eventTime, event.getDateTime(), event.getDuration());
-        eventAddresse.setText(event.getAddress().getAddress());
-        eventCity.setText(event.getAddress().getPostcode() + " " + event.getAddress().getPostcode());
+        eventAddresse.setText(event.getLocation().getAddress());
+        eventCity.setText(event.getLocation().getPostcode() + " " + event.getLocation().getPostcode());
         eventGoingGuests.setText(event.getGoingGuests() + "");
         eventMaxGuests.setText(event.getMaxGuest() + "");
-        eventCountry.setText(event.getAddress().getCountry());
+        eventCountry.setText(event.getLocation().getCountry());
     }
 
 

@@ -208,12 +208,12 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                 String loggedUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 if (event.getUserIdOfCreator().equals(loggedUserId)) {
                     markers[i] = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(event.getAddress().getLatitude(), event.getAddress().getLongitude()))
+                            .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
                             .icon(BitmapDescriptorFactory.defaultMarker(45)));
                     markers[i].setTag(event.getEventId());
                 } else {
                     markers[i] = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(event.getAddress().getLatitude(), event.getAddress().getLongitude()))
+                            .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
                             .icon(BitmapDescriptorFactory.defaultMarker(0)));
                     markers[i].setTag(event.getEventId());
                 }
@@ -277,8 +277,8 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         //create a list of all possible locations available
         for (int i = 0; i < events.size(); i++) {
             Location temp = new Location("");
-            temp.setLatitude(events.get(i).getAddress().getLatitude());
-            temp.setLongitude(events.get(i).getAddress().getLongitude());
+            temp.setLatitude(events.get(i).getLocation().getLatitude());
+            temp.setLongitude(events.get(i).getLocation().getLongitude());
             locations.add(temp);
         }
         //algo which calculates closes from list
