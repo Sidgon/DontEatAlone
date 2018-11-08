@@ -1,6 +1,4 @@
-package ch.mse.dea.donteatalone.Objects;
-
-import android.content.Context;
+package ch.mse.dea.donteatalone.objects;
 
 import org.junit.Before;
 import org.junit.Test;
