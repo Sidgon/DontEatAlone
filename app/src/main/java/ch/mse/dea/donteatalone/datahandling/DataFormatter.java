@@ -46,6 +46,12 @@ public class DataFormatter {
         return "";
     }
 
+
+    public static String getDateAsString(int year, int monthOfYear,int dayOfMonth,String dateType){
+        DateTime date= DateTime.now().withYear(year).withMonthOfYear(monthOfYear).withDayOfMonth(dayOfMonth);
+        return getDateAsString(date,dateType);
+    }
+
     public static DateTime getDateFromString(String date,String dateType){
         switch (dateType){
             case LONG: return dateFormatterLong.parseDateTime(date);
@@ -77,12 +83,5 @@ public class DataFormatter {
         return null;
     }
 
-
-
-
-    public static String getDateAsString(int year, int monthOfYear,int dayOfMonth,String dateType){
-        DateTime date= DateTime.now().withYear(year).withMonthOfYear(monthOfYear).withDayOfMonth(dayOfMonth);
-        return getDateAsString(date,dateType);
-    }
 
 }
