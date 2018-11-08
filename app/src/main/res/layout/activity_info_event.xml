@@ -4,7 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activitys.InfoEventActivity">
+    tools:context=".activitys.InfoEventActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,28 +218,26 @@
                 android:layout_marginStart="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginEnd="@dimen/margin_middle"
+                android:layout_marginBottom="@dimen/margin_middle"
                 android:onClick="onClick_goingUserActivity"
 
                 android:text="@string/activity_info_event_view_going_user" />
 
             <Button
                 android:id="@+id/activity_info_event_ungoing"
-                style="@style/DeleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
                 android:layout_marginStart="@dimen/margin_middle"
-                android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_middle"
                 android:layout_marginBottom="@dimen/margin_middle"
 
-                android:onClick="onClick_ungoingEvent"
-                android:text="@string/activity_info_event_ungoing" />
+                android:onClick="onClick_goingOrUngoingEvent"
+                android:text="no text" />
 
 
 
         </LinearLayout>
-
+</ScrollView>
 
 </LinearLayout>

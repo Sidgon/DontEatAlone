@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -8,8 +8,21 @@
 
     <ListView android:id="@+id/event_listView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/user_profile_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_margin="@dimen/margin_middle"
+        android:elevation="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         />
 
     <TextView
@@ -20,5 +33,10 @@
         android:gravity="center"
         android:text="@string/event_list_noData"
         style="@style/TextAppearance.AppCompat.Display1"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         />
-</LinearLayout>
+
+
+</RelativeLayout>

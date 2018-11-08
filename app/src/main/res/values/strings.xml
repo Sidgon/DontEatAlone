@@ -3,10 +3,12 @@
     <string name="title_activity_user_profile">User Profile</string>
     <string name="title_activity_edit_user_profile">Edit Profile</string>
     <string name="action_settings">Settings</string>
+    <string name="user_not_logedin">Action not allwoed, please login to enable access</string>
 
     <string name="user_profile_btnGoingEvents_text">Going Events</string>
     <string name="user_profile_btnCreatedEvents_text">Own Events</string>
     <string name="user_profile_btnEditProfile_text">Edit Profile</string>
+    <string name="user_profile_btnLogout_text">Logout</string>
     <string name="user_profile_txtProfileName_text">profile name</string>
     <string name="user_profile_txtUsername_text">user name</string>
     <string name="user_profile_userImage_des">Profile picture of user</string>
@@ -24,9 +26,17 @@
     <string name="edit_user_profile_username">Username</string>
     <string name="edit_user_profile_email">Email</string>
     <string name="edit_user_profile_old_password">Old Password</string>
-    <string name="edit_user_profile_enter_password">Enter Password</string>
+    <string name="edit_user_profile_password">Password</string>
+    <string name="edit_user_profile_enter_password">New Password</string>
     <string name="edit_user_profile__repeat_password">Repeat Password</string>
-    
+    <string name="edit_user_profile_delete">Delete account</string>
+    <string name="edit_user_profile_dialog_onDelete_title">Delete Account</string>
+    <string name="edit_user_profile_dialog_onDelete_massage">Do you really want to delete this account?</string>
+    <string name="edit_user_profile_error_deleting_event">Deleting of the account has failed, please try again later</string>
+    <string name="edit_user_profile_change_password">Change Password</string>
+    <string name="edit_user_profile_change_button">Change</string>
+    <string name="edit_user_profile_change_email">Change email</string>
+    <string name="edit_user_profile_error_updating_user">Updating has failed, please try again later</string>
 
     <string name="edit_event_title">Edit Event</string>
     <string name="create_event_title">Create Event</string>
@@ -36,6 +46,7 @@
     <string name="edit_create_event_btn_time">Set time</string>
     <string name="edit_create_event_txt_time">Start time</string>
     <string name="edit_create_event_duration">Duration in minutes</string>
+    <string name="edit_create_event_duration_field">Duration</string>
     <string name="edit_create_event_address">Address</string>
     <string name="edit_create_event_postcode">Postcode</string>
     <string name="edit_create_event_City">City</string>
@@ -45,14 +56,17 @@
     <string name="edit_create_event_event_name">Event name</string>
     <string name="edit_create_event_delete">Delete Event</string>
     <string name="edit_create_event_save">Save Changes</string>
+    <string name="edit_create_event_create">Create event</string>
 
     <string name="edit_create_event_dialog_title">Unsaved changes</string>
     <string name="edit_create_event_dialog_massage">You have unsaved changes, do you really want to lose the data?</string>
     <string name="edit_create_event_dialog_cancel_button">Cancel</string>
     <string name="edit_create_event_dialog_delete_button">Delete</string>
-
+    <string name="edit_create_event_error_crating_event">Creating an event has failed, please try again later</string>
+    <string name="edit_create_event_error_deleting_event">Deleting of the event has failed, please try again later</string>
+    <string name="edit_create_event_error_updating_event">Updating the event has failed, please try again later</string>
     <string name="edit_create_event_dialog_onDelete_title">Delete Event</string>
-    <string name="edit_create_event_dialog_onDelete_massage">Do you really want to delet this Event?</string>
+    <string name="edit_create_event_dialog_onDelete_massage">Do you really want to delete this event?</string>
 
     <string name="login_txtEmail">Email</string>
     <string name="login_txtPassword">Password</string>
@@ -66,10 +80,10 @@
     <string name="register_txtPassword">Enter Password</string>
     <string name="register_txtLastName">Lastname</string>
     <string name="register_txtFirstName">Firstname</string>
-    
+
     <string name="error_password_wrong_pattern">The password have to contain at least 6 characters and one uppercase letter, lowercase latter and a number. </string>
     <string name="error_password_contains_conditions">No conditions allowed like AND,NOT,OR. </string>
-
+    <string name="error_no_connection_to_database">No network connection</string>
 
     <string name="user_validation_error_required">Required</string>
     <string name="user_validation_error_length">Length: min $1$d characters</string>
@@ -79,10 +93,33 @@
     <string name="user_validation_error_passwords_wrong_password">Wrong password</string>
 
     <string name="activity_info_event_title">Info Event</string>
-    <string name="activity_info_event_ungoing">Ungoing event</string>
+    <string name="activity_info_event_ungoing_event">Ungoing event</string>
+    <string name="activity_info_event_going_event">Going event</string>
     <string name="activity_info_event_view_going_user">Going user</string>
     <string name="activity_info_event_alert_title_ungoing">Ungoing event</string>
     <string name="activity_info_event_alert_massage_going_user">Do you really want to ungoing this Event?</string>
-    <string name="activity_info_event_alert_button_going_user">ungoing</string>
+    <string name="activity_info_event_alert_button_going_user">Ungoing Event</string>
+    <string name="activity_info_event_falure_ungoing_event">Ungoing event has failed, please try again later</string>
+    <string name="activity_info_event_going_event_database">Going to event has failed, please try again later</string>
+
+    <string name="menu_item_main_navigation_map">Map</string>
+    <string name="menu_item_main_navigation_going_events">Going Events</string>
+    <string name="menu_item_main_navigation_own_events">Own Events</string>
+
+    <string name="action_bar_icon_user_profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="going_user_to_event_list_noData">No user yet</string>
+    <string name="going_user_to_event_list_title">Going Users</string>
+
+    <string name="activity_maps_title">Maps</string>
+    <string name="activity_maps_marker_no_event_found">Sorry, event not found, please check internet connection and try it again.</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="no_internet_connection_try_later">No internet connection, please try again later</string>
+    <string name="no_internet_reconnection">To internet reconnected</string>
+
 
 </resources>

@@ -3,4 +3,6 @@
     <string name="intent_edit_create_event_event">intent_edit_create_event_event</string>
     <string name="intent_edit_user_profile_user">intent_edit_user_profile_user</string>
     <string name="intent_info_event">intent_info_event</string>
+    <string name="intent_going_user_to_event">intent_going_user_to_event</string>
+    <string name="intent_info_event_going_user">intent_fraom_map_to_info_event_going_user</string>
 </resources>

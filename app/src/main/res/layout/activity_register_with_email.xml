@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activitys.RegisterWithEmailActivity">
+    tools:context=".activitys.RegisterWithEmailActivity">
 
     <EditText
         android:id="@+id/registerUsernameTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
@@ -18,12 +18,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxLines="1"
+        />
 
     <EditText
         android:id="@+id/registerEmailTextField"
-        android:layout_width="315dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/margin_middle"
@@ -33,11 +35,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerUsernameTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/registerUsernameTextField"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/registerFirstNameTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
@@ -47,11 +50,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerEmailTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/registerEmailTextField"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/registerLastNameTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
@@ -61,12 +65,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerFirstNameTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/registerFirstNameTextField"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/registerPasswordTextField"
-        android:layout_width="315dp"
-        android:layout_height="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/margin_middle"
@@ -76,12 +81,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerLastNameTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/registerLastNameTextField"
+        android:maxLines="1"/>
     />
 
     <EditText
         android:id="@+id/registerPasswordRepeatTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="8dp"
@@ -92,11 +98,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordTextField"
+        android:maxLines="1"/>
 
     <Button
         android:id="@+id/registerSignUpButton"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginEnd="@dimen/margin_middle"

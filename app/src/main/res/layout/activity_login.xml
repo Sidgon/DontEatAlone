@@ -4,43 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activitys.LoginActivity">
+    tools:context=".activitys.LoginActivity">
 
     <EditText
         android:id="@+id/emailLoginTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginEnd="@dimen/margin_middle"
+        android:layout_marginEnd="@dimen/margin_large"
         android:ems="10"
         android:hint="@string/login_txtEmail"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/passwordLoginTextField"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_middle"
+        android:layout_marginEnd="@dimen/margin_large"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="@string/login_txtPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailLoginTextField" />
+        app:layout_constraintTop_toBottomOf="@+id/emailLoginTextField"
+        android:maxLines="1"/>
 
     <Button
         android:id="@+id/emailSignInButton"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_middle"
+        android:layout_marginEnd="@dimen/margin_large"
         android:ems="10"
         android:text="@string/login_btnSignIn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +51,8 @@
 
     <View
         android:id="@+id/going_event_divider"
-        android:layout_width="368dp"
-        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_size_small"
         android:layout_marginStart="@dimen/margin_middle"
         android:layout_marginTop="@dimen/margin_middle"
         android:layout_marginEnd="@dimen/margin_small"
@@ -61,11 +63,11 @@
 
     <Button
         android:id="@+id/emailRegisterButton"
-        android:layout_width="315dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="@dimen/margin_middle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
         android:layout_marginTop="@dimen/margin_middle"
-        android:layout_marginEnd="@dimen/margin_middle"
+        android:layout_marginEnd="@dimen/margin_large"
         android:ems="10"
         android:text="@string/login_btnRegister"
         app:layout_constraintEnd_toEndOf="parent"
