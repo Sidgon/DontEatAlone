@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activitys.UserProfileActivity">
+    tools:context=".activitys.UserProfileActivity">
 
 
     <fragment
-        android:name="ch.mse.dea.donteatalone.Fragments.UserProfileInfoSideFragment"
+        android:name="ch.mse.dea.donteatalone.fragments.UserProfileInfoSideFragment"
         android:id="@+id/userProfileInfoSideFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7"/>
 
     <fragment
-        android:name="ch.mse.dea.donteatalone.Fragments.UserProfileInteractionFragment"
+        android:name="ch.mse.dea.donteatalone.fragments.UserProfileInteractionFragment"
         android:id="@+id/UserProfileInteractionFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"

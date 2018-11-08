@@ -22,7 +22,7 @@
         android:required="true" />
 
     <application
-        android:name=".Objects.App"
+        android:name=".objects.App"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -32,7 +32,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <receiver
-            android:name=".Adapter.NetworkChangeReceiver"
+            android:name=".adapter.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -51,34 +51,30 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".Activitys.LoginActivity" />
-        <activity android:name=".Activitys.RegisterWithEmailActivity" />
+        <activity android:name=".activitys.LoginActivity" />
+        <activity android:name=".activitys.RegisterWithEmailActivity" />
         <activity
-            android:name=".Activitys.UserProfileActivity"
+            android:name=".activitys.UserProfileActivity"
             android:label="@string/title_activity_user_profile" />
         <activity
-            android:name=".Activitys.EditUserProfileActivity"
+            android:name=".activitys.EditUserProfileActivity"
             android:label="@string/title_activity_edit_user_profile"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activitys.InfoEventActivity"
+            android:name=".activitys.InfoEventActivity"
             android:label="@string/activity_info_event_title" />
         <activity
-            android:name=".Activitys.EditCreateEventActivity"
+            android:name=".activitys.EditCreateEventActivity"
             android:label="@string/create_event_title"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".Activitys.MapsActivity"
-            android:label="@string/activity_maps_title" />
-        <activity android:name=".Activitys.MainActivity">
+        <activity android:name=".activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activitys.GoingUserToEventListActivity" />
-        <activity android:name=".NoInternetActivity"></activity>
+        <activity android:name=".activitys.GoingUserToEventListActivity" />
     </application>
 
 </manifest>

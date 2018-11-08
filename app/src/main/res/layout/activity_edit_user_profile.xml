@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activitys.EditUserProfileActivity">
+    tools:context=".activitys.EditUserProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
