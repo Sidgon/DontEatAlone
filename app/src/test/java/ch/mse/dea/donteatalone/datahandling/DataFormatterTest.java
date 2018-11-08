@@ -1,14 +1,13 @@
-package ch.mse.dea.donteatalone.DataHandling;
+package ch.mse.dea.donteatalone.datahandling;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DataFormatterTest {
 
-    DateTime dateTime = new DateTime(2018, 11, 07, 17, 19,40,10);
+    DateTime dateTime = new DateTime(2018, 11, 07, 17, 19, 40, 10);
 
     @Test
     public void getTimeAsString() {
@@ -17,7 +16,7 @@ public class DataFormatterTest {
 
     @Test
     public void getTimeAsString1() {
-        assertEquals("17:19", DataFormatter.getTimeAsString(17,19));
+        assertEquals("17:19", DataFormatter.getTimeAsString(17, 19));
     }
 
     @Test

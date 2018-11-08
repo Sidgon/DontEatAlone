@@ -22,6 +22,7 @@ import ch.mse.dea.donteatalone.objects.App;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG= MainActivity.class.getName();
     private FragmentManager fragmentManager = this.getSupportFragmentManager();
     private FragmentTransaction fragmentTransaction;
     private BlankFragment blankFragment;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
-            App.print("User=null");
+            App.log(TAG,"User=null");
 
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
