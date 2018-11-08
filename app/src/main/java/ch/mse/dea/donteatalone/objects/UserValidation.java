@@ -7,7 +7,9 @@ import android.widget.Toast;
 import ch.mse.dea.donteatalone.R;
 
 public class UserValidation {
-    private static final String TAG= UserValidation.class.getName();
+
+    private UserValidation() {
+    }
 
     public static String username(String username) {
 

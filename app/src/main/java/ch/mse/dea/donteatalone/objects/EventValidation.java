@@ -6,7 +6,10 @@ import ch.mse.dea.donteatalone.R;
 
 public class EventValidation {
 
-    public static String standart(String str,int minLength) {
+    private EventValidation() {
+    }
+
+    public static String standart(String str, int minLength) {
 
         if (TextUtils.isEmpty(str)) {
             return App.getFromResource(R.string.user_validation_error_required) + ".";

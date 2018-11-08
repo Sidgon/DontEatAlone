@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 
 import ch.mse.dea.donteatalone.adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.datahandling.DataFormatter;
+import ch.mse.dea.donteatalone.objects.Address;
 import ch.mse.dea.donteatalone.objects.App;
 import ch.mse.dea.donteatalone.objects.Event;
 import ch.mse.dea.donteatalone.objects.EventValidation;
@@ -101,7 +102,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             longitude = 0;
             isEdit = false;
             if (App.getDebug())
-                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60, "Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 8, 0, 0));
+                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60 , 8, new Address("Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland",0,0)));
         }
 
         Log.i(TAG, "Finish on Create");
@@ -115,12 +116,11 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
                 seekBarDuration.getProgress() * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE,
-                txtAddress.getText().toString(),
-                txtPostcode.getText().toString(),
-                txtCity.getText().toString(),
-                txtCountryName.getText().toString(),
                 seekBarMaxGuest.getProgress()+SEEKBAR_MAX_GUEST_MIN_VALUE,
-                latitude, longitude
+                new Address(txtAddress.getText().toString(),
+                        txtPostcode.getText().toString(),
+                        txtCity.getText().toString(),
+                        txtCountryName.getText().toString(),latitude, longitude)
         );
     }
 
@@ -129,14 +129,14 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         seekBarDuration.setProgress((event.getDuration()-SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
-        txtAddress.setText(event.getAddress());
-        txtPostcode.setText(String.valueOf(event.getPostcode()));
-        txtCity.setText(event.getCity());
-        txtCountryName.setText(event.getCountry());
+        txtAddress.setText(event.getAddress().getAddress());
+        txtPostcode.setText(String.valueOf(event.getAddress().getPostcode()));
+        txtCity.setText(event.getAddress().getCity());
+        txtCountryName.setText(event.getAddress().getCountry());
         seekBarMaxGuest.setProgress(event.getMaxGuest()-SEEKBAR_MAX_GUEST_MIN_VALUE);
 
-        latitude = event.getLatitude();
-        longitude = event.getLongitude();
+        latitude = event.getAddress().getLatitude();
+        longitude = event.getAddress().getLongitude();
     }
 
     private boolean validateForm(Event event) {
