@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -132,15 +135,9 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         // Define the criteria how to select the location provider -> use
         // default
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = locationManager.getBestProvider(criteria, false);
-        if (provider == null) {
-            Log.e(TAG, "No location provider found!");
-            return;
-        }
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+
+
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             AlertDialog.Builder myAlert = new AlertDialog.Builder(getActivity());
             myAlert.setMessage("Could not access your location!")
                     .setPositiveButton("Continue..", new DialogInterface.OnClickListener() {
@@ -153,9 +150,34 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                     .create();
             myAlert.show();
         }
-        mLastLocation = locationManager.getLastKnownLocation(provider);
 
-        if (mLastLocation != null) Log.d(TAG, mLastLocation.toString());
+//        Criteria criteria = new Criteria();
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+//        String provider = locationManager.getBestProvider(criteria, true);
+//        if (provider == null) {
+//            Log.e(TAG, "No location provider found!");
+//            return;
+//        }
+//        mLastLocation = locationManager.getLastKnownLocation(provider);
+//
+//        App.log(TAG, mLastLocation + " Location");
+//
+//        if (mLastLocation != null) Log.d(TAG, mLastLocation.toString());
+
+
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            mLastLocation = location;
+                        }
+                    }
+                });
+
     }
 
     // load db with events
@@ -186,7 +208,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private void loadMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -293,7 +315,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
     public void onClickMyLocationButton(View view) {
-        if(App.isNetworkAvailable(true)) {
+        if (App.isNetworkAvailable(true)) {
             FloatingActionButton fabs = view.findViewById(R.id.my_location_fab);
             fabs.show();
             fabs.setOnClickListener(new View.OnClickListener() {
@@ -301,16 +323,15 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
                 public void onClick(View v) {
                     try {
                         getPhoneLocation();
+
+                        CameraUpdate center = CameraUpdateFactory.newLatLng(getLastPosition());
+                        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+                        mMap.moveCamera(center);
+                        mMap.animateCamera(zoom);
+
                     } catch (ExecutionException | InterruptedException e) {
                         Log.v(TAG, e.toString());
                     }
-
-                    CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude()
-                            , mLastLocation.getLongitude()));
-                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-                    mMap.moveCamera(center);
-                    mMap.animateCamera(zoom);
-
                 }
             });
         }
@@ -363,6 +384,15 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
 
 
         return false;
+    }
+
+    private LatLng getLastPosition() {
+
+        if (mLastLocation != null) {
+            return new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        } else {
+            return new LatLng(0, 0);
+        }
     }
 
 }

@@ -100,7 +100,7 @@ public class InfoEventActivity extends AppCompatActivity {
     }
 
 
-    public void onClickGoingOrUngoingEvent() {
+    public void onClickGoingOrUngoingEvent(View view) {
         if (App.isNetworkAvailable(true)) {
             if (isGoing == IS_GOING) {
                 // Der User nimmt bereits am event teil und will jetzt das event verlassen.
@@ -181,7 +181,7 @@ public class InfoEventActivity extends AppCompatActivity {
 
     }
 
-    public void onClickGoingUserActivity() {
+    public void onClickGoingUserActivity(View view) {
         if(App.isNetworkAvailable(true)) {
             Gson gson = GsonAdapter.getGson();
             Intent intent = new Intent(this, GoingUserToEventListActivity.class);

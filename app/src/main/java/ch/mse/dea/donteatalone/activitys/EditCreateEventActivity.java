@@ -219,7 +219,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         });
     }
 
-    public void onClickSearchForAddress() {
+    public void onClickSearchForAddress(View view) {
         placePickerRequest += 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -269,7 +269,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             }
     }
 
-    public void onClickOpenDatePicker() {
+    public void onClickOpenDatePicker(View view) {
 
         DateTime dateTime = null;
         if (!txtDate.getText().toString().isEmpty())
@@ -295,7 +295,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    public void onClickOpenTimePicker() {
+    public void onClickOpenTimePicker(View view) {
 
         DateTime dateTime = null;
         if (!txtTime.getText().toString().isEmpty())
@@ -322,7 +322,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
 
-    public void onClickDeleteEvent() {
+    public void onClickDeleteEvent(View view) {
 
         if (App.isNetworkAvailable(true)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -377,7 +377,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     }
 
-    public void onClickSaveEvent() {
+    public void onClickSaveEvent(View view) {
         if (App.isNetworkAvailable(true)) {
             Event viewValues = getViewValues();
 
@@ -467,6 +467,4 @@ public class EditCreateEventActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 }

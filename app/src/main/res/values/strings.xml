@@ -121,5 +121,16 @@
     <string name="no_internet_connection_try_later">No internet connection, please try again later</string>
     <string name="no_internet_reconnection">To internet reconnected</string>
 
+    <string name="onboarding_title_welcome"></string>
+
+    <string-array name="onboarding_title">
+        <item>Welcome</item>
+    </string-array>
+
+    <string-array name="onboarding_description">
+        <item>Welcome to Don\'t Eat Alone</item>
+    </string-array>
+
+
 
 </resources>
