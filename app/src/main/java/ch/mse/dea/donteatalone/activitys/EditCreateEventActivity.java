@@ -35,7 +35,7 @@ import org.joda.time.DateTime;
 
 import ch.mse.dea.donteatalone.adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.datahandling.DataFormatter;
-import ch.mse.dea.donteatalone.objects.Address;
+import ch.mse.dea.donteatalone.objects.Location;
 import ch.mse.dea.donteatalone.objects.App;
 import ch.mse.dea.donteatalone.objects.Event;
 import ch.mse.dea.donteatalone.objects.EventValidation;
@@ -102,7 +102,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             longitude = 0;
             isEdit = false;
             if (App.getDebug())
-                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60 , 8, new Address("Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland",0,0)));
+                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60 , 8, new Location("Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland",0,0)));
         }
 
         Log.i(TAG, "Finish on Create");
@@ -117,7 +117,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
                 seekBarDuration.getProgress() * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE,
                 seekBarMaxGuest.getProgress()+SEEKBAR_MAX_GUEST_MIN_VALUE,
-                new Address(txtAddress.getText().toString(),
+                new Location(txtAddress.getText().toString(),
                         txtPostcode.getText().toString(),
                         txtCity.getText().toString(),
                         txtCountryName.getText().toString(),latitude, longitude)
@@ -129,14 +129,14 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
         seekBarDuration.setProgress((event.getDuration()-SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
-        txtAddress.setText(event.getAddress().getAddress());
-        txtPostcode.setText(String.valueOf(event.getAddress().getPostcode()));
-        txtCity.setText(event.getAddress().getCity());
-        txtCountryName.setText(event.getAddress().getCountry());
+        txtAddress.setText(event.getLocation().getAddress());
+        txtPostcode.setText(String.valueOf(event.getLocation().getPostcode()));
+        txtCity.setText(event.getLocation().getCity());
+        txtCountryName.setText(event.getLocation().getCountry());
         seekBarMaxGuest.setProgress(event.getMaxGuest()-SEEKBAR_MAX_GUEST_MIN_VALUE);
 
-        latitude = event.getAddress().getLatitude();
-        longitude = event.getAddress().getLongitude();
+        latitude = event.getLocation().getLatitude();
+        longitude = event.getLocation().getLongitude();
     }
 
     private boolean validateForm(Event event) {
@@ -219,7 +219,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         });
     }
 
-    public void onClick_searchForAddress(View view) {
+    public void onClickSearchForAddress(View view) {
         placePickerRequest += 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -232,9 +232,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == placePickerRequest) {
-            if (resultCode == RESULT_OK) {
+        if (requestCode == placePickerRequest && resultCode == RESULT_OK) {
                 Place pickedPlace = PlacePicker.getPlace(data, this);
                 String fulladdress = pickedPlace.getAddress().toString();
                 Log.d("", fulladdress);
@@ -267,10 +267,9 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 longitude = latlng.longitude;
 
             }
-        }
     }
 
-    public void onClick_openDatePicker(View view) {
+    public void onClickOpenDatePicker(View view) {
 
         DateTime dateTime = null;
         if (!txtDate.getText().toString().isEmpty())
@@ -296,7 +295,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    public void onClick_openTimePicker(View view) {
+    public void onClickOpenTimePicker(View view) {
 
         DateTime dateTime = null;
         if (!txtTime.getText().toString().isEmpty())
@@ -323,7 +322,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
 
-    public void onClick_deleteEvent(View view) {
+    public void onClickDeleteEvent(View view) {
 
         if (App.isNetworkAvailable(true)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -378,7 +377,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
     }
 
-    public void onClick_saveEvent(View view) {
+    public void onClickSaveEvent(View view) {
         if (App.isNetworkAvailable(true)) {
             Event viewValues = getViewValues();
 
@@ -468,6 +467,4 @@ public class EditCreateEventActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 }

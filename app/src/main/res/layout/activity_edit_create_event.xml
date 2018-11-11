@@ -64,7 +64,7 @@
                 android:layout_marginEnd="@dimen/margin_middle"
 
                 android:layout_toEndOf="@id/txt_date"
-                android:onClick="onClick_openDatePicker"
+                android:onClick="onClickOpenDatePicker"
                 android:text="@string/edit_create_event_btn_date"
 
                 />
@@ -102,7 +102,7 @@
                 android:layout_marginEnd="@dimen/margin_middle"
 
                 android:layout_toEndOf="@id/txt_time"
-                android:onClick="onClick_openTimePicker"
+                android:onClick="onClickOpenTimePicker"
                 android:text="@string/edit_create_event_btn_time"
 
                 />
@@ -211,7 +211,7 @@
                 android:layout_marginStart="@dimen/margin_middle"
                 android:layout_marginTop="@dimen/margin_middle"
                 android:layout_marginEnd="@dimen/margin_middle"
-                android:onClick="onClick_searchForAddress"
+                android:onClick="onClickSearchForAddress"
 
                 android:text="@string/edit_create_event_get_address" />
             <!--android:onClick="onClick_searchEvent"-->
@@ -236,7 +236,7 @@
                 android:layout_marginRight="@dimen/margin_middle"
 
                 android:layout_marginBottom="@dimen/margin_middle"
-                android:onClick="onClick_saveEvent"
+                android:onClick="onClickSaveEvent"
 
                 android:text="@string/edit_create_event_save" />
 
@@ -251,7 +251,7 @@
                 android:layout_marginRight="@dimen/margin_middle"
 
                 android:layout_marginBottom="@dimen/margin_middle"
-                android:onClick="onClick_deleteEvent"
+                android:onClick="onClickDeleteEvent"
 
                 android:text="@string/edit_create_event_delete" />
 

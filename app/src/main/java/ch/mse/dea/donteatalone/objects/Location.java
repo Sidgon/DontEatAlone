@@ -2,7 +2,7 @@ package ch.mse.dea.donteatalone.objects;
 
 import java.util.Objects;
 
-public class Address {
+public class Location {
 
     private String address;
     private String postcode;
@@ -11,10 +11,10 @@ public class Address {
     private double latitude;
     private double longitude;
 
-    public Address() {
+    public Location() {
     }
 
-    public Address(String address, String postcode, String city, String country, double latitude, double longitude) {
+    public Location(String address, String postcode, String city, String country, double latitude, double longitude) {
         this.address = address;
         this.postcode = postcode;
         this.city = city;
@@ -75,13 +75,13 @@ public class Address {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Address address1 = (Address) o;
-        return Double.compare(address1.getLatitude(), getLatitude()) == 0 &&
-                Double.compare(address1.getLongitude(), getLongitude()) == 0 &&
-                Objects.equals(getAddress(), address1.getAddress()) &&
-                Objects.equals(getPostcode(), address1.getPostcode()) &&
-                Objects.equals(getCity(), address1.getCity()) &&
-                Objects.equals(getCountry(), address1.getCountry());
+        Location location1 = (Location) o;
+        return Double.compare(location1.getLatitude(), getLatitude()) == 0 &&
+                Double.compare(location1.getLongitude(), getLongitude()) == 0 &&
+                Objects.equals(getAddress(), location1.getAddress()) &&
+                Objects.equals(getPostcode(), location1.getPostcode()) &&
+                Objects.equals(getCity(), location1.getCity()) &&
+                Objects.equals(getCountry(), location1.getCountry());
     }
 
     @Override

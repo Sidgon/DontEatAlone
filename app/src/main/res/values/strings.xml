@@ -40,7 +40,7 @@
 
     <string name="edit_event_title">Edit Event</string>
     <string name="create_event_title">Create Event</string>
-    <string name="edit_create_event_get_address">Search address of Location</string>
+    <string name="edit_create_event_get_address">Search location of Location</string>
     <string name="edit_create_event_btn_date">Set Date</string>
     <string name="edit_create_event_txt_date">Date</string>
     <string name="edit_create_event_btn_time">Set time</string>
@@ -120,6 +120,17 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="no_internet_connection_try_later">No internet connection, please try again later</string>
     <string name="no_internet_reconnection">To internet reconnected</string>
+
+    <string name="onboarding_title_welcome"></string>
+
+    <string-array name="onboarding_title">
+        <item>Welcome</item>
+    </string-array>
+
+    <string-array name="onboarding_description">
+        <item>Welcome to Don\'t Eat Alone</item>
+    </string-array>
+
 
 
 </resources>

@@ -117,7 +117,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         return valid;
     }
 
-    public void onClick_saveUser(View view) {
+    public void onClickSaveUser(View view) {
         if (App.isNetworkAvailable(true)) {
             User viewValues = getViewValues();
 
@@ -180,7 +180,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick_deleteUser(View view) {
+    public void onClickDeleteUser(View view) {
         if (App.isNetworkAvailable(true)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -250,7 +250,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClick_changePassword(View view) {
+    public void onClickChangePassword(View view) {
         if (App.isNetworkAvailable(true)) {
             final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -328,7 +328,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
     }
 
-    public void onClick_changeEmail(View view) {
+    public void onClickChangeEmail(View view) {
         if (App.isNetworkAvailable(true)) {
             final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             LayoutInflater li = LayoutInflater.from(this);
