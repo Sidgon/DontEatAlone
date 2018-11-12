@@ -33,13 +33,13 @@ import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 
+import ch.mse.dea.donteatalone.R;
 import ch.mse.dea.donteatalone.adapter.GsonAdapter;
 import ch.mse.dea.donteatalone.datahandling.DataFormatter;
-import ch.mse.dea.donteatalone.objects.Location;
 import ch.mse.dea.donteatalone.objects.App;
 import ch.mse.dea.donteatalone.objects.Event;
 import ch.mse.dea.donteatalone.objects.EventValidation;
-import ch.mse.dea.donteatalone.R;
+import ch.mse.dea.donteatalone.objects.Location;
 
 public class EditCreateEventActivity extends AppCompatActivity {
 
@@ -58,6 +58,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     private TextView txtMaxGuest;
     private Button btnDeleteEvent;
     private Button btnSaveEvent;
+    private Button btnSearchForLocation;
     private double latitude;
     private double longitude;
     private boolean isEdit;
@@ -98,11 +99,13 @@ public class EditCreateEventActivity extends AppCompatActivity {
             event = null;
             btnDeleteEvent.setVisibility(View.GONE);
             btnSaveEvent.setText(R.string.edit_create_event_create);
+            seekBarMaxGuest.setProgress(4 - SEEKBAR_MAX_GUEST_MIN_VALUE);
+            seekBarDuration.setProgress((60 - SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
             latitude = 0;
             longitude = 0;
             isEdit = false;
             if (App.getDebug())
-                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60 , 8, new Location("Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland",0,0)));
+                setViewValues(new Event("", firebaseUser.getUid(), "Migros", DateTime.now().plusDays(2), 60, 8, new Location("Dragonerstrasse 55", "5600", "Lenzburg", "Switzerland", 0, 0)));
         }
 
         Log.i(TAG, "Finish on Create");
@@ -115,12 +118,12 @@ public class EditCreateEventActivity extends AppCompatActivity {
                 event == null ? firebaseUser.getUid() : event.getUserIdOfCreator(),
                 etxtEventName.getText().toString(),
                 DataFormatter.getDateTimeFromString(txtDate.getText().toString(), txtTime.getText().toString(), "long"),
-                seekBarDuration.getProgress() * SEEKBAR_INCREMENT+SEEKBAR_DURATION_MIN_VALUE,
-                seekBarMaxGuest.getProgress()+SEEKBAR_MAX_GUEST_MIN_VALUE,
+                seekBarDuration.getProgress() * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE,
+                seekBarMaxGuest.getProgress() + SEEKBAR_MAX_GUEST_MIN_VALUE,
                 new Location(txtAddress.getText().toString(),
                         txtPostcode.getText().toString(),
                         txtCity.getText().toString(),
-                        txtCountryName.getText().toString(),latitude, longitude)
+                        txtCountryName.getText().toString(), latitude, longitude)
         );
     }
 
@@ -128,12 +131,12 @@ public class EditCreateEventActivity extends AppCompatActivity {
         etxtEventName.setText(event.getEventName());
         txtDate.setText(DataFormatter.getDateAsString(event.getDateTime(), "long"));
         txtTime.setText(DataFormatter.getTimeAsString(event.getDateTime()));
-        seekBarDuration.setProgress((event.getDuration()-SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
+        seekBarDuration.setProgress((event.getDuration() - SEEKBAR_DURATION_MIN_VALUE) / SEEKBAR_INCREMENT);
         txtAddress.setText(event.getLocation().getAddress());
         txtPostcode.setText(String.valueOf(event.getLocation().getPostcode()));
         txtCity.setText(event.getLocation().getCity());
         txtCountryName.setText(event.getLocation().getCountry());
-        seekBarMaxGuest.setProgress(event.getMaxGuest()-SEEKBAR_MAX_GUEST_MIN_VALUE);
+        seekBarMaxGuest.setProgress(event.getMaxGuest() - SEEKBAR_MAX_GUEST_MIN_VALUE);
 
         latitude = event.getLocation().getLatitude();
         longitude = event.getLocation().getLongitude();
@@ -163,6 +166,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         txtMaxGuest = findViewById(R.id.maxGuest);
         btnDeleteEvent = findViewById(R.id.btn_delete_event);
         btnSaveEvent = findViewById(R.id.btn_save_event);
+        btnSearchForLocation = findViewById(R.id.searchForAddress);
 
         setSeekBarDuration();
         setSeekBarMaxGuest();
@@ -179,7 +183,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtDuration.setText((getString(R.string.edit_create_event_duration_field)+" "+getStringDuration(progresValue * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE)));
+                txtDuration.setText((getString(R.string.edit_create_event_duration_field) + " " + getStringDuration(progresValue * SEEKBAR_INCREMENT + SEEKBAR_DURATION_MIN_VALUE)));
             }
 
             @Override
@@ -204,7 +208,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                txtMaxGuest.setText((getString(R.string.edit_create_event_max_guest)+" "+(progresValue + SEEKBAR_MAX_GUEST_MIN_VALUE)));
+                txtMaxGuest.setText((getString(R.string.edit_create_event_max_guest) + " " + (progresValue + SEEKBAR_MAX_GUEST_MIN_VALUE)));
             }
 
             @Override
@@ -220,53 +224,56 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClickSearchForAddress(View view) {
+        btnSearchForLocation.setEnabled(false);
         placePickerRequest += 1;
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
         try {
-            if(App.isNetworkAvailable(true)) {
+            if (App.isNetworkAvailable(true)) {
                 startActivityForResult(builder.build(this), placePickerRequest);
             }
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            Log.v(TAG,e.toString());
+            Log.v(TAG, e.toString());
+            btnSearchForLocation.setEnabled(true);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        btnSearchForLocation.setEnabled(true);
         if (requestCode == placePickerRequest && resultCode == RESULT_OK) {
-                Place pickedPlace = PlacePicker.getPlace(data, this);
-                String fulladdress = pickedPlace.getAddress().toString();
-                Log.d("", fulladdress);
-                //manipulate address String "Kirchbreitestrasse 14, 6033 Buchrain, Switzerland" to get information
-                String[] addressPLZPlaceCountry = fulladdress.split(",");
+            Place pickedPlace = PlacePicker.getPlace(data, this);
+            String fulladdress = pickedPlace.getAddress().toString();
+            Log.d("", fulladdress);
+            //manipulate address String "Kirchbreitestrasse 14, 6033 Buchrain, Switzerland" to get information
+            String[] addressPLZPlaceCountry = fulladdress.split(",");
 
-                if (addressPLZPlaceCountry.length==3) {
-                    //plz + ort are not divided by "," therefore split again
-                    String[] plzPlace = addressPLZPlaceCountry[1].split("\\s");
-                    //remove leading whitespace from country
-                    String country = addressPLZPlaceCountry[2].trim();
-                    //put into textboxes
-                    txtAddress.setText(addressPLZPlaceCountry[0]);
-                    txtPostcode.setText(plzPlace[1]);
-                    txtCity.setText(plzPlace[2]);
-                    txtCountryName.setText(country);
-                }else if(addressPLZPlaceCountry.length==2){
-                    //plz + ort are not divided by "," therefore split again
-                    //remove leading whitespace from country
-                    String country = addressPLZPlaceCountry[1].trim();
-                    //put into textboxes
-                    txtAddress.setText(addressPLZPlaceCountry[0]);
-                    txtPostcode.setText(" ");
-                    txtCity.setText(" ");
-                    txtCountryName.setText(country);
-                }
-                //save picked latlng position off place
-                LatLng latlng = pickedPlace.getLatLng();
-                latitude = latlng.latitude;
-                longitude = latlng.longitude;
-
+            if (addressPLZPlaceCountry.length == 3) {
+                //plz + ort are not divided by "," therefore split again
+                String[] plzPlace = addressPLZPlaceCountry[1].split("\\s");
+                //remove leading whitespace from country
+                String country = addressPLZPlaceCountry[2].trim();
+                //put into textboxes
+                txtAddress.setText(addressPLZPlaceCountry[0]);
+                txtPostcode.setText(plzPlace[1]);
+                txtCity.setText(plzPlace[2]);
+                txtCountryName.setText(country);
+            } else if (addressPLZPlaceCountry.length == 2) {
+                //plz + ort are not divided by "," therefore split again
+                //remove leading whitespace from country
+                String country = addressPLZPlaceCountry[1].trim();
+                //put into textboxes
+                txtAddress.setText(addressPLZPlaceCountry[0]);
+                txtPostcode.setText(" ");
+                txtCity.setText(" ");
+                txtCountryName.setText(country);
             }
+            //save picked latlng position off place
+            LatLng latlng = pickedPlace.getLatLng();
+            latitude = latlng.latitude;
+            longitude = latlng.longitude;
+
+        }
     }
 
     public void onClickOpenDatePicker(View view) {
@@ -280,6 +287,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
         int mMonth = dateTime.getMonthOfYear();
         int mDay = dateTime.getDayOfMonth();
 
+        App.log(TAG,mYear+"/"+mMonth+"/"+mDay);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -287,11 +295,12 @@ public class EditCreateEventActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
+                        App.log(TAG,year+"/"+monthOfYear+"/"+dayOfMonth);
 
-                        txtDate.setText(DataFormatter.getDateAsString(year, monthOfYear, dayOfMonth, "long"));
+                        txtDate.setText(DataFormatter.getDateAsString(year, monthOfYear+1, dayOfMonth, "long"));
 
                     }
-                }, mYear, mMonth, mDay);
+                }, mYear, mMonth-1, mDay);
         datePickerDialog.show();
     }
 
@@ -323,7 +332,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
 
 
     public void onClickDeleteEvent(View view) {
-
+        btnDeleteEvent.setEnabled(false);
         if (App.isNetworkAvailable(true)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
@@ -336,6 +345,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
                     .setCancelable(false)
                     .setPositiveButton(R.string.edit_create_event_dialog_cancel_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            btnDeleteEvent.setEnabled(true);
                             dialog.cancel();
                         }
                     })
@@ -344,23 +354,25 @@ public class EditCreateEventActivity extends AppCompatActivity {
                             if (event != null) {
 
 
-                                refEvents.child(event.getEventId()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        finish();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.w("DeleteEvent:failure", e);
-                                                                Toast.makeText(EditCreateEventActivity.this,
-                                                                        getString(R.string.edit_create_event_error_deleting_event),
-                                                                        Toast.LENGTH_SHORT).show();
+                                refEvents.child(event.getEventId()).removeValue()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                btnDeleteEvent.setEnabled(true);
+                                                Log.w("DeleteEvent:failure", e);
+                                                Toast.makeText(EditCreateEventActivity.this,
+                                                        getString(R.string.edit_create_event_error_deleting_event),
+                                                        Toast.LENGTH_SHORT).show();
 
-                                                                Log.i(TAG, "Event gelöscht: \n   -ID: " + event.getEventId() + " \n   -Name: " + event.getEventName());
 
-                                                            }
-                                                        }
+                                            }
+                                        }
                                 );
 
 
@@ -378,6 +390,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
     }
 
     public void onClickSaveEvent(View view) {
+        btnSaveEvent.setEnabled(false);
         if (App.isNetworkAvailable(true)) {
             Event viewValues = getViewValues();
 
@@ -398,6 +411,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                btnSaveEvent.setEnabled(true);
                                 Log.w(TAG, "CreateEvent:failure", e);
                                 Toast.makeText(EditCreateEventActivity.this,
                                         getString(R.string.edit_create_event_error_crating_event),
@@ -420,6 +434,7 @@ public class EditCreateEventActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            btnSaveEvent.setEnabled(true);
                             Log.w("UpdateEvent:failure", e);
                             Toast.makeText(EditCreateEventActivity.this,
                                     getString(R.string.edit_create_event_error_updating_event),
