@@ -38,7 +38,7 @@ public class App extends Application {
     }
 
     public static boolean getDebug() {
-        return true;
+        return false;
     }
 
     public static void log(String TAG, String str) {

@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
 import ch.mse.dea.donteatalone.R;
-import ch.mse.dea.donteatalone.fragments.BlankFragment;
+import ch.mse.dea.donteatalone.fragments.MapFragment;
 import ch.mse.dea.donteatalone.fragments.GoingEventsListFragment;
 import ch.mse.dea.donteatalone.fragments.OwnEventsListFragment;
 import ch.mse.dea.donteatalone.objects.App;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
     private FragmentManager fragmentManager = this.getSupportFragmentManager();
     private FragmentTransaction fragmentTransaction;
-    private BlankFragment blankFragment;
+    private MapFragment mapFragment;
     private OwnEventsListFragment ownEventsListFragment;
     private GoingEventsListFragment goingEventsListFragment;
 
@@ -40,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         loginCheck();
 
-        blankFragment = new BlankFragment();
+        mapFragment = new MapFragment();
         ownEventsListFragment = new OwnEventsListFragment();
         goingEventsListFragment = new GoingEventsListFragment();
 
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.main_activity_fragment, goingEventsListFragment);
         fragmentTransaction.add(R.id.main_activity_fragment, ownEventsListFragment);
-        fragmentTransaction.add(R.id.main_activity_fragment, blankFragment);
-        fragmentTransaction.show(blankFragment);
+        fragmentTransaction.add(R.id.main_activity_fragment, mapFragment);
+        fragmentTransaction.show(mapFragment);
         fragmentTransaction.hide(goingEventsListFragment);
         fragmentTransaction.hide(ownEventsListFragment);
         fragmentTransaction.commit();
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.main_navigation_item_map:
                                 setTitle(R.string.app_name);
                                 fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.show(blankFragment);
+                                fragmentTransaction.show(mapFragment);
                                 fragmentTransaction.hide(goingEventsListFragment);
                                 fragmentTransaction.hide(ownEventsListFragment);
                                 fragmentTransaction.commit();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.main_navigation_item_goning_events:
                                 setTitle(R.string.going_events_list_activity_tile);
                                 fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.hide(blankFragment);
+                                fragmentTransaction.hide(mapFragment);
                                 fragmentTransaction.show(goingEventsListFragment);
                                 fragmentTransaction.hide(ownEventsListFragment);
                                 fragmentTransaction.commit();
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.main_navigation_item_own_events:
                                 setTitle(R.string.own_events_list_activity_tile);
                                 fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.hide(blankFragment);
+                                fragmentTransaction.hide(mapFragment);
                                 fragmentTransaction.hide(goingEventsListFragment);
                                 fragmentTransaction.show(ownEventsListFragment);
                                 fragmentTransaction.commit();

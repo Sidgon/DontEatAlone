@@ -56,7 +56,7 @@ import ch.mse.dea.donteatalone.objects.Event;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BlankFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     public static final int REQUEST_LOCATION_PERM = 59;
     private static final String TAG = "Maps";
@@ -72,7 +72,7 @@ public class BlankFragment extends Fragment implements OnMapReadyCallback, Googl
     private Location closestLocation;
 
 
-    public BlankFragment() {
+    public MapFragment() {
         // Required empty public constructor
     }
 
