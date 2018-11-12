@@ -42,7 +42,7 @@ public class App extends Application {
     }
 
     public static boolean getDebug() {
-        return false;
+        return true;
     }
 
     public static void log(String TAG, String str) {
