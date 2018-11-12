@@ -34,10 +34,6 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        loginCheck();
-
-
         setContentView(R.layout.activity_login);
         getViews();
 
@@ -48,6 +44,12 @@ public class LoginActivity extends AppCompatActivity implements
         findViewById(R.id.emailRegisterButton).setOnClickListener(this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        loginCheck();
+    }
 
     private void setDummyData(){
         mEmailTextField.setText("steinegger.daniel@gmail.com");
