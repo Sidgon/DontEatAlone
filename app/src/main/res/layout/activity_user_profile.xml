@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/onboarding_fragment"
-    android:name="ch.mse.dea.donteatalone.fragments.FirstUseFragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activitys.UserProfileActivity">
+
+
+    <fragment
+        android:name="ch.mse.dea.donteatalone.fragments.UserProfileInfoSideFragment"
+        android:id="@+id/userProfileInfoSideFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"/>
+
+    <fragment
+        android:name="ch.mse.dea.donteatalone.fragments.UserProfileInteractionFragment"
+        android:id="@+id/UserProfileInteractionFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"/>
+
+</LinearLayout>

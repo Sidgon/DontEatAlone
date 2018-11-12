@@ -57,10 +57,13 @@ public class EditUserProfileActivity extends AppCompatActivity {
         getViews();
 
         if (getIntent().getExtras() != null) {
+
             Gson gson = GsonAdapter.getGson();
             String json = getIntent().getExtras().getString(R.string.intent_edit_user_profile_user + "");
             user = gson.fromJson(json, User.class);
+
             setViewValues(user);
+
         } else {
             Log.d(TAG, "Couldn't extract User from Intent");
             finish();

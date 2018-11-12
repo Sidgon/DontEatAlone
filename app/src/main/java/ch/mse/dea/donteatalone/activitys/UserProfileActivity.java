@@ -97,6 +97,7 @@ public class UserProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EditUserProfileActivity.class);
         intent.putExtra(R.string.intent_edit_user_profile_user + "", gson.toJson(user));
         startActivity(intent);
+
     }
 
 
