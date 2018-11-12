@@ -16,6 +16,10 @@ public class App extends Application {
 
     private static Context context;
 
+    public static void setApplicationContext(Context context){
+        App.context = context;
+    }
+
     public static boolean isNetworkAvailable(boolean showToast) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

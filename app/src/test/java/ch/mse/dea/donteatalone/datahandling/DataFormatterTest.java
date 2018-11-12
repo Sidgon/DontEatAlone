@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DataFormatterTest {
 
@@ -20,12 +21,6 @@ public class DataFormatterTest {
     }
 
     @Test
-    public void getTimeFromString() {
-        //fragen
-        //assertEquals("17:19", DataFormatter.getTimeFromString("17:19"));
-    }
-
-    @Test
     public void getDateAsString() {
         assertEquals("", DataFormatter.getDateAsString(dateTime, "sljdakgk"));
         assertEquals("07.11.18", DataFormatter.getDateAsString(dateTime, "short"));
@@ -35,22 +30,20 @@ public class DataFormatterTest {
 
     @Test
     public void getDateAsString1() {
-
+        assertEquals("", DataFormatter.getDateAsString(2018, 11, 07, "sljdakgk"));
+        assertEquals("07.11.18", DataFormatter.getDateAsString(2018, 11, 07,  "short"));
+        assertEquals("07.11.2018", DataFormatter.getDateAsString(2018, 11, 07,  "normal"));
+        assertEquals("Wednesday, 07.11.2018", DataFormatter.getDateAsString(2018, 11, 07,  "long"));
     }
 
     @Test
     public void getDateFromString() {
-        /* doesnt like the input String
-        assertNull(DataFormatter.getDateFromString("2018-11-07", "sljdakgk"));
-        assertEquals( "07.11.18", DataFormatter.getDateFromString("2018-11-07", "short"));
-        assertEquals("07.11.2018", DataFormatter.getDateFromString("2018-11-07", "normal"));
-        assertEquals("Wednesday, 07.11.2018", DataFormatter.getDateFromString("2018-11-07", "long"));
-        */
+        assertNull(DataFormatter.getDateFromString(dateTime.toString(), "sljdakgk"));
     }
 
     @Test
     public void getDateTimeFromString() {
-        //doesnt like input String
+        assertNull(DataFormatter.getDateFromString(dateTime.toString(), "sljdakgk"));
     }
 
 
