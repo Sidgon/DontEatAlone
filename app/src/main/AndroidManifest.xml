@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
-
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -33,7 +32,7 @@
 
         <receiver
             android:name=".adapter.NetworkChangeReceiver"
-            android:label="NetworkChangeReceiver" >
+            android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
@@ -51,7 +50,13 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".activitys.LoginActivity" />
+        <activity android:name=".activitys.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activitys.RegisterWithEmailActivity" />
         <activity
             android:name=".activitys.UserProfileActivity"
@@ -67,13 +72,9 @@
             android:name=".activitys.EditCreateEventActivity"
             android:label="@string/create_event_title"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activitys.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".activitys.MainActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
         <activity android:name=".activitys.GoingUserToEventListActivity" />
     </application>
 

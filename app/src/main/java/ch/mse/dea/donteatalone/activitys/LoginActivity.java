@@ -10,10 +10,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 
 import ch.mse.dea.donteatalone.objects.App;
 import ch.mse.dea.donteatalone.objects.UserValidation;
@@ -33,6 +35,9 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        loginCheck();
+
+
         setContentView(R.layout.activity_login);
         getViews();
 
@@ -77,10 +82,8 @@ public class LoginActivity extends AppCompatActivity implements
 
                             if (user!=null) {
                                 //start new intent
-                                Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
-                                nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                LoginActivity.this.startActivity(nextIntent);
-                                finish();
+                                intentToMain();
+
                             } else {
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_LONG).show();
@@ -128,5 +131,34 @@ public class LoginActivity extends AppCompatActivity implements
     public void onBackPressed() {
         moveTaskToBack(true);
         System.exit(0);
+    }
+
+    private void loginCheck() {
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null && currentUser.getEmail()!=null) {
+            mAuth.fetchSignInMethodsForEmail(currentUser.getEmail()).addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
+                @Override
+                public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
+                    if (signInMethodQueryResult!=null && signInMethodQueryResult.getSignInMethods()!=null && !signInMethodQueryResult.getSignInMethods().isEmpty()) {
+                        App.log(TAG,"login check true");
+                        intentToMain();
+                    }
+                }
+            });
+
+        }
+    }
+
+    private void intentToMain() {
+        Intent nextIntent = new Intent(this, MainActivity.class);
+        nextIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(nextIntent);
+        finish();
+
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//        finish();
     }
 }

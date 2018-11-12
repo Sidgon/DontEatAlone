@@ -10,16 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
 
 import ch.mse.dea.donteatalone.R;
-import ch.mse.dea.donteatalone.fragments.MapFragment;
 import ch.mse.dea.donteatalone.fragments.GoingEventsListFragment;
+import ch.mse.dea.donteatalone.fragments.MapFragment;
 import ch.mse.dea.donteatalone.fragments.OwnEventsListFragment;
-import ch.mse.dea.donteatalone.objects.App;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-
-        loginCheck();
 
         mapFragment = new MapFragment();
         ownEventsListFragment = new OwnEventsListFragment();
@@ -94,13 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        loginCheck();
     }
 
     @Override
@@ -126,33 +111,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void loginCheck() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null && currentUser.getEmail()!=null) {
-            mAuth.fetchSignInMethodsForEmail(currentUser.getEmail()).addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
-                @Override
-                public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
-                    if (signInMethodQueryResult==null || signInMethodQueryResult.getSignInMethods()==null || signInMethodQueryResult.getSignInMethods().isEmpty()) {
-                        intentToLogin();
-                    }
-                }
-            });
-
-        } else {
-            intentToLogin();
-        }
-    }
-
-    private void intentToLogin() {
-        FirebaseAuth.getInstance().signOut();
-
-        App.log(TAG, "User=null");
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
-    }
 }
